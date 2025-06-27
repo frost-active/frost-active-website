@@ -20,7 +20,7 @@ const Footer = () => {
               src="/images/logo2.png"
               height={150}
               width={150}
-              alt="logo"
+              alt="FROST Aura Smart Hydration dock on a desk"
               className="object-contain"
             />
           </Link>

@@ -44,7 +44,7 @@ const Header = () => {
           >
             <div className="relative top-[6px] left-[-30px]">
               <img
-                src="/images/logo2.png"
+                src="/images/logo2.png" loading="lazy"
                 alt="FROST Logo"
                 className="h-40 w-auto object-contain max-w-[180px]"
               />
@@ -128,7 +128,7 @@ const AboutPage = () => {
           <path d="M0,100 C20,50 80,50 100,100 L100,100 L0,100 Z" fill="#FFFFFF"></path>
         </svg>
       <div className="absolute bottom-5 -sm:-bottom-2 left-0 w-full">
-              <img src="/images/waves.png" alt="Waves" className="w-full" />
+              <img src="/images/waves.png" loading="lazy" alt="Waves" className="w-full" />
           </div>
       </div>
     </section>

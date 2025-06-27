@@ -40,7 +40,6 @@ const navLinks = [
   { name: 'Contact Us', path: 'try' },
 ];
 
-// Header component with scroll-to-section navigation
 const Header = () => {
   const handleNavClick = (sectionId) => (e) => {
     e.preventDefault();
@@ -63,11 +62,11 @@ const Header = () => {
               onClick={handleNavClick('home')}
             >
               <div className="relative left-[-30px] top-[6px] ">
-              <img
-                src="/images/logo2.png"
-                alt="FROST Logo"
-                className="h-40 w-auto object-contain max-w-[180px]" // restrict height and width
-              />
+                <img
+                  src="/images/logo2.png" loading="lazy"
+                  alt="FROST Aura Smart Hydration dock on a desk"
+                  className="h-40 w-auto object-contain max-w-[180px]"
+                />
               </div>
             </a>
 
@@ -83,6 +82,17 @@ const Header = () => {
                   {link.name}
                 </a>
               ))}
+              
+              {/* Book Now Button - Desktop */}
+              {/* <div className="-ml-2">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                    <a href="/fund">Invest</a>
+                  </Button>
+                </motion.div>
+              </div>
+              */}
+
             </nav>
 
             {/* Mobile Navigation */}
@@ -106,15 +116,27 @@ const Header = () => {
                       </a>
                     </DropdownMenuItem>
                   ))}
+
+                  {/* Book Now Button - Mobile */}
+                  {/*
+                  <DropdownMenuItem asChild>
+                    <div className="w-full px-4 py-2">
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
+                          <a href="/fund" className="w-full block text-center">
+                            Invest 
+                          </a>
+                        </Button>
+                      </motion.div>
+                    </div>
+                  </DropdownMenuItem>
+                  */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </div>
         </div>
       </header>
-
-      {/* Spacer to prevent content being hidden under fixed header */}
-     
     </>
   );
 };
@@ -127,8 +149,8 @@ const heroContent = [
     subheading: "DESKTOP COMPANION",
     description:
       "Stay sharp, stay centered. FROST keeps you hydrated and focused with timely posture resets, deep breathing cues, and eye relaxation prompts that recharge your workflow.",
-    image: "/images/bottle.png",
-    imageStyles: { top: "10px", left: "246px", height: "258px", width: "80px" },
+    image: "/images/bottle.png", 
+    imageStyles: { top: "10px", left: "243px", height: "258px", width: "85px" } , 
   },
   {
     heading: "YOUR NEW",
@@ -329,21 +351,23 @@ const HeroSection = () => {
                 />
                 {/* Dynamic Image */}
                 <AnimatePresence mode="wait">
-                  <motion.img
-                    key={currentIndex}
-                    src={current.image}
-                    alt={`${current.subheading} Image`}
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.92 }}
-                    transition={{ duration: 0.25 }}
-                    style={{
-                      position: "absolute",
-                      ...current.imageStyles,
-                      zIndex: 10,
-                    }}
-                  />
-                </AnimatePresence>
+  <motion.img
+    key={currentIndex}
+    src={current.image}
+    alt={`${current.subheading} Image`}
+    initial={{ opacity: 0, y: -100 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.4, ease: "easeOut" }}
+    style={{
+      position: "absolute",
+      ...current.imageStyles,
+      zIndex: 10,
+    }}
+  />
+</AnimatePresence>
+
+
               </div>
             </div>
           </motion.div>
@@ -387,6 +411,7 @@ const HeroSection = () => {
     </section>
   );
 };
+
 
 const FeaturesSection = () => {
   const features = [
@@ -643,8 +668,8 @@ if (scrollInterval.current || isHovered.current) return;
       </div>
 
       {/* Curvy background */}
-      <div className="mt-20 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
-        <img src="/images/curvy.png" alt="curvy" className="w-full h-auto object-cover" />
+      <div className="mt-0 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+        <img src="/images/curvy1.png" loading="lazy" alt="curvy" className="w-full h-auto object-cover" />
       </div>
     </section>
   );
@@ -674,9 +699,86 @@ const steps = [
 ];
 
 const HowItWorksSection = () => {
+  const sectionRef = useRef(null);
+  const audioRef = useRef(null);
+  const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
+  const [audioAllowed, setAudioAllowed] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        setIsInView(visible);
+
+        if (visible) {
+          setShowPermissionPrompt(true);
+        } else {
+          // Pause and reset audio on exit
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+          }
+          setAudioAllowed(false);
+          setShowPermissionPrompt(false);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (audioAllowed && isInView && audioRef.current) {
+      audioRef.current.loop = true;
+      audioRef.current.play().catch(() => {});
+    }
+  }, [audioAllowed, isInView]);
+
+  const handleAllowSound = () => {
+    setAudioAllowed(true);
+    setShowPermissionPrompt(false);
+    if (audioRef.current && isInView) {
+      audioRef.current.loop = true;
+      audioRef.current.play().catch(() => {});
+    }
+  };
+
   return (
     <>
+      {/* Hidden Audio Player */}
+      <audio ref={audioRef} src="/audio/how-it-works.mp3" preload="auto" />
+
+      {/* Permission Prompt */}
+      {showPermissionPrompt && !audioAllowed && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm mx-auto">
+            <h3 className="text-lg font-semibold mb-2 text-[#021637]">Enable Sound?</h3>
+            <p className="text-sm text-[#021637] mb-4">
+              This section includes audio to explain how <span className="text-[#389ED7]"><b>FROST</b></span> works. Allow sound to continue?
+            </p>
+            <button
+              onClick={handleAllowSound}
+              className="bg-[#389ED7] text-white px-5 py-2 rounded-full font-medium hover:bg-[#2CA4E0]/90"
+            >
+              Allow Sound
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Section */}
       <section
+        ref={sectionRef}
         id="how-it-works"
         className="-mt-24 w-full bg-white px-0 py-20 flex flex-col md:flex-row items-center justify-between"
       >
@@ -688,28 +790,25 @@ const HowItWorksSection = () => {
             <span className="text-[#389ED7]">WORKS?</span>
           </h2>
 
-          {/* Steps with individual dotted lines */}
+          {/* Steps */}
           <div className="relative space-y-20 left-0 sm:left-1">
             {steps.map((step, index) => (
               <div key={index} className="relative pl-12 sm:pl-16 pr-4">
-                {/* Big background number */}
                 <span className="absolute -left-2 md:left-2 -top-8 text-[72px] font-bold text-[#E6EAF0] leading-none z-0 select-none">
                   {step.number}
                 </span>
 
-                {/* Vertical dotted line below number except for last step */}
                 {index < steps.length - 1 && (
                   <div className="absolute left-8 top-10 md:top-10 h-24 border-l-2 border-dotted border-[#B0C4D8] z-0" />
                 )}
 
-                {/* Text Content */}
                 <div className="relative z-10">
                   <h3 className="text-2xl font-semibold text-[#021637]" style={{ fontFamily: "Roboto" }}>
                     {step.title}
                   </h3>
                   <p
                     className="text-sm text-[#021637] mt-2 leading-relaxed max-w-full sm:max-w-sm font-light"
-                    style={{ fontFamily: "Roboto", font:"Light" }}
+                    style={{ fontFamily: "Roboto" }}
                   >
                     {step.description}
                   </p>
@@ -717,62 +816,61 @@ const HowItWorksSection = () => {
               </div>
             ))}
 
-            {/* Dotted line from 03 to button */}
             <div className="absolute left-8 top-[330px] md:top-[285px] h-24 border-l-2 border-dotted border-[#B0C4D8] z-0" />
           </div>
 
-          {/* Order Button */}
           <div className="mt-14 pl-0">
-            <Button
-              size="lg"
+            <button
               className="rounded-full px-8 py-3 text-white bg-[#389ED7] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md"
             >
               <a href="/order">Book Now</a>
-            </Button>
+            </button>
           </div>
         </div>
 
-        {/* Right Image with Blue Background Image and Bottle */}
+        {/* Right Image */}
         <div className="w-full md:w-1/2 mt-60 md:mt-16 lg:mt-0 flex justify-center md:justify-end relative">
-          {/* Blue background image */}
           <img
-            src="/images/BlueBackgroundImage.png"
+            src="/images/BlueBackgroundImage.png" loading="lazy"
             alt="Background Shape"
             className="absolute -top-[160px] md:-top-10  right-[1px] md:-right-20 w-[200px] md:w-[500px] 
               h-[300px] md:h-[650px] z-0"
           />
-          {/* Bottle Image */}
+
+          <div className="relative z-10">
+            <img
+              src="/images/ringdesign.png" loading="lazy"
+              alt="Ring Design"
+              className="absolute left-[185px] top-[8px] md:left-[130px] md:top-[350px] md:w-[210px] md:h-[115px] w-[130px] h-[70px] z-20 animate-vibrate"
+            />
+            <img
+              src="/images/works1.png" loading="lazy"
+              alt="How it Works"
+              className="relative left-[185px] md:left-[120px] -top-[160px] md:top-[30px] z-10 md:w-[350px] md:h-[550px] 
+                w-[200px]  h-[300px]"
+            />
+          </div>
           <img
-            src="/images/works1.png"
-            alt="How it Works"
-            className="relative left-[185px] md:left-[120px] -top-[160px] md:top-[30px] z-10 md:w-[350px] md:h-[550px] 
-              w-[200px]  h-[300px]"
-          />
-          <img
-            src="/images/square1.png"
+            src="/images/square1.png" loading="lazy"
             alt="square1"
-            className="relative right-[10px] -top-[240px]
-               md:right-[180px] md:-top-[60px] w-[30px] h-[30px]"
+            className="relative right-[10px] -top-[240px] md:right-[180px] md:-top-[60px] w-[30px] h-[30px]"
           />
           <img
-            src="/images/square2.png"
+            src="/images/square2.png" loading="lazy"
             alt="square2"
-            className="relative -right-[40px] -top-[210px]
-               md:right-[100px] md:-top-[40px] z-10 w-10 h-10 "
+            className="relative -right-[40px] -top-[210px] md:right-[100px] md:-top-[40px] z-10 w-10 h-10 "
           />
           <img
-            src="/images/square3.png"
+            src="/images/square3.png" loading="lazy"
             alt="square3"
-            className="relative right-[100px] -top-[150px] 
-              md:right-[260px] md:top-[45px] z-10 w-[30px] h-[30px] "
+            className="relative right-[100px] -top-[150px] md:right-[260px] md:top-[45px] z-10 w-[30px] h-[30px] "
           />
         </div>
       </section>
 
-      {/* Curvy Bottom Image (Full Width) */}
       <div className="-mt-[230px] md:-mt-[78px] relative -ml-[1vw] -mr-[5vw] overflow-hidden w-screen">
         <img
-          src="/images/curvy1.png"
+          src="/images/curvy1.png" loading="lazy"
           alt="curvy"
           className="w-full h-auto md:h-[200px] object-cover"
         />
@@ -780,6 +878,7 @@ const HowItWorksSection = () => {
     </>
   );
 };
+
 
 
 
@@ -970,7 +1069,7 @@ const GallerySection = () => {
 
       <div className="mt-0 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
         <motion.img
-          src="/images/curvy.png"
+          src="/images/curvy.png" loading="lazy"
           alt="curvy"
           className="w-screen h-auto object-cover"
           initial={{ opacity: 0 }}
@@ -1024,7 +1123,7 @@ const TechnicalSpecification = () => {
         viewport={{ once: true }}
       >
         <img
-          src="/images/TechnicalSpecification1.png"
+          src="/images/TechnicalSpecification1.png" loading="lazy"
           alt="Technical Specification"
           className="w-full max-w-4xl -mt-20 ml-20 h-auto object-cover"
         />
@@ -1467,7 +1566,7 @@ const MeetOurTeamSection = () => {
         </div>
 
         <div className="md:-mt-[50px] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-          <img src="/images/curvy1.png" alt="curvy" className="w-full h-auto object-cover" />
+          <img src="/images/curvy1.png" loading="lazy" alt="curvy" className="w-full h-auto object-cover" />
         </div>
       </div>
     </section>
@@ -1585,7 +1684,7 @@ const TestimonialsSection = () => {
       <motion.section
         id="testimonials"
         className="container relative overflow-x-hidden"
-        style={{ minHeight: '100vh', paddingBottom: '0px' }} // Remove extra bottom padding
+        style={{ minHeight: '50vh', paddingBottom: '0px' }} // Remove extra bottom padding
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
@@ -1739,13 +1838,8 @@ const TestimonialsSection = () => {
       </motion.section>
 
       {/* Curvy image: much smaller negative margin on all screens, only increases for large desktop */}
-      <div className="w-full relative -mt-4 sm:-mt-6 md:-mt-12 lg:-mt-20" style={{ left: 0, right: 0 }}>
-        <img
-          src="/images/curvy.png"
-          alt="curvy"
-          className="w-full h-auto object-cover"
-          style={{ display: 'block', maxWidth: '100vw' }}
-        />
+      <div className="md:-mt-[50px] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+          <img src="/images/curvy1.png" loading="lazy" alt="curvy" className="w-full h-auto object-cover" />
       </div>
     </>
   );
@@ -1776,7 +1870,7 @@ const BlogSection = () => {
       excerpt:  "3-Minute Read",
       fullText: "More content for Blog 2...",
       slug: "blog-2",
-      image: "/images/blog2image.png",
+      image: "/images/blog2image.png" , 
       url: "/blogs2",
     },
     {
@@ -1962,7 +2056,20 @@ const TryItNowSection = () => {
           transition={{ delay: 0.4 }}
         />
 
-        <Card className="relative mx-auto max-w-full md:max-w-7xl lg:max-w-[90rem] rounded-[20px] shadow-[inset_0px_4px_4px_#00000040,inset_0px_-4px_4px_#00000040] bg-gradient-to-b from-[#b1e3ff] to-white px-4 sm:px-8 md:px-12 lg:px-16 py-8 md:py-16 my-0 md:my-12 z-10 overflow-visible">
+        <Card
+  className="
+    relative mx-auto max-w-full md:max-w-7xl lg:max-w-[90rem]
+    rounded-[20px]
+    shadow-[inset_0px_4px_4px_#00000040,inset_0px_-4px_4px_#00000040]
+    bg-gradient-to-b from-[#b1e3ff] to-white
+    px-4 sm:px-8 md:px-12 lg:px-16
+    py-12 sm:py-16 md:py-16
+    my-0 md:my-12
+    min-h-[1150px] sm:min-h-[1000px] md:min-h-0
+    z-10 overflow-visible
+  "
+>
+
           <CardContent className="p-0">
             {/* Title */}
             <motion.div
@@ -1996,7 +2103,7 @@ const TryItNowSection = () => {
                     <div className="absolute inset-[8%] bg-[#7ad6fb33] rounded-[50%]"></div>
                     <div className="absolute top-[20%] left-[24%] w-[52%] h-[48%] bg-[#015b8f33] rounded-[50%]"></div>
                     <img
-                      className="absolute w-[98%] h-[90%] top-0 left-[3%] object-contain"
+                      className="absolute w-[98%] h-[90%] top-0 left-[3%] object-contain" 
                       alt="frost kit"
                       src="/images/kit.png"
                       loading="lazy"
@@ -2055,13 +2162,23 @@ const TryItNowSection = () => {
                 </div>
               </motion.div>
             </div>
+
             {/* Floating Circles Animation - Now INSIDE Card and layered above bg */}
             <motion.div
-              className="absolute -bottom-10 md:bottom-10 right-0 md:-right-20 w-[220px] h-[180px] sm:w-[260px] sm:h-[220px] md:w-[360px] md:h-[320px] z-20 pointer-events-none"
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              style={{ pointerEvents: "none" }}
-            >
+  className="
+    absolute
+    bottom-[6px] sm:bottom-[-60px] md:bottom-10
+    right-[-20px] sm:right-[-40px] md:-right-20
+    w-[220px] h-[180px]
+    sm:w-[260px] sm:h-[220px]
+    md:w-[360px] md:h-[320px]
+    z-20 pointer-events-none
+  "
+  animate={{ y: [0, 10, 0] }}
+  transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+  style={{ pointerEvents: 'none' }}
+>
+
               {/* Big Circles */}
               <div className="absolute bottom-0 right-0 scale-75 sm:scale-90 md:scale-100 w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] md:w-[240px] md:h-[240px]">
                 <div className="absolute inset-0 bg-[#b1e3ff88] rounded-full"></div>

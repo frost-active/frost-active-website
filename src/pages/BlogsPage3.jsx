@@ -65,7 +65,7 @@ const Header = () => {
           >
            <div className="relative top-[6px] left-[-30px] ">
               <img
-                src="/images/logo2.png"
+                src="/images/logo2.png" loading="lazy"
                 alt="FROST Logo"
                 className="h-40 w-auto object-contain max-w-[180px]" // restrict height and width
               />
@@ -240,14 +240,14 @@ const BlogsPage = () => {
 <div className="flex flex-col md:flex-row  md:space-x-8 space-y-4 md:space-y-0 mb-10">
   <div className="w-full md:w-1/2 h-[450px] border border-gray-300 rounded overflow-hidden">
     <img
-      src="/images/blog3-1.jpg"
+      src="/images/blog3-1.jpg" loading="lazy"
       alt="Hydration Tip 1"
       className="w-full h-full object-fill"
     />
   </div>
   <div className="w-full md:w-1/2 aspect-[3/2] border border-gray-300 rounded overflow-hidden">
     <img
-      src="/images/blog3-2.jpg"
+      src="/images/blog3-2.jpg" loading="lazy"
       alt="Hydration Tip 2"
       className="w-full h-full object-fill"
     />
@@ -328,7 +328,7 @@ const BlogsPage = () => {
 <div className="flex flex-col md:flex-row  justify-center md:space-x-8 space-y-4 md:space-y-0 mb-10">
   <div className="w-full md:w-1/2 h-[450px] border border-gray-300 rounded overflow-hidden">
     <img
-      src="/images/blog3-3.jpg"
+      src="/images/blog3-3.jpg" loading="lazy"
       alt="Hydration Tip 1"
       className="w-full h-full object-fill"
     />

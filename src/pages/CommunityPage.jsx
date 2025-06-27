@@ -45,7 +45,7 @@ const Header = () => {
           >
            <div className="relative top-[6px] left-[-30px] ">
               <img
-                src="/images/logo2.png"
+                src="/images/logo2.png" loading="lazy" 
                 alt="FROST Logo"
                 className="h-40 w-auto object-contain max-w-[180px]" // restrict height and width
               />

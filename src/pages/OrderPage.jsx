@@ -45,7 +45,7 @@ const Header = () => {
           >
            <div className="relative top-[6px] left-[-30px] ">
               <img
-                src="/images/logo2.png"
+                src="/images/logo2.png" loading="lazy"
                 alt="FROST Logo"
                 className="h-40 w-auto object-contain max-w-[180px]" // restrict height and width
               />
@@ -200,7 +200,7 @@ const OrderPage = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-white pt-24 px-4 flex flex-col items-center">
+      <div className="-mt-16 min-h-screen bg-white pt-24 px-4 flex flex-col items-center">
         <div className="bg-white shadow-md border w-full max-w-3xl p-8 relative">
           {!submitted ? (
             <>

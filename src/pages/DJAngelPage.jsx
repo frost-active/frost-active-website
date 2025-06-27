@@ -43,7 +43,7 @@ const Header = () => {
           >
             <div className="relative top-[6px] left-[-30px]">
               <img
-                src="/images/logo2.png"
+                src="/images/logo2.png" loading="lazy"
                 alt="FROST Logo"
                 className="h-40 w-auto object-contain max-w-[180px]"
               />
@@ -127,15 +127,15 @@ const DJAngelPage = () => {
       </p>
 
      <div className="flex flex-col md:flex-row  justify-center md:space-x-8 space-y-4 md:space-y-0 mb-10">
-  
-  <div className="w-full md:w-[800px] md:h-[700px] border border-gray-300 rounded overflow-hidden">
-    <img
-      src="/images/djangel1.jpg"
-      alt="Hydration Tip 1"
-      className="w-full h-full object-fill"
-    />
+      <div className="w-full md:w-[800px] md:h-[700px] border border-gray-300 rounded overflow-hidden">
+        <img
+          src="/images/djangel1.jpg" loading="lazy"
+          alt="Hydration Tip 1"
+          className="w-full h-full object-fill"
+        />
+      </div>
   </div>
-  </div>
+
       <h2 className="text-2xl font-semibold mt-8 mb-4">🔊 The Journey: From Beats to Balance</h2>
 
       <p className="mb-4">
@@ -210,10 +210,18 @@ const DJAngelPage = () => {
         And in the race of life, she reminds you to <em>pause, breathe, and realign.</em>
       </blockquote>
 
+      
       <p className="mb-4">
         So the next time you plug into music, ask yourself:<br />
         <strong>Are you just listening, or are you healing?</strong>
       </p>
+      <div className="md:ml-20 w-full md:w-[600px] md:h-[500px] border border-gray-300 rounded overflow-hidden">
+        <img
+          src="/images/djangel2.jpg" loading="lazy"
+          alt="Hydration Tip 1"
+          className="w-full h-full object-fill"
+        />
+      </div>
 
       <h3 className="text-xl font-semibold mt-6 mb-2">🎧 Explore Her Soundscape:</h3>
       <ul className="list-disc ml-6">
