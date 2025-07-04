@@ -418,91 +418,72 @@ const FeaturesSection = () => {
     {
       id: 1,
       title: "Drink Water",
-      description:
-        "Get personalized nudges to drink water throughout your day — no more guesswork, just natural hydration.",
-      details:
-        "Even mild dehydration (just 1–2% of body weight) can impair memory, concentration, and mood. Office workers often forget to drink water during long stretches of screen time. Frost Aura delivers gentle, timely nudges—so hydration becomes effortless, not an afterthought.",
+      description: "Get personalized nudges to drink water throughout your day — no more guesswork, just natural hydration.",
+      details: "Even mild dehydration (just 1–2% of body weight) can impair memory, concentration, and mood. Office workers often forget to drink water during long stretches of screen time. Frost Aura delivers gentle, timely nudges—so hydration becomes effortless, not an afterthought.",
       backed: "Harvard T.H. Chan School of Public Health, Lieberman HR (2007)",
       img: "/images/drink-water.png",
     },
     {
       id: 2,
       title: "Clean Bottle",
-      description:
-        "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it — keeping bacteria at bay.",
-      details:
-        "Reusable bottles can become breeding grounds for bacteria if not cleaned regularly. Studies show biofilms develop within 48 hours. Frost Aura tracks your cleaning intervals and reminds you when it’s time to wash—so your sips stay safe.",
+      description: "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it — keeping bacteria at bay.",
+      details: "Reusable bottles can become breeding grounds for bacteria if not cleaned regularly. Studies show biofilms develop within 48 hours. Frost Aura tracks your cleaning intervals and reminds you when it’s time to wash—so your sips stay safe.",
       backed: "NSF International, Dr. Philip Tierno, NYU Langone",
       img: "/images/clean-bottle.png",
     },
     {
       id: 3,
       title: "Take Medicine",
-      description:
-        "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
-      details:
-        "Medication routines are easy to forget—especially when tied to meals or water intake. Frost Aura links hydration and medicine reminders, helping users stay consistent and healthy with subtle, supportive alerts.",
+      description: "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
+      details: "Medication routines are easy to forget—especially when tied to meals or water intake. Frost Aura links hydration and medicine reminders, helping users stay consistent and healthy with subtle, supportive alerts.",
       backed: "WHO Adherence Report, CDC Medication Compliance",
       img: "/images/take-medicine.png",
     },
     {
       id: 4,
       title: "Water Reminder",
-      description:
-        "Monitor daily water intake, set goals, and get insights via the FROST mobile app — all without micromanaging.",
-      details:
-        "Most people under-drink water without realizing it. Frost Aura helps you monitor your daily water intake with smart tracking and insights—building healthier habits one sip at a time.",
+      description: "Monitor daily water intake, set goals, and get insights via the FROST mobile app — all without micromanaging.",
+      details: "Most people under-drink water without realizing it. Frost Aura helps you monitor your daily water intake with smart tracking and insights—building healthier habits one sip at a time.",
       backed: "JAMA (hydration & disease prevention), BJ Fogg's Behavior Model",
       img: "/images/water-remainder.png",
     },
     {
       id: 5,
       title: "Meditation, Yoga & Workout",
-      description:
-        "Activate focused modes for your practice — FROST emits healing vibrations (like 432 Hz) to harmonize body and mind.",
-      details:
-        "Your water can carry more than hydration—it can carry healing intent. Frost Aura uses vibrational frequencies like 432 Hz to enhance meditation and yoga sessions, energizing water and harmonizing mind and body.",
+      description: "Activate focused modes for your practice — FROST emits healing vibrations (like 432 Hz) to harmonize body and mind.",
+      details: "Your water can carry more than hydration—it can carry healing intent. Frost Aura uses vibrational frequencies like 432 Hz to enhance meditation and yoga sessions, energizing water and harmonizing mind and body.",
       backed: "PubMed - Sound Frequencies on Water, Emoto Water Crystal Study",
       img: "/images/meditation.png",
     },
     {
       id: 6,
       title: "Short Walk",
-      description:
-        "Been sitting too long? FROST encourages short movement breaks to keep your circulation flowing and your head clear.",
-      details:
-        "Prolonged sitting is linked to heart disease, diabetes, and fatigue. Just 2–3 minutes of walking every hour reduces these risks. Frost Aura gently encourages short walks to reset your posture and energy.",
+      description: "Been sitting too long? FROST encourages short movement breaks to keep your circulation flowing and your head clear.",
+      details: "Prolonged sitting is linked to heart disease, diabetes, and fatigue. Just 2–3 minutes of walking every hour reduces these risks. Frost Aura gently encourages short walks to reset your posture and energy.",
       backed: "WHO Activity Guidelines, American Heart Association",
       img: "/images/walk.png",
     },
     {
       id: 7,
       title: "Place Bottle",
-      description:
-        "Left your bottle behind? FROST gently notifies you to place it back on the dock — so your tracking never skips a beat.",
-      details:
-        "Habit stacking is key to behavior change. When your bottle is on the dock, you're more likely to hydrate and stay consistent. Frost Aura reminds you to place your bottle—keeping the loop intact.",
+      description: "Left your bottle behind? FROST gently notifies you to place it back on the dock — so your tracking never skips a beat.",
+      details: "Habit stacking is key to behavior change. When your bottle is on the dock, you're more likely to hydrate and stay consistent. Frost Aura reminds you to place your bottle—keeping the loop intact.",
       backed: "James Clear (Atomic Habits), Charles Duhigg (The Power of Habit)",
       img: "/images/exercise.png",
     },
     {
       id: 8,
       title: "Short Break",
-      description:
-        "Protect your focus with short, intentional breaks. Stretch, blink, breathe — let FROST cue your brain to reset.",
-      details:
-        "Micro-breaks reduce eye strain, mental fatigue, and back pain. Frost Aura suggests 2–3 min pauses to stretch, blink, or breathe—recharging your focus without disrupting your flow.",
-      backed:
-        "American Optometric Association, Microsoft Human Factors Lab Study",
+      description: "Protect your focus with short, intentional breaks. Stretch, blink, breathe — let FROST cue your brain to reset.",
+      details: "Micro-breaks reduce eye strain, mental fatigue, and back pain. Frost Aura suggests 2–3 min pauses to stretch, blink, or breathe—recharging your focus without disrupting your flow.",
+      backed: "American Optometric Association, Microsoft Human Factors Lab Study",
       img: "/images/cleanbottle.png",
     },
     {
       id: 9,
       title: "Pomodoro Activity",
-      description:
-        "Work in deep focus cycles with built-in Pomodoro timers — paired with hydration cues to keep your energy flowing.",
-      details:
-        "The Pomodoro technique boosts focus by breaking tasks into 25-min sprints with 5-min breaks. Frost Aura builds hydration cues into these cycles, keeping your brain fresh and your body fueled.",
+      description: "Work in deep focus cycles with built-in Pomodoro timers — paired with hydration cues to keep your energy flowing.",
+      details: "The Pomodoro technique boosts focus by breaking tasks into 25-min sprints with 5-min breaks. Frost Aura builds hydration cues into these cycles, keeping your brain fresh and your body fueled.",
       backed: "Francesco Cirillo (Pomodoro Creator), UC Irvine Study on Deep Work",
       img: "/images/pomodoro.png",
     },
@@ -511,10 +492,12 @@ const FeaturesSection = () => {
   const [expandedRows, setExpandedRows] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef(null);
+  const sectionRef = useRef(null);
   const scrollInterval = useRef(null);
   const isHovered = useRef(false);
   const isTouching = useRef(false);
   const resumeTimeout = useRef(null);
+  const hasEntered = useRef(false);
 
   const scrollSpeed = 2;
   const cardWidth = 320;
@@ -526,7 +509,7 @@ const FeaturesSection = () => {
   };
 
   const startAutoScroll = () => {
-if (scrollInterval.current || isHovered.current) return;
+    if (scrollInterval.current || isHovered.current) return;
 
     scrollInterval.current = setInterval(() => {
       const container = scrollRef.current;
@@ -536,7 +519,6 @@ if (scrollInterval.current || isHovered.current) return;
 
       const scrollWidth = container.scrollWidth;
       const scrollLeft = container.scrollLeft;
-      const visibleWidth = container.offsetWidth;
 
       if (scrollLeft >= scrollWidth / 2) {
         container.scrollLeft = 0;
@@ -562,10 +544,26 @@ if (scrollInterval.current || isHovered.current) return;
   };
 
   useEffect(() => {
-    startAutoScroll();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasEntered.current) {
+          hasEntered.current = true;
+          startAutoScroll();
+        }
+      },
+      { threshold: 0.5 } //  Trigger when 50% of the section is visible
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
     return () => {
       stopAutoScroll();
       clearTimeout(resumeTimeout.current);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
     };
   }, []);
 
@@ -579,7 +577,11 @@ if (scrollInterval.current || isHovered.current) return;
   };
 
   return (
-    <section id="features" className="container bg-white py-16 px-4 mt-0 md:px-8">
+    <section
+      id="features"
+      ref={sectionRef}
+      className="container bg-white py-16 px-4 mt-0 md:px-8"
+    >
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground" style={{ fontFamily: "Roboto", fontWeight: "600" }}>
         <span style={{ color: "#021637" }}>KEY </span>
         <span style={{ color: "#389ED7" }}>FEATURES</span>
@@ -604,54 +606,54 @@ if (scrollInterval.current || isHovered.current) return;
         onTouchEnd={handleTouchEnd}
       >
         <div className="flex gap-4 snap-x snap-mandatory mt-20 px-4 pb-6 w-max items-start">
-          {[...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features, ...features].map((feature, index) => (
-            <div key={`${feature.id}-${index}`} className="flex flex-col">
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.4 }}
-                className={`snap-start min-w-[300px] max-w-sm flex-shrink-0 bg-white rounded-xl border border-gray-200 shadow-md p-6 flex flex-col relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-sky-600 after:rounded-b-xl ${
-                  [2, 4, 6, 8].includes(feature.id) ? "relative top-20" : ""
-                }`}
-              >
-                <div className="mx-auto rounded-full" style={{ width: 120, height: 120, marginTop: -96 }}>
-                  <img src={feature.img} alt={feature.title} className="w-full h-full object-contain" />
-                </div>
-
-                <div className="text-center mt-4">
-                  <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "Roboto", color: "#021738" }}>
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-3">{feature.description}</p>
-                  <button
-                    onClick={() => toggleExpand(feature.id)}
-                    className="text-sm font-medium hover:underline focus:outline-none"
-                    style={{ color: "#389ED7" }}
-                  >
-                    {expandedRows.includes(feature.id) ? "Hide details ↑" : "Learn more →"}
-                  </button>
-                </div>
-
-                <AnimatePresence initial={false}>
-                  {expandedRows.includes(feature.id) && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden text-sm text-gray-700 bg-gray-50 rounded-lg p-3 mt-2"
+          {Array(5)
+            .fill(features)
+            .flat()
+            .map((feature, index) => (
+              <div key={`${feature.id}-${index}`} className="flex flex-col">
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.4 }}
+                  className={`snap-start min-w-[300px] max-w-sm flex-shrink-0 bg-white rounded-xl border border-gray-200 shadow-md p-6 flex flex-col relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-sky-600 after:rounded-b-xl ${[2, 4, 6, 8].includes(feature.id) ? "relative top-20" : ""}`}
+                >
+                  <div className="mx-auto rounded-full" style={{ width: 120, height: 120, marginTop: -96 }}>
+                    <img src={feature.img} alt={feature.title} className="w-full h-full object-contain" />
+                  </div>
+                  <div className="text-center mt-4">
+                    <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "Roboto", color: "#021738" }}>
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">{feature.description}</p>
+                    <button
+                      onClick={() => toggleExpand(feature.id)}
+                      className="text-sm font-medium hover:underline focus:outline-none"
+                      style={{ color: "#389ED7" }}
                     >
-                      <p><strong>Why it matters:</strong> {feature.details}</p>
-                      {feature.backed && (
-                        <p className="mt-2"><strong>Backed by:</strong> {feature.backed}</p>
-                      )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </div>
-          ))}
+                      {expandedRows.includes(feature.id) ? "Hide details ↑" : "Learn more →"}
+                    </button>
+                  </div>
+
+                  <AnimatePresence initial={false}>
+                    {expandedRows.includes(feature.id) && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden text-sm text-gray-700 bg-gray-50 rounded-lg p-3 mt-2"
+                      >
+                        <p><strong>Why it matters:</strong> {feature.details}</p>
+                        {feature.backed && (
+                          <p className="mt-2"><strong>Backed by:</strong> {feature.backed}</p>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </div>
+            ))}
         </div>
       </div>
 
@@ -700,8 +702,8 @@ const steps = [
 
 const HowItWorksSection = () => {
   const sectionRef = useRef(null);
-  const audioRef = useRef(null);
-  const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
+  const audio1Ref = useRef(null);
+  const audio2Ref = useRef(null);
   const [audioAllowed, setAudioAllowed] = useState(false);
   const [isInView, setIsInView] = useState(false);
 
@@ -710,73 +712,71 @@ const HowItWorksSection = () => {
       ([entry]) => {
         const visible = entry.isIntersecting;
         setIsInView(visible);
-
-        if (visible) {
-          setShowPermissionPrompt(true);
-        } else {
-          // Pause and reset audio on exit
-          if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-          }
+        if (!visible) {
+          stopAllAudio();
           setAudioAllowed(false);
-          setShowPermissionPrompt(false);
         }
       },
       { threshold: 0.5 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
     };
   }, []);
 
   useEffect(() => {
-    if (audioAllowed && isInView && audioRef.current) {
-      audioRef.current.loop = true;
-      audioRef.current.play().catch(() => {});
+    if (audio1Ref.current && audio2Ref.current) {
+      audio1Ref.current.volume = 0.3;
+      audio2Ref.current.volume = 0.3; 
+    }
+  }, []);
+
+  useEffect(() => {
+    if (audioAllowed && isInView) {
+      playAudioSequence();
     }
   }, [audioAllowed, isInView]);
 
+  const playAudioSequence = () => {
+    if (!audio1Ref.current || !audio2Ref.current) return;
+    audio1Ref.current.currentTime = 0;
+    audio2Ref.current.currentTime = 0;
+    audio1Ref.current.play().catch(() => {});
+
+    audio1Ref.current.onended = () => {
+      if (audioAllowed && isInView) {
+        audio2Ref.current.play().catch(() => {});
+      }
+    };
+
+    audio2Ref.current.onended = () => {
+      if (audioAllowed && isInView) {
+        playAudioSequence();
+      }
+    };
+  };
+
+  const stopAllAudio = () => {
+    [audio1Ref, audio2Ref].forEach((ref) => {
+      if (ref.current) {
+        ref.current.pause();
+        ref.current.currentTime = 0;
+      }
+    });
+  };
+
   const handleAllowSound = () => {
     setAudioAllowed(true);
-    setShowPermissionPrompt(false);
-    if (audioRef.current && isInView) {
-      audioRef.current.loop = true;
-      audioRef.current.play().catch(() => {});
-    }
+    playAudioSequence();
   };
 
   return (
     <>
-      {/* Hidden Audio Player */}
-      <audio ref={audioRef} src="/audio/how-it-works.mp3" preload="auto" />
+      <audio ref={audio1Ref} src="/audio/how-it-works-1.mp3" preload="auto" />
+      <audio ref={audio2Ref} src="/audio/how-it-works-2.mp3" preload="auto" />
 
-      {/* Permission Prompt */}
-      {showPermissionPrompt && !audioAllowed && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm mx-auto">
-            <h3 className="text-lg font-semibold mb-2 text-[#021637]">Enable Sound?</h3>
-            <p className="text-sm text-[#021637] mb-4">
-              This section includes audio to explain how <span className="text-[#389ED7]"><b>FROST</b></span> works. Allow sound to continue?
-            </p>
-            <button
-              onClick={handleAllowSound}
-              className="bg-[#389ED7] text-white px-5 py-2 rounded-full font-medium hover:bg-[#2CA4E0]/90"
-            >
-              Allow Sound
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Section */}
       <section
         ref={sectionRef}
         id="how-it-works"
@@ -784,11 +784,25 @@ const HowItWorksSection = () => {
       >
         {/* Left Content */}
         <div className="w-full md:w-1/2 relative left-4 md:left-20 px-4 sm:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12" style={{ fontFamily: "Roboto" }}>
-            <span className="text-[#021637]">How it </span>
-            <br />
-            <span className="text-[#389ED7]">WORKS?</span>
-          </h2>
+          <div className="flex items-center justify-between mb-12 w-full">
+            <h2
+              className="text-3xl md:text-4xl font-bold"
+              style={{ fontFamily: "Roboto" }}
+            >
+              <span className="text-[#021637]">How it </span>
+              <br />
+              <span className="text-[#389ED7]">WORKS?</span>
+            </h2>
+            
+            <button
+              onClick={handleAllowSound}
+             
+              className="transform md:-translate-x-56 -translate-x-10 bg-[#389ED7] text-white px-5 py-2 rounded-full font-medium hover:bg-[#2CA4E0]/90 animate-pulse whitespace-nowrap"
+            >
+              🎧 Allow Sound
+            </button>
+   
+          </div>
 
           {/* Steps */}
           <div className="relative space-y-20 left-0 sm:left-1">
@@ -797,13 +811,14 @@ const HowItWorksSection = () => {
                 <span className="absolute -left-2 md:left-2 -top-8 text-[72px] font-bold text-[#E6EAF0] leading-none z-0 select-none">
                   {step.number}
                 </span>
-
                 {index < steps.length - 1 && (
                   <div className="absolute left-8 top-10 md:top-10 h-24 border-l-2 border-dotted border-[#B0C4D8] z-0" />
                 )}
-
                 <div className="relative z-10">
-                  <h3 className="text-2xl font-semibold text-[#021637]" style={{ fontFamily: "Roboto" }}>
+                  <h3
+                    className="text-2xl font-semibold text-[#021637]"
+                    style={{ fontFamily: "Roboto" }}
+                  >
                     {step.title}
                   </h3>
                   <p
@@ -820,9 +835,7 @@ const HowItWorksSection = () => {
           </div>
 
           <div className="mt-14 pl-0">
-            <button
-              className="rounded-full px-8 py-3 text-white bg-[#389ED7] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md"
-            >
+            <button className="rounded-full px-8 py-3 text-white bg-[#389ED7] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md">
               <a href="/order">Book Now</a>
             </button>
           </div>
@@ -831,37 +844,40 @@ const HowItWorksSection = () => {
         {/* Right Image */}
         <div className="w-full md:w-1/2 mt-60 md:mt-16 lg:mt-0 flex justify-center md:justify-end relative">
           <img
-            src="/images/BlueBackgroundImage.png" loading="lazy"
+            src="/images/BlueBackgroundImage.png"
+            loading="lazy"
             alt="Background Shape"
-            className="absolute -top-[160px] md:-top-10  right-[1px] md:-right-20 w-[200px] md:w-[500px] 
-              h-[300px] md:h-[650px] z-0"
+            className="absolute -top-[160px] md:-top-10 right-[1px] md:-right-20 w-[200px] md:w-[500px] h-[300px] md:h-[650px] z-0"
           />
-
           <div className="relative z-10">
             <img
-              src="/images/ringdesign.png" loading="lazy"
+              src="/images/ringdesign.png"
+              loading="lazy"
               alt="Ring Design"
               className="absolute left-[185px] top-[8px] md:left-[130px] md:top-[350px] md:w-[210px] md:h-[115px] w-[130px] h-[70px] z-20 animate-vibrate"
             />
             <img
-              src="/images/works1.png" loading="lazy"
+              src="/images/works1.png"
+              loading="lazy"
               alt="How it Works"
-              className="relative left-[185px] md:left-[120px] -top-[160px] md:top-[30px] z-10 md:w-[350px] md:h-[550px] 
-                w-[200px]  h-[300px]"
+              className="relative left-[185px] md:left-[120px] -top-[160px] md:top-[30px] z-10 md:w-[350px] md:h-[550px] w-[200px]  h-[300px]"
             />
           </div>
           <img
-            src="/images/square1.png" loading="lazy"
+            src="/images/square1.png"
+            loading="lazy"
             alt="square1"
             className="relative right-[10px] -top-[240px] md:right-[180px] md:-top-[60px] w-[30px] h-[30px]"
           />
           <img
-            src="/images/square2.png" loading="lazy"
+            src="/images/square2.png"
+            loading="lazy"
             alt="square2"
             className="relative -right-[40px] -top-[210px] md:right-[100px] md:-top-[40px] z-10 w-10 h-10 "
           />
           <img
-            src="/images/square3.png" loading="lazy"
+            src="/images/square3.png"
+            loading="lazy"
             alt="square3"
             className="relative right-[100px] -top-[150px] md:right-[260px] md:top-[45px] z-10 w-[30px] h-[30px] "
           />
@@ -870,7 +886,8 @@ const HowItWorksSection = () => {
 
       <div className="-mt-[230px] md:-mt-[78px] relative -ml-[1vw] -mr-[5vw] overflow-hidden w-screen">
         <img
-          src="/images/curvy1.png" loading="lazy"
+          src="/images/curvy1.png"
+          loading="lazy"
           alt="curvy"
           className="w-full h-auto md:h-[200px] object-cover"
         />
