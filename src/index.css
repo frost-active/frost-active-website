@@ -204,6 +204,33 @@ img {
 
 
 
+/* Custom scrollbar styles NEW for INVESTOR PAGE  */
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #D9F0FA;
+  border-radius: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #021637;
+  border-radius: 8px;
+  border: 2px solid #D9F0FA;
+}
+
+.custom-scroll::-webkit-scrollbar-button {
+  display: none; /* removes top and bottom scroll buttons */
+}
+
+/* Firefox Support */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #021637 #D9F0FA;
+}
+
+
 
 
 

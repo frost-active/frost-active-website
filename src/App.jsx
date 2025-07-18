@@ -23,11 +23,15 @@ import ScrollToHash from './components/ScrollToHash';
 
 import Investor from './pages/Investor';
 
+import usePageTracking from './usePageTracking';
+
 
 
 function App() {
+   
   return (
     <Router>
+    <PageTracker />
     <ScrollToHash />
 
       <Layout>
@@ -58,6 +62,12 @@ function App() {
     </Router>
   );
 }
+
+// ✅ Wrap your usePageTracking in a component
+const PageTracker = () => {
+  usePageTracking();
+  return null;
+};
 
 export default App;
   

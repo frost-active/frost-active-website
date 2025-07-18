@@ -223,7 +223,7 @@ const CommunityPage = () => {
               className="h-10 w-10 object-contain"
             />
           </a>
-          <a href="https://chat.whatsapp.com/HT4U3PDWsU76jlz2UmyMX3" target="_blank" rel="noopener noreferrer">
+          <a href="https://whatsapp.com/channel/0029VbB70aGHAdNWV8ujXX3c" target="_blank" rel="noopener noreferrer">
             <img
               src="/images/whatsapp.png"
               alt="WhatsApp"

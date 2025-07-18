@@ -71,7 +71,7 @@ const Header = () => {
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex gap-8 items-center">
+            <nav className="hidden md:flex gap-6 items-center">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
@@ -82,9 +82,20 @@ const Header = () => {
                   {link.name}
                 </a>
               ))}
+
+              {/* Pre-Book Button - Desktop */}
+              <div className="-ml-2 -mr-2 mt-4">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                    <a href="/order">Pre Book</a>
+                  </Button>
+                </motion.div>
+                <p className="text-xs ml-3">Pre Book with $1</p>
+              </div>
+
               
               {/* Invest Button - Desktop */}
-               <div className="-ml-2">
+              <div className="-ml-2 -mr-6">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
                     <a href="/invest">Invest</a>
@@ -115,8 +126,8 @@ const Header = () => {
                     </DropdownMenuItem>
                   ))}
 
-                  {/* Invest Button - Mobile */}
-                  
+
+                  {/* Invest Button - Mobile */} 
                   <DropdownMenuItem asChild>
                     <div className="w-full px-4 py-2">
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -128,7 +139,6 @@ const Header = () => {
                       </motion.div>
                     </div>
                   </DropdownMenuItem>
-                  
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

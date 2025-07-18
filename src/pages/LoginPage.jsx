@@ -81,8 +81,8 @@ const LoginPage = () => {
       >
         <Card className="w-full max-w-md mx-auto shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Student Login</CardTitle>
-            <CardDescription>Access your courses and dashboard.</CardDescription>
+            <CardTitle className="text-2xl font-bold"> Login</CardTitle>
+            <CardDescription></CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
@@ -102,9 +102,9 @@ const LoginPage = () => {
                  <div className="flex justify-between items-center">
                     <Label htmlFor="password">Password</Label>
                     {/* Add Forgot Password functionality later if needed */}
-                    {/* <Button variant="link" size="sm" className="p-0 h-auto text-xs" asChild>
+                     <Button variant="link" size="sm" className="p-0 h-auto text-xs" asChild>
                         <Link to="/forgot-password">Forgot password?</Link>
-                    </Button> */}
+                    </Button> 
                  </div>
                 <Input
                   id="password"
