@@ -21,6 +21,9 @@ import CommunityPage from './pages/CommunityPage';
 import GetInTouch from './pages/GetInTouch';
 import ScrollToHash from './components/ScrollToHash';
 
+import Investor from './pages/Investor';
+
+
 
 function App() {
   return (
@@ -47,6 +50,7 @@ function App() {
             <Route path="/djangel" element={<DJAngelPage />} />
 
             <Route path="/community" element={<CommunityPage />} />
+            <Route path="/invest" element={<Investor />} />
 
         </Routes>
       </Layout>

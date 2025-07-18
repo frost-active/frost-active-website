@@ -8,15 +8,16 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 // Navigation links
 const navLinks = [
-  { name: "Home", url: "/" },
-  { name: "Features", url: "/#features" },
-  { name: "Working", url: "/#how-it-works" },
-  { name: "Team", url: "/#team" },
-  { name: "Testimonials", url: "/#testimonials" },
-  { name: "Contact Us", url: "/#try" },
+  { name: 'Home', url: '/' },
+  { name: 'Features', url: '/#features' },
+  { name: 'Working', url: '/#how-it-works' },
+  { name: 'Team', url: '/#team' },
+  { name: 'Testimonials', url: '/#testimonials' },
+  { name: 'Contact Us', url: '/#try' },
 ];
 
 const Header = () => {
@@ -35,36 +36,47 @@ const Header = () => {
 
   return (
     <>
+      {/* Fixed Header */}
       <header className="fixed top-0 left-0 w-full h-20 z-50 bg-white shadow-md">
         <div className="container mx-auto flex items-center justify-between px-4 h-full overflow-hidden">
+          {/* Logo on the left */}
           <a
-            onClick={() => handleNavClick("/")}
+            onClick={() => handleNavClick('/')}
             className="flex items-center gap-2 font-extrabold text-xl text-primary cursor-pointer"
           >
-            <div className="relative top-[6px] left-[-30px]">
+           <div className="relative top-[6px] left-[-30px] ">
               <img
                 src="/images/logo2.png" loading="lazy"
                 alt="FROST Logo"
-                className="h-40 w-auto object-contain max-w-[180px]"
+                className="h-40 w-auto object-contain max-w-[180px]" // restrict height and width
               />
-            </div>
+              </div>
           </a>
 
-          {/* Desktop Nav */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-6 items-center">
             {navLinks.map((link) => (
               <span
                 key={link.name}
                 onClick={() => handleNavClick(link.url)}
                 className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition cursor-pointer"
-                style={{ fontFamily: "Roboto", fontWeight: "800" }}
+                style={{ fontFamily: 'Roboto', fontWeight: '800' }}
               >
                 {link.name}
               </span>
             ))}
+
+            {/* Invest Button - Desktop */}
+               <div className="-ml-2">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                    <a href="/invest">Invest</a>
+                  </Button>
+                </motion.div>
+              </div>
           </nav>
 
-          {/* Mobile Nav */}
+          {/* Mobile Menu */}
           <div className="md:hidden flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -78,17 +90,33 @@ const Header = () => {
                     <span
                       onClick={() => handleNavClick(link.url)}
                       className="text-gray-800 hover:bg-blue-100 px-4 py-2 rounded transition cursor-pointer"
-                      style={{ fontFamily: "Roboto", fontWeight: "400" }}
+                      style={{ fontFamily: 'Roboto', fontWeight: '400' }}
                     >
                       {link.name}
                     </span>
                   </DropdownMenuItem>
                 ))}
+
+                {/* Invest Button - Mobile */}
+                                  
+                                  <DropdownMenuItem asChild>
+                                    <div className="w-full px-4 py-2">
+                                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
+                                          <a href="/invest" className="w-full block text-center">
+                                            Invest 
+                                          </a>
+                                        </Button>
+                                      </motion.div>
+                                    </div>
+                                  </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       </header>
+
+      {/* Spacer to avoid content being hidden under the fixed header */}
       <div className="h-20" />
     </>
   );

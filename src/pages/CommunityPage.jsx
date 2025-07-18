@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 // Navigation links
 const navLinks = [
@@ -45,7 +46,7 @@ const Header = () => {
           >
            <div className="relative top-[6px] left-[-30px] ">
               <img
-                src="/images/logo2.png" loading="lazy" 
+                src="/images/logo2.png" loading="lazy"
                 alt="FROST Logo"
                 className="h-40 w-auto object-contain max-w-[180px]" // restrict height and width
               />
@@ -64,6 +65,15 @@ const Header = () => {
                 {link.name}
               </span>
             ))}
+
+            {/* Invest Button - Desktop */}
+               <div className="-ml-2">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                    <a href="/invest">Invest</a>
+                  </Button>
+                </motion.div>
+              </div>
           </nav>
 
           {/* Mobile Menu */}
@@ -86,6 +96,20 @@ const Header = () => {
                     </span>
                   </DropdownMenuItem>
                 ))}
+
+                {/* Invest Button - Mobile */}
+                                  
+                                  <DropdownMenuItem asChild>
+                                    <div className="w-full px-4 py-2">
+                                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
+                                          <a href="/invest" className="w-full block text-center">
+                                            Invest 
+                                          </a>
+                                        </Button>
+                                      </motion.div>
+                                    </div>
+                                  </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
