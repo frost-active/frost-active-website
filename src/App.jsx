@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import HomePage from '@/pages/HomePage'; 
@@ -8,9 +9,11 @@ import AboutPage from '@/pages/AboutPage';
 import LoginPage from '@/pages/LoginPage'; 
 import RegisterPage from '@/pages/RegisterPage'; 
 import { Toaster } from '@/components/ui/toaster';
+import GoogleTranslate from './components/GoogleTranslate';
+
+
 
 import OrderPage from '@/pages/OrderPage'; 
-
 import BlogsPage1 from '@/pages/BlogsPage1'; 
 import BlogsPage2 from '@/pages/BlogsPage2'; 
 import BlogsPage3 from '@/pages/BlogsPage3'; 
@@ -20,10 +23,24 @@ import DJAngelPage from '@/pages/DJAngelPage';
 import CommunityPage from './pages/CommunityPage';
 import GetInTouch from './pages/GetInTouch';
 import ScrollToHash from './components/ScrollToHash';
-
 import Investor from './pages/Investor';
-
 import usePageTracking from './usePageTracking';
+
+import LanguageSelector from './components/LanguageSelector';
+
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
+
+import CookieConsent from "./components/CookieConsent";
+
+import PreOrderPage from './pages/PreOrderPage';
+import ReservePage from './pages/ReservePage';
+import NoThanksPage from './pages/NoThanksPage';
+
+import EmailPopup from "./components/EmailPopup";
+import WhatsAppButton from './components/WhatsAppButton';
+
+
 
 
 
@@ -33,7 +50,14 @@ function App() {
     <Router>
     <PageTracker />
     <ScrollToHash />
+    <GoogleTranslate/>
+     {/* Email popup Triggers for 30 sec
+     <EmailPopup /> */}
 
+      <WhatsAppButton />
+
+     {/* <CookieConsent />
+     {/* <LanguageSelector /> */}
       <Layout>
       
         <Routes>
@@ -55,6 +79,12 @@ function App() {
 
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/invest" element={<Investor />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/preorder" element={<PreOrderPage />} />
+            <Route path="/reserve" element={<ReservePage />} />
+            <Route path="/questions" element={<NoThanksPage />} />
+          
 
         </Routes>
       </Layout>

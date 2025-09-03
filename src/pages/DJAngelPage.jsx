@@ -66,14 +66,26 @@ const Header = () => {
               </span>
             ))}
 
-            {/* Invest Button - Desktop */}
-               <div className="-ml-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
-                    <a href="/invest">Invest</a>
-                  </Button>
-                </motion.div>
-              </div>
+            {/* Pre-Book Button - Desktop 
+                         <div className="-ml-2 -mr-2 mt-0">
+                           
+                               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                             <Button className="bg-primary/90 hover:bg-primary/90 text-white font-['Roboto'] px-5 sm:px-2 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                               <a href="/order">Pre-order for $1</a>
+                             </Button>
+                           </motion.div>
+                         </div>
+                         */}
+           
+           
+                       {/* Invest Button - Desktop */}
+                                     <div className="-ml-2 -mr-2">
+                                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                         <Button className="bg-[#1F82D1] tracking-wide hover:bg-[#1F82D1] text-white font-['Roboto'] px-5 sm:px-3 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                                           <a href="/invest">Invest</a>
+                                         </Button>
+                                       </motion.div>
+                                     </div>
           </nav>
 
           {/* Mobile Menu */}
@@ -125,8 +137,8 @@ const Header = () => {
 const DJAngelPage = () => {
   return (
     <div className=" text-[#222] px-5 py-10 max-w-4xl mx-auto font-sans" style={{ fontFamily: "Segoe UI" }}>
-      <Header />
-    <main className="max-w-5xl mx-auto md:mt-12 border border-gray-300 p-10 rounded-md shadow-sm">
+     {/*<Header /> */}
+    <main className="max-w-5xl mx-auto mt-20 md:mt-[120px] border border-gray-300 p-10 rounded-md shadow-sm">
 
       <h1 className="text-3xl font-bold mb-6">
         🎧 From Dance Floors to Divine Frequencies: Meet DJ Angel Johal, the Sound Alchemist of India

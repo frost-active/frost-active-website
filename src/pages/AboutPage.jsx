@@ -1,7 +1,7 @@
 // No change in imports
 import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { ChevronDown, Menu } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -67,14 +67,26 @@ const Header = () => {
               </span>
             ))}
 
-            {/* Invest Button - Desktop */}
-               <div className="-ml-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
-                    <a href="/invest">Invest</a>
-                  </Button>
-                </motion.div>
-              </div>
+            {/* Pre-Book Button - Desktop 
+                         <div className="-ml-2 -mr-2 mt-0">
+                           
+                               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                             <Button className="bg-primary/90 hover:bg-primary/90 text-white font-['Roboto'] px-5 sm:px-2 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                               <a href="/order">Pre-order for $1</a>
+                             </Button>
+                           </motion.div>
+                         </div>
+                         */}
+           
+           
+                       {/* Invest Button - Desktop */}
+                                     <div className="-ml-2 -mr-2">
+                                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                         <Button className="bg-[#1F82D1] tracking-wide hover:bg-[#1F82D1] text-white font-['Roboto'] px-5 sm:px-3 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                                           <a href="/invest">Invest</a>
+                                         </Button>
+                                       </motion.div>
+                                     </div>
           </nav>
 
           {/* Mobile Menu */}
@@ -103,7 +115,7 @@ const Header = () => {
                                   <DropdownMenuItem asChild>
                                     <div className="w-full px-4 py-2">
                                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
+                                        <Button className="w-full bg-[#1F82D1] tracking-wider text-white rounded-md text-sm shadow-md">
                                           <a href="/fund" className="w-full block text-center">
                                             Invest 
                                           </a>
@@ -126,10 +138,10 @@ const Header = () => {
 const AboutPage = () => {
   return (
     <>
-      <Header />
+ 
 
       {/* Hero Section */}
-      <section className="bg-[#389ED7] text-white text-center h-[360px] sm:h-[580px] pt-28 pb-16 relative overflow-hidden">
+      <section className="mt-20 bg-[#389ED7] text-white text-center h-[360px] sm:h-[580px] pt-28 pb-16 relative overflow-hidden">
       <div className="-mt-14 container mx-auto px-6">
         <h1 className="text-3xl sm:text-4xl font-semibold mb-4" style={{ fontFamily: 'Roboto' }}>
           About Us
@@ -166,7 +178,7 @@ const AboutPage = () => {
       {/* Main Content */}
       <section className="bg-white py-16 px-4 sm:px-6 md:px-8 max-w-6xl mx-auto space-y-12">
         <div className="text-center -mt-8">
-          <p className="text-sm  text-[#021637] font-bold" style={{ fontFamily: 'Roboto', letterSpacing: '0.2em' }}>
+          <p className="-mt-16 text-sm  text-[#021637] font-bold" style={{ fontFamily: 'Roboto', letterSpacing: '0.2em' }}>
             We’re not building a gadget <br /> We’re building a ritual
           </p>
           <p className="text-lg sm:text-xl font-bold mt-4 text-[#021637]" style={{ fontFamily: 'Roboto' }}>

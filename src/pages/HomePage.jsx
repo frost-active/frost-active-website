@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react"; 
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { Button } from '@/components/ui/button';
-import { Bookmark, BookmarkCheck, Menu, ChevronLeft, ChevronRight, Pill, Clock, Brain, Dumbbell, Footprints, CheckCircle, Droplet, Bell, Coffee, HeartPulse, Users, Thermometer, BarChart, Zap, Settings, Smartphone, ArrowRight, Linkedin, Instagram, Twitter, Mail, Phone, MapPin, MessageCircle, Send } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, Bookmark, BookmarkCheck, Menu, ChevronLeft, ChevronRight, Pill, Clock, Brain, Dumbbell, Footprints, CheckCircle, Droplet, Bell, Coffee, HeartPulse, Users, Thermometer, BarChart, Zap, Settings, Smartphone, ArrowRight, Linkedin, Instagram, Twitter, Mail, Phone, MapPin, MessageCircle, Send } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -31,122 +31,164 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 
-const navLinks = [
-  { name: 'Home', path: 'home' },
-  { name: 'Features', path: 'features' },
-  { name: 'Working', path: 'how-it-works' },
-  { name: 'Team', path: 'team' },
-  { name: 'Testimonials', path: 'testimonials' },
-  { name: 'Contact Us', path: 'try' },
-];
 
-const Header = () => {
-  const handleNavClick = (sectionId) => (e) => {
-    e.preventDefault();
-    const section = document.getElementById(sectionId.toLowerCase().replace(/\s+/g, ''));
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+
+function renderSubtitle(subtitle) {
+  const idx = subtitle.indexOf("Companion");
+  if (idx === -1) return subtitle;
 
   return (
     <>
-      {/* Header (fixed) */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-20 items-center justify-between">
-            {/* Logo */}
-            <a
-              href="#home"
-              className="flex items-center gap-2 font-extrabold text-xl text-primary hover:text-blue-200 transition-all"
-              onClick={handleNavClick('home')}
-            >
-              <div className="relative left-[-30px] top-[6px] ">
-                <img
-                  src="/images/logo2.png" loading="lazy"
-                  alt="FROST Aura Smart Hydration dock on a desk"
-                  className="h-40 w-auto object-contain max-w-[180px]"
-                />
-              </div>
-            </a>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex gap-6 items-center">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={`#${link.path.toLowerCase().replace(/\s+/g, '')}`}
-                  className="text-sm font-semibold text-gray-800 transition-all duration-300 ease-in-out hover:text-primary hover:underline"
-                  onClick={handleNavClick(link.path)}
-                >
-                  {link.name}
-                </a>
-              ))}
-
-              {/* Pre-Book Button - Desktop */}
-              <div className="-ml-2 -mr-2 mt-4">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
-                    <a href="/order">Pre Book</a>
-                  </Button>
-                </motion.div>
-                <p className="text-xs ml-3">Pre Book with $1</p>
-              </div>
-
-              
-              {/* Invest Button - Desktop */}
-              <div className="-ml-2 -mr-6">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
-                    <a href="/invest">Invest</a>
-                  </Button>
-                </motion.div>
-              </div>
-            </nav>
-
-            {/* Mobile Navigation */}
-            <div className="md:hidden flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-primary">
-                    <Menu className="h-6 w-6" />
-                    <span className="sr-only">Toggle Menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-white rounded-lg shadow-lg">
-                  {navLinks.map((link) => (
-                    <DropdownMenuItem key={link.name} asChild>
-                      <a
-                        href={`#${link.path.toLowerCase().replace(/\s+/g, '')}`}
-                        className="text-gray-800 hover:bg-blue-100 rounded-md px-4 py-2 transition-all"
-                        onClick={handleNavClick(link.path)}
-                      >
-                        {link.name}
-                      </a>
-                    </DropdownMenuItem>
-                  ))}
-
-
-                  {/* Invest Button - Mobile */} 
-                  <DropdownMenuItem asChild>
-                    <div className="w-full px-4 py-2">
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
-                          <a href="/invest" className="w-full block text-center">
-                            Invest 
-                          </a>
-                        </Button>
-                      </motion.div>
-                    </div>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </div>
-      </header>
+      <span className="block leading-[1.2]">
+        {subtitle.slice(0, idx).trim()}
+      </span>
+      <span className="block leading-[1]">Companion</span>
     </>
   );
+}
+
+const HeroBanner = () => {
+  const mainImages = [
+    "/images/desktop-companion2.jpg",
+    "/images/desktop-companion3.jpg",
+    "/images/desktop-companion5.jpg",
+    "/images/desktop-companion4.jpg",
+    "/images/desktop-companion6.jpg",
+    "/images/desktop-companion7.jpg",
+  ];
+
+  const subtitles = [
+    "Desktop Companion",
+    "Kitchen Companion",
+    "Gym Companion",
+    "Meditation Corner Companion",
+    "Clinic Companion",
+    "Couch/Living Room Companion",
+  ];
+
+  const descriptions = [
+    "Stay hydrated and focused with posture resets, mindful breathing, and soothing eye relaxation.",
+    "Hydrate with intention as you cook, eat, or relax water infused with restorative frequencies.",
+    "Train harder, recover smarter mid-set hydration with energizing buzz syncing to fitness rhythm.",
+    "Elevate your stillness—affirmations and sound frequencies deepen your mind-body harmony.",
+    "Care meets clarity—smart medication reminders and water cues elevate daily wellness routines.",
+    "Even your downtime deserves intention gentle reminders keep you hydrated and balanced.",
+  ];
+
+  const [isPaused, setIsPaused] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const imageWidth = 180; 
+  const mainWidth = 420; 
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, 4000); // Change image every 4 seconds
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const getDisplayImages = () => {
+    // Repeat images many times so we can scroll infinitely without snap-back
+    return Array(80).fill(mainImages).flat();
+  };
+
+  const images = getDisplayImages();
+
+  return (
+  <>
+    <div
+      className="mt-20 flex flex-col lg:flex-row items-center lg:items-start px-4 sm:px-6 lg:px-8 font-['Roboto'] gap-x-6 relative"
+      // onMouseEnter={() => setIsPaused(true)}
+      // onMouseLeave={() => setIsPaused(false)}
+    >
+      {/* IMAGE BELT */}
+      <div className="lg:mt-7 lg:-ml-12 flex-shrink-0 w-full lg:w-[40%] pr-4 relative">
+        <motion.div
+          className="flex items-center"
+          animate={{
+            x: -currentIndex * imageWidth,
+          }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          style={{ height: 466 }}
+        >
+          {images.map((src, i) => {
+            const isMain = i === currentIndex;
+            return (
+              <motion.img
+                key={`${src}-${i}`}
+                src={src}
+                animate={{
+                  width: isMain ? mainWidth : 160,
+                  height: isMain ? 466 : 240, 
+                  y: isMain ? 0 : 120,
+                  // Apply x offset only on lg screens (≥1024px)
+                  x: typeof window !== "undefined" && window.innerWidth >= 1024 
+                    ? (isMain ? 0 : -50) 
+                    : 0,
+                  zIndex: isMain ? 10 : 1,
+                }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="object-contain rounded-lg"
+                style={{
+                  borderRadius: 12,
+                  marginRight: 20,
+                  flexShrink: 0,
+                }}
+              />
+            );
+          })}
+        </motion.div>
+      </div>
+
+      {/* RIGHT SIDE TEXT */}
+      <div className="lg:mt-0 mt-8 flex flex-col lg:w-[80%] items-center lg:items-end justify-center text-center lg:text-right gap-3  font-['Roboto']">
+        <motion.h2
+          key={`subtitle-${currentIndex % mainImages.length}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-[28px] xl:text-[38px] text-[#389ED7] font-bold"
+        >
+          {renderSubtitle(subtitles[currentIndex % mainImages.length])}
+        </motion.h2>
+
+        <motion.p
+          key={`desc-${currentIndex % mainImages.length}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+          className="text-sm xl:text-base text-[#021637] max-w-[350px]"
+        >
+          {descriptions[currentIndex % mainImages.length]}
+        </motion.p>
+
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="lg:mt-6 flex items-center bg-[#389ED7] text-lg text-white px-2 py-2 rounded-md shadow-md"
+        >
+          <a href="/preorder">Pre Order</a>
+          <span className="ml-2 bg-white w-6 h-6 rounded flex items-center justify-center">
+            <ArrowUpRight className="w-6 h-5 text-[#389ED7]" />
+          </span>
+        </motion.button>
+      </div>
+    </div>
+
+    {/* Curvy background */}
+    <div className="lg:mt-2 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+      <img
+        src="/images/curvy1.png"
+        loading="lazy"
+        alt="curvy"
+        className="w-full h-auto object-cover"
+      />
+    </div>
+  </>
+);
 };
 
 
@@ -359,23 +401,21 @@ const HeroSection = () => {
                 />
                 {/* Dynamic Image */}
                 <AnimatePresence mode="wait">
-  <motion.img
-    key={currentIndex}
-    src={current.image}
-    alt={`${current.subheading} Image`}
-    initial={{ opacity: 0, y: -100 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.4, ease: "easeOut" }}
-    style={{
-      position: "absolute",
-      ...current.imageStyles,
-      zIndex: 10,
-    }}
-  />
-</AnimatePresence>
-
-
+                    <motion.img
+                      key={currentIndex}
+                      src={current.image}
+                      alt={`${current.subheading} Image`}
+                      initial={{ opacity: 0, y: -100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      style={{
+                        position: "absolute",
+                        ...current.imageStyles,
+                        zIndex: 10,
+                      }}
+                    />
+                </AnimatePresence>
               </div>
             </div>
           </motion.div>
@@ -419,6 +459,165 @@ const HeroSection = () => {
     </section>
   );
 };
+
+
+
+{/* NEW Features Section */}
+const KeyFeatures = () => {
+  const images = [
+    "/images/drink-water.png",
+    "/images/clean-bottle.png",
+    "/images/take-medicine.png",
+    "/images/water-remainder.png",
+    "/images/meditation.png",
+    "/images/walk.png",
+    "/images/exercise.png",
+    "/images/cleanbottle.png",
+    "/images/pomodoro.png",
+    "/images/waterhealing.png",
+  ];
+
+  const headings = [
+    "Drink Water",
+    "Clean Bottle",
+    "Take Medicine",
+    "Water Remainder",
+    "Meditation, Yoga & Workout",
+    "Short Walk",
+    "Place Bottle",
+    "Short Break",
+    "Pomodoro Activity",
+    "Water Energizing",
+  ];
+
+  const descriptions = [
+    "Get personalized nudges to drink water throughout your day — no more guesswork, just natural hydration.",
+    "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it — keeping bacteria at bay.",
+    "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
+    "Monitor daily water intake, set goals, and get insights via the FROST mobile app — all without micromanaging.",
+    "Activate focused modes for your practice — FROST emits healing vibrations (like 432 Hz) to harmonize body and mind.",
+    "Been sitting too long? FROST encourages short movement breaks to keep your circulation flowing and your head clear.",
+    "Left your bottle behind? FROST gently notifies you to place it back on the dock — so your tracking never skips a beat.",
+    "Protect your focus with short, intentional breaks. Stretch, blink, breathe — let FROST cue your brain to reset.",
+    "Work in deep focus cycles with built-in Pomodoro timers — paired with hydration cues to keep your energy flowing.",
+    "FROST Aura turns hydration into a mindful ritual, infusing water with healing frequencies and mantras to harmonize energy and wellbeing.",
+  ];
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
+  const handleNext = () => {
+    setFade(false);
+    setTimeout(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+      setFade(true);
+    }, 300);
+  };
+
+  const handleThumbnailClick = (index) => {
+    setFade(false);
+    setTimeout(() => {
+      setActiveIndex(index);
+      setFade(true);
+    }, 300);
+  };
+
+  return (
+    <section id="features">
+      {/* Mobile Heading First */}
+      <div className="lg:hidden text-center py-6">
+        <h2 className="text-4xl text-[#021637] font-bold mb- font-['Roboto'] ">
+          <span style={{ color: "#021637" }}>KEY </span>
+          <span style={{ color: "#389ED7" }}>FEATURES</span>
+        </h2>
+        <p className="text-lg text-[#021637] mb-4 font-['Roboto'] ">explore in-depth</p>
+      </div>
+
+      <div className="font-['Roboto'] flex flex-col lg:flex-row items-center lg:items-start gap-8 px-4 lg:px-20 py-10">
+        {/* Left side - Image + Thumbnails */}
+        <div className="-mt-12 lg:mt-0  lg:pt-2 flex flex-col items-center lg:w-1/2 order-2 lg:order-1">
+          <div className="w-full flex justify-center">
+            <img
+              src={images[activeIndex]}
+              alt={headings[activeIndex]}
+              className={`w-[300px] sm:w-[350px] md:w-[400px] lg:w-[250px] transition-opacity duration-500 ${
+                fade ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+
+          <div className="flex overflow-x-auto lg:gap-3 mt-4 pb-2 scrollbar-hide">
+            {images.map((thumb, index) => (
+              <img
+                key={index}
+                src={thumb}
+                alt={`Thumbnail ${index + 1}`}
+                className={`w-10 h-10 sm:w-14 sm:h-14 rounded-full cursor-pointer border-2 flex-shrink-0 ${
+                  activeIndex === index
+                    ? "border-[#389ED7]"
+                    : "border-transparent"
+                } transition duration-300`}
+                onClick={() => handleThumbnailClick(index)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Right side - Text */}
+        <div className="lg:w-1/2 text-center lg:text-left lg:pl-28 lg:pt-4 order-3 lg:order-2">
+          {/* Desktop heading */}
+          <div className="hidden lg:block">
+            <h2 className="text-4xl text-[#021637] font-bold mb-0">
+              <span style={{ color: "#021637" }}>KEY </span>
+              <span style={{ color: "#389ED7" }}>FEATURES</span>
+            </h2>
+            <p className="text-lg text-[#021637] mb-10">explore in-depth</p>
+          </div>
+
+          <h3
+            className={`text-[#389ED7] text-xl font-bold transition-opacity duration-500 ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {headings[activeIndex]}
+          </h3>
+
+          <p
+            className={`text-[#021637] md:mb-16 lg:w-[65%] transition-opacity duration-500 ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ minHeight: "100px" }}
+          >
+            {descriptions[activeIndex]}
+          </p>
+          <div className="md:-mt-8">
+          <a href="#" className="text-[#389ED7] font-medium hover:underline transition" > 
+             {/* learn more → */}
+            </a>
+            </div>
+        </div>
+      </div>
+
+      {/* Curvy background */}
+      <div className="lg:-mt-12 -mt-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+        <img
+          src="/images/curvy1.png"
+          loading="lazy"
+          alt="curvy"
+          className="w-full h-auto object-cover"
+        />
+      </div>
+    </section>
+  );
+};
+
 
 
 const FeaturesSection = () => {
@@ -590,7 +789,7 @@ const FeaturesSection = () => {
       ref={sectionRef}
       className="container bg-white py-16 px-4 mt-0 md:px-8"
     >
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground" style={{ fontFamily: "Roboto", fontWeight: "600" }}>
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-foreground" style={{ fontFamily: "Roboto", fontWeight: "600" }}>
         <span style={{ color: "#021637" }}>KEY </span>
         <span style={{ color: "#389ED7" }}>FEATURES</span>
       </h2>
@@ -788,7 +987,7 @@ const HowItWorksSection = () => {
       <section
         ref={sectionRef}
         id="how-it-works"
-        className="-mt-24 w-full bg-white px-0 py-20 flex flex-col md:flex-row items-center justify-between"
+        className="-mt-10 w-full bg-white px-0 py-20 flex flex-col md:flex-row items-center justify-between"
       >
         {/* Left Content */}
         <div className="w-full md:w-1/2 relative left-4 md:left-20 px-4 sm:px-6">
@@ -843,8 +1042,8 @@ const HowItWorksSection = () => {
           </div>
 
           <div className="mt-14 pl-0">
-            <button className="rounded-full px-8 py-3 text-white bg-[#389ED7] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md">
-              <a href="/order">Book Now</a>
+            <button className="rounded-full px-6 py-3 text-white bg-[#389ED7] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md">
+              <a href="/preorder">Pre Order</a>
             </button>
           </div>
         </div>
@@ -1111,6 +1310,7 @@ const GallerySection = () => {
 
 const TechnicalSpecification = () => {
   return (
+    <section id="technical">
     <div className="w-full px-4 py-10">
       {/* Heading */}
       <motion.h2
@@ -1121,6 +1321,7 @@ const TechnicalSpecification = () => {
         transition={{ duration: 0.7 }}
         viewport={{ once: true }}
       >
+    
         <span className="text-[#021637]">TECHNICAL</span>
         <span className="text-[#389ED7]"> SPECIFICATIONS</span>
       </motion.h2>
@@ -1169,6 +1370,7 @@ const TechnicalSpecification = () => {
         />
       </motion.div>
     </div>
+    </section>
   );
 };
 
@@ -1302,7 +1504,7 @@ const ComparisonFrost = () => {
             </ul>
             <div className="mt-6 text-center">
               <button className="rounded-2xl bg-white px-6 py-2 text-base font-semibold text-[#021637]">
-                <a href="/order">Book Now</a>
+                <a href="/preorder">Pre Order</a>
               </button>
             </div>
           </motion.div>
@@ -1620,21 +1822,33 @@ const initialTestimonials = [
     linkedin: 'https://www.linkedin.com/in/likithgowda-k-r-102296214?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
     email: 'mailto:someone@example.com',
   },
-  {
-    id: 3,
-    name: 'Channegowda',
-    designation: 'Cloud Devops Engineer, Bangalore',
-    image: '/images/channegowda.jpg',
+   {
+    id: 4,
+    name: 'Aitana',
+    designation: 'Software Engineer, Spain',  
+    image: '/images/aitana1.png',
     testimonial:
-      "I’ve been working remotely for the past six months, and I slowly realized I wasn’t hydrating enough or moving at all during the day. Even though I have a smartwatch, I really wanted something physical something made just for wellness, not just time or steps. Frost Aura changed that completely. The glow reminds me to sip water, stretch, and breathe. It’s like a quiet little coach on my desk.",
-    linkedin: 'https://www.linkedin.com/in/channe-gowda-j-l-195736138?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
-    email: 'mailto:someone@example.com',
+      "Even in its early stage, Frost Aura is already making a difference. As a Software Engineer juggling multiple campaigns, I often struggle to stay centered. The MVP’s subtle lighting cues and basic breathing guidance have helped me refocus during high-pressure moments. It’s a promising start—and the clean, minimal design already feels like a natural fit on my desk",
+    linkedin: 'https://www.linkedin.com/in/aitana-peinado-contreras-365a27258/',
   },
+
+  
+  //{
+    //id: 3,
+    //name: 'Channegowda',
+    //designation: 'Cloud Devops Engineer, Bangalore',
+    //image: '/images/channegowda.jpg',
+    //testimonial:
+      //"I’ve been working remotely for the past six months, and I slowly realized I wasn’t hydrating enough or moving at all during the day. Even though I have a smartwatch, I really wanted something physical something made just for wellness, not just time or steps. Frost Aura changed that completely. The glow reminds me to sip water, stretch, and breathe. It’s like a quiet little coach on my desk.",
+    //linkedin: 'https://www.linkedin.com/in/channe-gowda-j-l-195736138?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
+    //email: 'mailto:someone@example.com',
+  //},
+
 ];
 
 const moreTestimonials = [
   {
-    id: 4,
+    id: 5,
     name: 'Priya',
     designation: 'Marketing Specialist',
     image: '/images/priya.jpg',
@@ -1644,7 +1858,7 @@ const moreTestimonials = [
     email: 'mailto:someone@example.com',
   },
   {
-    id: 5,
+    id: 6,
     name: 'Arjun',
     designation: 'Software Developer',
     image: '/images/arjun.jpg',
@@ -1654,7 +1868,7 @@ const moreTestimonials = [
     email: 'mailto:someone@example.com',
   },
   {
-    id: 6,
+    id: 7,
     name: 'Sneha',
     designation: 'UX Designer',
     image: '/images/sneha.jpg',
@@ -1761,21 +1975,23 @@ const TestimonialsSection = () => {
                     <div
                       className="rounded-full border-4 shadow-lg flex items-center justify-center overflow-hidden"
                       style={{
-                        width: 160,
-                        height: 160,
+                        width: 180,
+                        height: 180,
                         borderColor: '#d7e9f5',
                         background: 'linear-gradient(180deg, #eaf7ff 0%, #d7e9f5 100%)',
                         marginRight: 16,
+                        padding: 4,
                       }}
                     >
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
                         style={{
-                          width: 150,
-                          height: 150,
-                          objectFit: 'cover',
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
                           borderRadius: '50%',
+                      
                         }}
                       />
                     </div>
@@ -1916,15 +2132,7 @@ const BlogSection = () => {
       image: "/images/blog4image.png",
       url: "/blogs4",
     },
-    //{
-      //id: 5,
-      //title: "A Blog On DJ Angel Johal",
-      //excerpt:"3-Minute Read",
-      //fullText: "Details about Blog 4...",
-      //slug: "blog-5",
-      //image: "/images/djangel.jpg",
-     // url: "/djangel",
-   //},
+    
   ];
 
   const toggleBookmark = (id) => {
@@ -1948,6 +2156,8 @@ const BlogSection = () => {
       },
     }),
   };
+
+  
 
   return (
     <motion.section
@@ -2063,37 +2273,19 @@ const TryItNowSection = () => {
         viewport={{ once: true }}
         className="relative w-full min-h-0 bg-white mt-10 overflow-hidden font-sans"
       >
-        {/* Decorative Zigzags */}
-        <motion.img
-          src="/images/zigzag1.png"
-          alt="Zigzag"
-          className="absolute top-[-126px] left-2 w-8 h-32 sm:w-16 sm:h-40 md:top-[-157px] md:left-[20px] md:w-[60px] md:h-[160px]"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        />
-        <motion.img
-          src="/images/zigzag2.png"
-          alt="Zigzag line"
-          className="absolute top-[-126px] right-1 w-20 h-32 sm:w-32 sm:h-40 md:top-[-158px] md:right-[2px] md:w-[140px] md:h-[160px] z-10"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        />
-
+        
         <Card
-  className="
-    relative mx-auto max-w-full md:max-w-7xl lg:max-w-[90rem]
-    rounded-[20px]
-    shadow-[inset_0px_4px_4px_#00000040,inset_0px_-4px_4px_#00000040]
-    bg-gradient-to-b from-[#b1e3ff] to-white
-    px-4 sm:px-8 md:px-12 lg:px-16
-    py-12 sm:py-16 md:py-16
-    my-0 md:my-12
-    min-h-[1150px] sm:min-h-[1000px] md:min-h-0
-    z-10 overflow-visible
-  "
->
+            className="
+              relative mx-auto max-w-full md:max-w-7xl lg:max-w-[90rem] 
+              rounded-[20px]
+              shadow-[inset_0px_4px_4px_#00000040,inset_0px_-4px_4px_#00000040]
+              bg-gradient-to-b from-[#B1E3FF] to-[#FFFFFF]
+              px-4 sm:px-8 md:px-12 lg:px-16
+              py-12 sm:py-16 md:py-16
+              my-0 md:my-12
+              max-h-[800px] overflow-hidden
+              z-10 overflow-visible"
+          >
 
           <CardContent className="p-0">
             {/* Title */}
@@ -2114,37 +2306,34 @@ const TryItNowSection = () => {
             </motion.div>
 
             {/* Content Row */}
-            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-8">
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-0">
               {/* Animated Left Image */}
               <motion.div
-                className="relative w-full md:w-1/2 flex justify-center"
+                className="relative w-full md:w-[1300px] flex justify-center"
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                <div className="relative max-w-[320px] sm:max-w-[360px] md:max-w-[500px] w-full aspect-[370/618] bg-[#eef8f733] rounded-[50%]">
-                  <div className="absolute inset-[5%] bg-[#bbebff33] rounded-[50%]">
-                    <div className="absolute inset-[8%] bg-[#7ad6fb33] rounded-[50%]"></div>
-                    <div className="absolute top-[20%] left-[24%] w-[52%] h-[48%] bg-[#015b8f33] rounded-[50%]"></div>
-                    <img
-                      className="absolute w-[98%] h-[90%] top-0 left-[3%] object-contain" 
-                      alt="frost kit"
-                      src="/images/kit.png"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
+                <div className="md:mt-0 -mt-10 relative max-w-[320px] sm:max-w-[360px] md:max-w-[600px] w-full h-[618px]  rounded-[50%]">
+              <img
+                className="absolute md:w-[130%] md:h-[55%] top-10 md:-left-[6%] rounded-2xl"
+                alt="frost kit"
+                src="/images/kit.jpg"
+                loading="lazy"
+              />
+             </div>
               </motion.div>
 
               {/* Animated Text + Buttons */}
               <motion.div
-                className="w-full md:w-1/2 px-2 md:px-6"
+                className="w-full md:w-full px-2 md:px-6"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
+                <div className="md:ml-20 md:-mt-52 -mt-[380px]">
                 <h2 className="font-semibold text-3xl md:text-4xl text-[#FFFFFF] mb-4">
                   <span className="text-[#021637]">Let&apos;s Get in Touch!!</span>
                 </h2>
@@ -2152,10 +2341,11 @@ const TryItNowSection = () => {
                   We’d love to hear from you whether it’s a question, feedback,
                   or just a hello. Let’s build a healthier future together, one sip at a time.
                 </p>
+                </div>
 
                 {/* Buttons */}
-                <div className="mt-10 flex flex-col gap-8 items-center relative">
-                  {[{ label: "Book Now", link: "/order" }, { label: "Get in Touch", link: "#contact" }].map((btn) => (
+                <div className="mt-10 md:ml-8 flex flex-col gap-8 items-center relative">
+                  {[{ label: "Book Now", link: "/preorder" }, { label: "Get in Touch", link: "#contact" }].map((btn) => (
                       <motion.div
                         key={btn.label}
                         whileHover={{ scale: 1.05 }}
@@ -2190,19 +2380,19 @@ const TryItNowSection = () => {
 
             {/* Floating Circles Animation - Now INSIDE Card and layered above bg */}
             <motion.div
-  className="
-    absolute
-    bottom-[6px] sm:bottom-[-60px] md:bottom-10
-    right-[-20px] sm:right-[-40px] md:-right-20
-    w-[220px] h-[180px]
-    sm:w-[260px] sm:h-[220px]
-    md:w-[360px] md:h-[320px]
-    z-20 pointer-events-none
-  "
-  animate={{ y: [0, 10, 0] }}
-  transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-  style={{ pointerEvents: 'none' }}
->
+              className="
+                absolute
+                bottom-[-100px] sm:bottom-[-60px] md:bottom-12
+                right-[-20px] sm:right-[-40px] md:-right-20
+                w-[220px] h-[180px]
+                sm:w-[260px] sm:h-[220px]
+                md:w-[360px] md:h-[320px]
+                z-20 pointer-events-none
+              "
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ pointerEvents: 'none' }}
+            >
 
               {/* Big Circles */}
               <div className="absolute bottom-0 right-0 scale-75 sm:scale-90 md:scale-100 w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] md:w-[240px] md:h-[240px]">
@@ -2324,7 +2514,7 @@ const ContactSection = () => {
       id="contact"
       className="
         container
-        py-6 sm:py-10 lg:py-20
+        py-14 sm:py-10 lg:py-20
         px-2 sm:px-4 lg:px-8
         mt-0
         "
@@ -2477,16 +2667,17 @@ const Home = () => (
       `}
     </style>
 
-    <Header />
-    <HeroSection />
-    <FeaturesSection />
+    
+    <HeroBanner /> 
+    <KeyFeatures/>
+   
     <HowItWorksSection />
     <GallerySection />
     <TechnicalSpecification />
     <ComparisonFrost />
     <MeetOurTeamSection />
     <TestimonialsSection />
-     <BlogSection />
+    <BlogSection />
     <TryItNowSection />
     <ContactSection />
   </>

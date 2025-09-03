@@ -1,0 +1,169 @@
+import React, { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+const ReservePage = () => {
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      fontFamily: 'Roboto, sans-serif',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    left: {
+      flex: '1 1 400px',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    right: {
+      flex: '1 1 400px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      padding: '20px',
+    },
+    title: {
+      fontSize: '41px',
+      color: '#021637',
+      fontWeight: '700',
+      marginBottom: '2px',
+    },
+    subtitle: {
+      fontSize: '15.5px',
+      color: '#021637',
+      marginBottom: '20px',
+    },
+    priceSection: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginBottom: '20px',
+    },
+    priceNew: {
+      fontSize: '32px',
+      color: '#021637',
+      fontWeight: '700',
+    },
+    priceOld: {
+      fontSize: '20px',
+      textDecoration: 'line-through',
+      color: '#021637',
+    },
+    reserveBtn: {
+      backgroundColor: '#389ED7',
+      color: '#fff',
+      border: 'none',
+      padding: '12px 20px',
+      fontSize: '16px',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      marginBottom: '10px',
+      width: '98%',
+    },
+    noThanksBtn: {
+      backgroundColor: '#fff',
+      border: '1px solid #000000',
+      padding: '12px 20px',
+      fontSize: '16px',
+      borderRadius: '4px',
+      color: '#021637',
+      cursor: 'pointer',
+      marginBottom: '10px',
+      width: '98%',
+    },
+    terms: {
+      fontSize: '16px',
+      color: '#021637',
+      marginBottom: '20px',
+      textAlign: 'center',
+    },
+    link: {
+      color: '#389ED7',
+      textDecoration: 'none',
+    },
+    image: {
+      maxWidth: '100%',
+      maxHeight: '90%',
+      objectFit: 'contain',
+    },
+  };
+
+  const leftRef = useRef(null);
+  const [imageHeight, setImageHeight] = useState('auto');
+
+  useEffect(() => {
+    if (leftRef.current) {
+      setImageHeight(leftRef.current.offsetHeight - 40); // subtract padding/margin
+    }
+  }, []); 
+
+  return (
+    <div className="mt-20" style={styles.container}>
+      {/* Left Section */}
+      <div className="lg:ml-6" style={styles.left} ref={leftRef}>
+        <h1 style={styles.title}>Reserve Your Special Discount</h1>
+        <p style={styles.subtitle}>
+          Only on frostactive.com, pre-order now and reserve 40% for your FROST-Aura device.
+        </p>
+        <div style={styles.priceSection}>
+          <span style={styles.priceNew}>$59</span>
+          <span style={styles.priceOld}>$99</span>
+        </div>
+     
+        <div className='lg:mt-16'>
+        <button
+          style={styles.reserveBtn}
+          onClick={() => window.open('https://rzp.io/rzp/frostaura', '_blank')}
+        >
+          Reserve discount for $5
+        </button>
+
+        <button
+  style={styles.noThanksBtn}
+  onClick={() => (window.location.href = '/questions')}
+>
+  No Thanks
+</button>
+
+        </div>
+
+        {/* Terms and Conditions Link */}
+        <p style={styles.terms} className="relative z-10">
+          by reserving, you accept the{' '}
+          <Link to="/terms" style={styles.link}>
+            terms and conditions
+          </Link>
+        </p>
+      </div>
+
+      {/* Right Section */}
+      <div className="lg:mt-0 -mt-24" style={styles.right}>
+        <img
+          className="rounded-lg"
+          src="/images/kit.jpg"
+          alt="Preorder Device"
+          style={{ ...styles.image, height: imageHeight }}
+        />
+      </div>
+
+      {/* Footer Strip */}
+      <div className="w-full bg-[#389ED7] text-white text-center md:text-lg lg:mt-2 -mt-12 py-3 px-4 rounded-lg overflow-hidden group relative z-0">
+        <div className="scroll-wrapper whitespace-nowrap inline-block group-hover:[animation-play-state:paused] ">
+          <span className="mx-3">100% Money-Back Guarantee</span>
+          <span className="mx-3">||</span>
+          <span className="mx-3">Risk-Free Commitment</span>
+          <span className="mx-3">||</span>
+          <span className="mx-3">Cancel anytime before launch</span>
+          <span className="mx-3">||</span>
+          <span className="mx-3">No strings attached</span>
+          <span className="mx-3">||</span>
+          <span className="mx-3">Just Attention</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ReservePage;

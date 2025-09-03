@@ -14,7 +14,8 @@ const routes = [
   '/blogs4',
   '/about',
   '/djangel',
-  '/community'
+  '/community',
+  '/invest'
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

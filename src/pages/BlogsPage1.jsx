@@ -86,14 +86,26 @@ const Header = () => {
               </span>
             ))}
 
-            {/* Invest Button - Desktop */}
-               <div className="-ml-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
-                    <a href="/invest">Invest</a>
-                  </Button>
-                </motion.div>
-              </div>
+            {/* Pre-Book Button - Desktop 
+                         <div className="-ml-2 -mr-2 mt-0">
+                           
+                               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                             <Button className="bg-primary/90 hover:bg-primary/90 text-white font-['Roboto'] px-5 sm:px-2 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                               <a href="/order">Pre-order for $1</a>
+                             </Button>
+                           </motion.div>
+                         </div>
+                         */}
+           
+           
+                       {/* Invest Button - Desktop */}
+                                     <div className="-ml-2 -mr-2">
+                                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                         <Button className="bg-[#1F82D1] tracking-wide hover:bg-[#1F82D1] text-white font-['Roboto'] px-5 sm:px-3 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                                           <a href="/invest">Invest</a>
+                                         </Button>
+                                       </motion.div>
+                                     </div>
           </nav>
 
           {/* Mobile Menu */}
@@ -122,7 +134,7 @@ const Header = () => {
                                   <DropdownMenuItem asChild>
                                     <div className="w-full px-4 py-2">
                                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
+                                        <Button className="w-full bg-[#1F82D1] tracking-wider text-white rounded-md text-sm shadow-md">
                                           <a href="/invest" className="w-full block text-center">
                                             Invest 
                                           </a>
@@ -146,8 +158,8 @@ const BlogsPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="-mt-20 min-h-screen bg-white px-6 py-28 font-sans">
-      <Header />
+    <div className="mt-0 min-h-screen bg-white px-6 py-28 font-sans">
+ 
 
       <main className="max-w-5xl mx-auto mt-12 border border-gray-300 p-10 rounded-md shadow-sm">
         <div className="-mt-4 flex justify-end">

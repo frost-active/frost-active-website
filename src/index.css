@@ -233,5 +233,96 @@ img {
 
 
 
+/* New Code for Her Banner */
+/* Main image exit */
+@keyframes mainSlideLeft {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(-120px); opacity: 0; }
+}
 
+/* Main image enter */
+@keyframes mainSlideInRight {
+  0% { transform: translateX(120px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Bottom gallery whole-row left shift */
+@keyframes gallerySlideLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-20%); }
+}
+
+/* Last gallery image entering */
+@keyframes galleryLastInRight {
+  0% { transform: translateX(120%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+
+
+@keyframes galleryLastInRightSmooth {
+  0% {
+    transform: translateX(120%) scale(0.95);
+    opacity: 0;
+  }
+  70% {
+    transform: translateX(0) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
   
+
+
+.main-slide-left {
+  animation: mainSlideLeft 0.8s ease forwards;
+}
+
+.main-slide-in-right {
+  animation: mainSlideInRight 0.8s ease forwards;
+}
+
+.gallery-slide-left {
+  animation: gallerySlideLeft 0.8s ease forwards;
+}
+
+.gallery-last-slide-in-right {
+  animation: galleryLastInRightSmooth 1s ease-in-out;
+}
+
+@keyframes galleryLastInRightSmooth {
+  from {
+    transform: translateX(50%) scale(1);
+    opacity: 0;
+  } 
+}
+
+
+
+
+
+
+.scroll-wrapper {
+  display: inline-block;
+  animation: scrollOnce 25s linear infinite;
+}
+
+.group:hover .scroll-wrapper {
+  animation-play-state: paused;
+}
+
+@keyframes scrollOnce {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+
+

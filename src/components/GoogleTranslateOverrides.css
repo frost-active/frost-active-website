@@ -1,0 +1,90 @@
+/* Stop Google from translating dropdown */
+.notranslate,
+.notranslate * {
+  unicode-bidi: isolate;
+  direction: ltr;
+}
+
+/* Hide Google banner + toolbars */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+iframe[id^=":"] {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+/* Keep widget in DOM but hidden */
+#google_translate_element {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Dropdown container */
+.gt-dropdown {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  z-index: 100000;
+}
+
+/* Header with close icon */
+.gt-dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 6px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 4px;
+}
+
+.gt-close-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+}
+.gt-close-btn:hover {
+  background: #f2f5fb;
+}
+
+/* Language list with tighter spacing */
+.gt-lang-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* tighter vertical space */
+}
+
+.gt-lang-btn {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.gt-lang-btn:hover {
+  background: #f2f5fb;
+}

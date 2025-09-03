@@ -8,101 +8,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence  } from 'framer-motion';
 
-
-
-// Navigation links
-const navLinks = [
-  { name: 'Home', url: '/' },
-  { name: 'Features', url: '/#features' },
-  { name: 'Working', url: '/#how-it-works' },
-  { name: 'Team', url: '/#team' },
-  { name: 'Testimonials', url: '/#testimonials' },
-  { name: 'Contact Us', url: '/#try' },
-];
-
-const Header = () => {
-  const navigate = useNavigate();
-  const navTimeout = useRef(null);
-
-  const handleNavClick = (url) => {
-    if (navTimeout.current) {
-      clearTimeout(navTimeout.current);
-    }
-    navTimeout.current = setTimeout(() => {
-      navigate(url);
-      navTimeout.current = null;
-    }, 300);
-  };
-
-  return (
-    <>
-      {/* Fixed Header */}
-      <header className="fixed top-0 left-0 w-full h-20 z-50 bg-white shadow-md">
-        <div className="container mx-auto flex items-center justify-between px-4 h-full overflow-hidden">
-          {/* Logo on the left */}
-          <a
-            onClick={() => handleNavClick('/')}
-            className="flex items-center gap-2 font-extrabold text-xl text-primary cursor-pointer"
-          >
-           <div className="relative top-[6px] left-[-20px] ">
-              <img
-                src="/images/logo2.png" loading="lazy"
-                alt="FROST Logo"
-                className="h-40 w-auto object-contain max-w-[180px]" // restrict height and width
-              />
-            </div>
-          </a>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-6 items-center">
-            {navLinks.map((link) => (
-              <span
-                key={link.name}
-                onClick={() => handleNavClick(link.url)}
-                className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition cursor-pointer"
-                style={{ fontFamily: 'Roboto', fontWeight: '800' }}
-              >
-                {link.name}
-              </span>
-            ))}  
-          </nav>
-
-          {/* Mobile Menu */}
-          <div className="md:hidden flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-primary">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-white rounded-lg shadow-lg">
-                {navLinks.map((link) => (
-                  <DropdownMenuItem key={link.name} asChild>
-                    <span
-                      onClick={() => handleNavClick(link.url)}
-                      className="text-gray-800 hover:bg-blue-100 px-4 py-2 rounded transition cursor-pointer"
-                      style={{ fontFamily: 'Roboto', fontWeight: '400' }}
-                    >
-                      {link.name}
-                    </span>
-                  </DropdownMenuItem>
-                ))}
-
-                {/* Invest Button - Mobile */}
-                                         
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </header>
-
-      {/* Spacer to avoid content being hidden under the fixed header */}
-      <div className="h-20" />
-    </>
-  );
-};
 
 const tabList = ['Community', 'Campaign', 'Rewards',  'FAQ', 'Updates'];
 
@@ -110,20 +17,18 @@ const CommunitySection = () => {
   return (
     <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 font-['Roboto'] bg-[#E1F6FF] text-[#021637] pt-10 overflow-x-hidden">
 
-   
       {/* Top Banner */}
       <img
-        src="/images/communitybanner2.png"
-        alt="Campaign Banner"
-        className=" w-full rounded-lg mb-12 "
+        src="/images/communitybanner1.png"
+        alt="Community  Banner"
+        className="w-full rounded-lg mb-12 -mt-6 "
       />
      
       
-
       {/* Welcome Section */}
-      <div className="text-center max-w-3xl mx-auto px-4 md:-mt-20 -mt-12">
-        <h2 className="text-4xl tracking-wide font-bold">Welcome to the <span className="text-[#389ED7]">FROST</span> Community</h2>
-        <p className="text-sm md:text-sm mt-4 tracking-wide ">
+      <div className="text-center max-w-3xl mx-auto px-4 md:-mt-4 -mt-8">
+        <h2 className="md:text-4xl text-3xl  font-bold">Welcome to the <span className="text-[#389ED7]">FROST</span> Community</h2>
+        <p className="text-sm md:text-sm mt-4 tracking-wider">
           At FROST, we believe wellness <span className="text-[#389ED7]"><b>isn’t a solo journey</b></span> — it’s something  <span className="text-[#389ED7]"><b> we build together </b></span> <br />
           Our mission isn’t just to create a smart hydration device — it’s to create a global community that believes in better work-life balance, mindful breaks, and small habits that make a big difference.
         </p>
@@ -146,10 +51,10 @@ const CommunitySection = () => {
           <img src="/images/discord.png" alt="Discord" className="w-10 cursor-pointer" />
           </a>
           <a href="https://www.facebook.com/share/16Q37LVMTM/" target="_blank" rel="noopener noreferrer">
-          <img src="/images/facebook.png" alt="Facebook" className="w-10 cursor-pointer" />
+          <img src="/images/facebook.png" alt="Facebook" className="w-12 -ml-2 cursor-pointer" />
           </a>
           <a href="https://www.youtube.com/@Frost_active" target="_blank" rel="noopener noreferrer">
-          <img src="/images/youtube.png" alt="YouTube" className="-ml-2 mt-2 w-12 cursor-pointer" />
+          <img src="/images/youtube.png" alt="YouTube" className="-ml-4 mt-2 w-14 cursor-pointer" />
           </a>
         </div>
         {/* New Supporting Text Below Icons */}
@@ -372,7 +277,7 @@ function getImageStyle(offset, dragX = 0, containerWidth = 1200, visibleCount = 
   return transforms[tIdx];
 }
 
-export const ScrollableCampaignGrid = () => {
+const ScrollableCampaignGrid = () => {
   const [center, setCenter] = useState(Math.floor(campaignImages.length / 2));
   const [dragStart, setDragStart] = useState(null);
   const [dragDelta, setDragDelta] = useState(0);
@@ -514,145 +419,151 @@ export const ScrollableCampaignGrid = () => {
 
   return (
     <div
-      className="relative mb-16 font-['Roboto'] w-full px-0 bg-white overflow-x-auto overflow-y-hidden"
+  className={`md:-mt-8 -mt-[130px] relative mb-16 font-['Roboto'] w-full px-0  ${
+    isMobileView ? 'overflow-hidden' : 'overflow-x-auto'
+  } overflow-y-hidden`}
+  style={{
+    WebkitOverflowScrolling: isMobileView ? 'auto' : 'touch',
+    paddingBottom: isMobileView ? '40px' : '80px',
+  }}
+>
+  <div
+    className="md:-mt-2 -mt-[100px] relative mx-auto"
+    ref={carouselRef}
+    style={{
+      width: isMobileView ? '100%' : 'auto',
+      maxWidth: isMobileView ? '100%' : '100vw',
+      minHeight: isMobileView ? '320px' : '200px',
+      overflow: 'visible',
+      margin: '0 auto',
+      position: 'relative',
+    }}
+  >
+    <div
+      className="relative flex justify-center items-center overflow-visible select-none touch-pan-x"
       style={{
-        WebkitOverflowScrolling: "touch",
-        paddingBottom: isMobileView ? "40px" : "80px",
+        width: '100%',
+        height: isMobileView ? 'min(100vw, 400px)' : 'min(90vw, 380px)',
+        minHeight: isMobileView ? 180 : 140,
+        maxHeight: isMobileView ? 460 : 540,
+        perspective: '2000px',
+        cursor: dragStart ? 'grabbing' : 'grab',
+        userSelect: 'none',
+        position: 'relative',
+        touchAction: 'pan-y',
       }}
     >
-      <div
-        className="md:-mt-2 -mt-[100px] relative w-full mx-auto"
-        ref={carouselRef}
-        style={{
-          maxWidth: isMobileView ? "100%" : "100vw",
-          minHeight: isMobileView ? "320px" : "200px",
-        }}
-      >
-        <div
-          className="relative flex justify-center items-center overflow-visible select-none touch-pan-x"
-          style={{
-            width: "100%",
-            height: isMobileView ? "min(100vw, 400px)" : "min(90vw, 380px)",
-            minHeight: isMobileView ? 180 : 140,
-            maxHeight: isMobileView ? 460 : 540,
-            perspective: "2000px",
-            cursor: dragStart ? "grabbing" : "grab",
-            userSelect: "none",
-            position: "relative",
-            touchAction: "pan-y",
-          }}
+      {isMobileView && (
+        <button
+          onClick={() => setCenter((idx) => (idx - 1 + campaignImages.length) % campaignImages.length)}
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md"
+          style={{ opacity: 0.85 }}
+          aria-label="Previous"
         >
-          {isMobileView && (
-            <button
-              onClick={() => setCenter((idx) => (idx - 1 + campaignImages.length) % campaignImages.length)}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md"
-              style={{ opacity: 0.85 }}
-              aria-label="Previous"
-            >
-              <ChevronLeft />
-            </button>
-          )}
-          {visibleImages.map(({ idx, offset }) => {
-            const dragX = offset === 0 && dragStart !== null ? dragDelta : 0;
-            const style = getImageStyle(offset, dragX, containerWidth, VISIBLE, gap);
+          <ChevronLeft />
+        </button>
+      )}
+      {visibleImages.map(({ idx, offset }) => {
+        const dragX = offset === 0 && dragStart !== null ? dragDelta : 0;
+        const style = getImageStyle(offset, dragX, containerWidth, VISIBLE, gap);
 
-            // Less additional gap for far images
-            let addGap = offset * gap * (Math.abs(offset) === 2 ? 0.9 : 1);
-            if (Math.abs(offset) === 2) addGap += offset * gap * 0.1;
+        let addGap = offset * gap * (Math.abs(offset) === 2 ? 0.9 : 1);
+        if (Math.abs(offset) === 2) addGap += offset * gap * 0.1;
 
-            return (
-              <div
-                key={`img-${idx}`}
-                className="carousel-image absolute rounded-xl overflow-hidden shadow-xl"
-                data-offset={offset}
-                style={{
-                  width: `${style.width}px`,
-                  height: `${style.height}px`,
-                  left: "50%",
-                  top: "50%",
-                  transform: `
-                    translate(-50%, -50%)
-                    translateX(${style.translateX + addGap}px)
-                    scale(${style.scale})
-                    rotateY(${style.rotateY}deg)
-                  `,
-                  zIndex: style.zIndex,
-                  opacity: style.opacity,
-                  transition: dragStart
-                    ? "none"
-                    : "transform 0.5s cubic-bezier(.77,0,.18,1), opacity 0.45s cubic-bezier(.77,0,.18,1)",
-                  boxShadow: offset === 0
-                    ? "0 12px 40px 0 rgba(0,0,0,0.11)"
-                    : "0 2px 20px 0 rgba(0,0,0,0.08)",
-                  pointerEvents: offset === 0 ? "auto" : "none",
-                  filter: offset === 0 ? "brightness(1.1)" : "brightness(.95)",
-                  border: offset === 0 ? "2.5px solid #008cd0" : "2px solid #e7f6fd",
-                  cursor: offset === 0 ? "pointer" : "default",
-                  background: "#FFF",
-                }}
-                tabIndex={offset === 0 ? 0 : -1}
-                onClick={() => setCenter(idx)}
-                aria-label={`Campaign ${idx + 1}`}
-              >
-                <img
-                  src={campaignImages[idx]}
-                  alt={`Campaign ${idx + 1}`}
-                  className="w-full h-full object-cover sm:rounded-xl pointer-events-none select-none"
-                  style={{
-                    objectFit: "cover",
-                    background: "#FFF",
-                  }}
-                  loading="lazy"
-                  draggable={false}
-                />
-              </div>
-            );
-          })}
-          {isMobileView && (
-            <button
-              onClick={() => setCenter((idx) => (idx + 1) % campaignImages.length)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md"
-              style={{ opacity: 0.85 }}
-              aria-label="Next"
-            >
-              <ChevronRight />
-            </button>
-          )}
-        </div>
-        {/* Dot indicator */}
-        <div
-          className={`flex justify-center items-center gap-2 ${
-            isMobileView
-              ? "absolute bottom-20 left-0 right-0 z-30"
-              : "relative mt-4"
-          }`}
+        return (
+          <div
+            key={`img-${idx}`}
+            className="carousel-image absolute rounded-xl overflow-hidden shadow-xl"
+            data-offset={offset}
+            style={{
+              width: `${style.width}px`,
+              height: `${style.height}px`,
+              left: '50%',
+              top: '50%',
+              transform: `
+                translate(-50%, -50%)
+                translateX(${style.translateX + addGap}px)
+                scale(${style.scale})
+                rotateY(${style.rotateY}deg)
+              `,
+              zIndex: style.zIndex,
+              opacity: style.opacity,
+              transition: dragStart
+                ? 'none'
+                : 'transform 0.5s cubic-bezier(.77,0,.18,1), opacity 0.45s cubic-bezier(.77,0,.18,1)',
+              boxShadow: offset === 0
+                ? '0 12px 40px 0 rgba(0,0,0,0.11)'
+                : '0 2px 20px 0 rgba(0,0,0,0.08)',
+              pointerEvents: offset === 0 ? 'auto' : 'none',
+              filter: offset === 0 ? 'brightness(1.1)' : 'brightness(.95)',
+              border: offset === 0 ? '2.5px solid #008cd0' : '2px solid #e7f6fd',
+              cursor: offset === 0 ? 'pointer' : 'default',
+              background: '#FFF',
+            }}
+            tabIndex={offset === 0 ? 0 : -1}
+            onClick={() => setCenter(idx)}
+            aria-label={`Campaign ${idx + 1}`}
+          >
+            <img
+              src={campaignImages[idx]}
+              alt={`Campaign ${idx + 1}`}
+              className="w-full h-full object-cover sm:rounded-xl pointer-events-none select-none"
+              style={{
+                objectFit: 'cover',
+                background: '#FFF',
+              }}
+              loading="lazy"
+              draggable={false}
+            />
+          </div>
+        );
+      })}
+      {isMobileView && (
+        <button
+          onClick={() => setCenter((idx) => (idx + 1) % campaignImages.length)}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md"
+          style={{ opacity: 0.85 }}
+          aria-label="Next"
         >
-          {campaignImages.map((_, idx) => {
-            const isActive = idx === center;
-            return (
-              <span
-                key={`dot-${idx}`}
-                style={{
-                  display: "inline-block",
-                  width: isActive ? 16 : 9,
-                  height: isActive ? 16 : 9,
-                  borderRadius: "999px",
-                  background: isActive ? "#008cd0" : "#e7f6fd",
-                  boxShadow: isActive ? "0 0 4px #008cd0b0" : "none",
-                  transition: "all 0.25s",
-                  margin: "0 2px",
-                  border: isActive ? "2px solid #389ED7" : "1px solid #8ab5cdff",
-                  cursor: "pointer",
-                }}
-                onClick={() => setCenter(idx)}
-                aria-label={`Go to image ${idx + 1}`}
-                tabIndex={0}
-              />
-            );
-          })}
-        </div>
-      </div>
+          <ChevronRight />
+        </button>
+      )}
     </div>
+    {/* Dot indicator */}
+    <div
+      className={`flex justify-center items-center gap-2 ${
+        isMobileView
+          ? 'absolute bottom-20 left-0 right-0 z-30'
+          : 'relative mt-4'
+      }`}
+    >
+      {campaignImages.map((_, idx) => {
+        const isActive = idx === center;
+        return (
+          <span
+            key={`dot-${idx}`}
+            style={{
+              display: 'inline-block',
+              width: isActive ? 16 : 9,
+              height: isActive ? 16 : 9,
+              borderRadius: '999px',
+              background: isActive ? '#008cd0' : '#e7f6fd',
+              boxShadow: isActive ? '0 0 4px #008cd0b0' : 'none',
+              transition: 'all 0.25s',
+              margin: '0 2px',
+              border: isActive ? '2px solid #389ED7' : '1px solid #8ab5cdff',
+              cursor: 'pointer',
+            }}
+            onClick={() => setCenter(idx)}
+            aria-label={`Go to image ${idx + 1}`}
+            tabIndex={0}
+          />
+        );
+      })}
+    </div>
+  </div>
+</div>
+
   );
 };
 
@@ -666,10 +577,17 @@ const mobileImages = [
   '/images/mobile5.png',
 ];
 
-const VISIBLE_COUNT = 5; // always show 5 images (center + 2 left + 2 right)
+const sentences = [
+  "Gentle reminders based on your routine",
+  "Syncs with your FROST device",
+  "Available for iOS and Android",
+  "Track your progress in real-time",
+  "Set your hydration and break goals",
+];
 
 const CampaignSection = () => {
-  const [activeIndex, setActiveIndex] = useState(2); // default center
+  const [activeIndex, setActiveIndex] = useState(0); // default center
+  const [sentenceKey, setSentenceKey] = useState(0); // for animation key
 
   // Swipe handlers
   const touchStartX = useRef(null);
@@ -689,11 +607,9 @@ const CampaignSection = () => {
 
     if (Math.abs(deltaX) > 50) {
       if (deltaX > 0) {
-        setActiveIndex((prev) => (prev + 1) % mobileImages.length);
+        updateActiveIndex((activeIndex + 1) % mobileImages.length);
       } else {
-        setActiveIndex((prev) =>
-          (prev - 1 + mobileImages.length) % mobileImages.length
-        );
+        updateActiveIndex((activeIndex - 1 + mobileImages.length) % mobileImages.length);
       }
     }
 
@@ -701,7 +617,11 @@ const CampaignSection = () => {
     touchEndX.current = null;
   };
 
-  // Compute indices for 5 images: two left, center, two right (circular)
+  const updateActiveIndex = (index) => {
+    setActiveIndex(index);
+    setSentenceKey((prev) => prev + 1); // trigger sentence animation
+  };
+
   const getVisibleIndices = () => {
     const total = mobileImages.length;
     const indices = [];
@@ -716,15 +636,16 @@ const CampaignSection = () => {
 
   return (
     <section className="-mt-8 relative left-1/2 right-1/2 w-screen -translate-x-1/2 font-['Roboto'] bg-white">
+      <br />
       {/* Top Banner */}
       <img
-        src="/images/campaign2.png"
+        src="/images/campaign1.png"
         alt="Campaign Banner"
         className="w-full rounded-lg mb-12"
       />
 
-      {/* How it STARTED ?? */}
-      <div className="text-center mb-16 font-roboto">
+      {/* How it STARTED */}
+      <div className="-mt-6 text-center mb-16 font-roboto">
         <h2 className="text-2xl md:text-3xl text-[#021637] font-bold mb-2">
           How it <span className="text-[#389ED7]">STARTED</span>
         </h2>
@@ -741,115 +662,138 @@ const CampaignSection = () => {
         </p>
       </div>
 
+      {/* Mobile Image Carousel */}
+        <ScrollableCampaignGrid/>
+
       {/* App Features Section */}
-      <div className="w-full py-0 px-4 md:px-12 text-center bg-white" style={{ fontFamily: 'Roboto, sans-serif' }}>
-        {/* Title */}
+      <div className="w-full -mt-20 px-4 md:px-12 text-center bg-white font-['Roboto']">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
           <span className="text-[#021637]">App </span>
           <span className="text-[#389ED7]">Features</span>
         </h2>
 
         {/* Bullet Points */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-12 text-[#021637] text-sm md:text-base max-w-3xl mx-auto mb-2 text-left">
-          <div className="flex items-start gap-2 justify-center md:justify-end">
-            <span>•</span> <span>Gentle reminders based on your routine</span>
-          </div>
-          <div className="md:ml-0 -ml-[28px] flex items-start gap-2 justify-center md:justify-start">
-            <span>•</span> <span>Set your hydration and break goals</span>
-          </div>
-          <div className="md:ml-[68px] -ml-14 flex items-start gap-2 justify-center md:justify-start">
-            <span>•</span> <span>Available for iOS and Android</span>
-          </div>
-          <div className="md:-m-0 -ml-10 flex items-start gap-2 justify-center md:justify-start">
-            <span>•</span> <span>Track your progress in real-time</span>
-          </div>
-        </div>
+        <div className="flex flex-col gap-y-6 text-[#021637] font-medium text-sm md:text-base max-w-6xl mx-auto mb-2 text-center sm:text-left">
+  {/* First Row */}
+  <div className="flex flex-col sm:flex-wrap sm:flex-row justify-center items-center sm:items-start gap-3 sm:gap-6">
+    <div className="flex items-start justify-center sm:justify-start gap-2 sm:pl-4 sm:relative">
+      <span className="sm:absolute sm:left-0">•</span>
+      <span>Gentle reminders based on your routine</span>
+    </div>
+    <div className="md:ml-0 -ml-7 flex items-start justify-center sm:justify-start gap-2 sm:pl-4 sm:relative">
+      <span className="sm:absolute sm:left-0">•</span>
+      <span>Set your hydration and break goals</span>
+    </div>
+    <div className="md:ml-0 -ml-16 flex items-start justify-center sm:justify-start gap-2 sm:pl-4 sm:relative">
+      <span className="sm:absolute sm:left-0">•</span>
+      <span>Available for iOS and Android</span>
+    </div>
+  </div>
+
+  {/* Second Row */}
+  <div className="md:-mt-2 flex flex-col sm:flex-wrap sm:flex-row justify-center items-center sm:items-start gap-3 sm:gap-6">
+    <div className="md:ml-0 -ml-11 flex items-start justify-center sm:justify-start gap-2 sm:pl-4 sm:relative">
+      <span className="sm:absolute sm:left-0">•</span>
+      <span>Track your progress in real-time</span>
+    </div>
+    <div className="md:ml-0 -ml-14 flex items-start justify-center sm:justify-start gap-2 sm:pl-4 sm:relative">
+      <span className="sm:absolute sm:left-0">•</span>
+      <span>Syncs with your FROST device</span>
+    </div>
+  </div>
+</div>
+
         <br /><br />
+      </div>
 
-        {/* Syncs with device */}
-        <div>
-          <p className="font-semibold text-[#021637] text-base md:text-xl mt-4 mb-10">
-            • Syncs with your FROST device
-          </p>
-          <br /> <br />
-        </div>
-
-        {/* Phone Carousel inside Ring */}
-        <div className="relative w-full flex justify-center items-center mb-10">
-          {/* Outer Ring */}
-          <div className="absolute w-[400px] h-[400px] md:w-[520px] md:h-[520px] rounded-full border-[10px] border-[#D7F1FD] z-0" />
-
-          {/* Inner Circle */}
-          <div className="absolute w-[330px] h-[330px] md:w-[450px] md:h-[450px] rounded-full bg-[#8ACAED] z-0" />
-
-          {/* Custom 5-image Carousel */}
-          <div
-            className="relative z-10 flex items-center justify-center w-full max-w-5xl gap-0 select-none"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+      {/* Dynamic Sentence Above Carousel */}
+      <div className="text-center text-base md:text-xl font-bold text-[#021637] font-['Roboto'] mb-6 min-h-[30px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={sentenceKey}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
           >
-            {visibleIndices.map((imgIdx, i) => {
-              const relativeIndex = i - 2;
-              let width, scale, zIndex, rotate, translate;
+            • {sentences[activeIndex]}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
-              if (relativeIndex === 0) {
-                width = "w-[132px] md:w-[170px] lg:w-[190px]";
-                scale = "scale-110";
-                zIndex = "z-30";
-                rotate = "rotate-0";
-                translate = "translate-x-0";
-              } else if (relativeIndex === -1) {
-                width = "w-[84px] md:w-[104px] lg:w-[140px]";
-                scale = "scale-100";
-                zIndex = "z-20";
-                rotate = "-rotate-[12deg]";
-                translate = "translate-x-[35px]";
-              } else if (relativeIndex === 1) {
-                width = "w-[84px] md:w-[104px] lg:w-[140px]";
-                scale = "scale-100";
-                zIndex = "z-20";
-                rotate = "rotate-[12deg]";
-                translate = "-translate-x-[35px]";
-              } else {
-                width = "w-[64px] md:w-[104px] lg:w-[100px]";
-                scale = "scale-100";
-                zIndex = "z-10";
-                const isFarLeft = relativeIndex === -2;
-                rotate = isFarLeft ? "-rotate-[18deg]" : "rotate-[18deg]";
-                translate = `${isFarLeft ? "translate-x-[68px]" : "-translate-x-[68px]"} translate-y-[18px]`;
-              }
 
-              return (
-                <div
-                  key={imgIdx}
-                  className={`transition-all duration-500 ease-in-out transform ${translate} ${scale} ${zIndex} ${rotate}`}
-                  style={{
-                    marginLeft: 0,
-                    marginRight: 0,
-                    flexShrink: 0,
-                  }}
-                  onClick={() => setActiveIndex(imgIdx)}
-                >
-                  <img
-                    src={mobileImages[imgIdx]}
-                    alt={`Phone ${imgIdx + 1}`}
-                    className={`cursor-pointer ${width}`}
-                    draggable={false}
-                  />
-                </div>
-              );
-            })}
-          </div>
+
+      {/* Carousel in Ring */}
+      <div className="mt-20 relative w-full flex justify-center items-center mb-10">
+        {/* Outer Ring */}
+        <div className="absolute w-[400px] h-[400px] md:w-[520px] md:h-[520px] rounded-full border-[10px] border-[#D7F1FD] z-0" />
+
+        {/* Inner Circle */}
+        <div className="absolute w-[330px] h-[330px] md:w-[450px] md:h-[450px] rounded-full bg-[#8ACAED] z-0" />
+
+        {/* 5-image Carousel */}
+        <div
+          className=" relative z-10 flex items-center justify-center w-full max-w-5xl gap-0 select-none"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {visibleIndices.map((imgIdx, i) => {
+            const relativeIndex = i - 2;
+            let width, scale, zIndex, rotate, translate;
+
+            if (relativeIndex === 0) {
+              width = "w-[132px] md:w-[170px] lg:w-[190px]";
+              scale = "scale-110";
+              zIndex = "z-30";
+              rotate = "rotate-0";
+              translate = "translate-x-0";
+            } else if (relativeIndex === -1) {
+              width = "w-[84px] md:w-[104px] lg:w-[140px]";
+              scale = "scale-100";
+              zIndex = "z-20";
+              rotate = "-rotate-[12deg]";
+              translate = "translate-x-[35px]";
+            } else if (relativeIndex === 1) {
+              width = "w-[84px] md:w-[104px] lg:w-[140px]";
+              scale = "scale-100";
+              zIndex = "z-20";
+              rotate = "rotate-[12deg]";
+              translate = "-translate-x-[35px]";
+            } else {
+              width = "w-[64px] md:w-[104px] lg:w-[100px]";
+              scale = "scale-100";
+              zIndex = "z-10";
+              const isFarLeft = relativeIndex === -2;
+              rotate = isFarLeft ? "-rotate-[18deg]" : "rotate-[18deg]";
+              translate = `${isFarLeft ? "translate-x-[68px]" : "-translate-x-[68px]"} translate-y-[18px]`;
+            }
+
+            return (
+              <div
+                key={imgIdx}
+                className={`transition-all duration-500 ease-in-out transform ${translate} ${scale} ${zIndex} ${rotate}`}
+                style={{ marginLeft: 0, marginRight: 0, flexShrink: 0 }}
+                onClick={() => updateActiveIndex(imgIdx)}
+              >
+                <img
+                  src={mobileImages[imgIdx]}
+                  alt={`Phone ${imgIdx + 1}`}
+                  className={`cursor-pointer ${width}`}
+                  draggable={false}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Pagination Dots with Click */}
+      {/* Pagination Dots */}
       <div className="flex justify-center items-center space-x-2 md:mt-0 mt-4">
         {mobileImages.map((_, index) => (
           <button
             key={index}
-            onClick={() => setActiveIndex(index)}
+            onClick={() => updateActiveIndex(index)}
             className={`w-3 h-3 rounded-full mt-8 transition-all duration-200 ${
               index === activeIndex ? 'bg-[#389ED7]' : 'bg-[#D7F1FD]'
             }`}
@@ -858,9 +802,12 @@ const CampaignSection = () => {
         ))}
       </div>
       <br /><br />
+
+      
     </section>
   );
 };
+
 
 
 
@@ -1019,7 +966,7 @@ const FAQSection = () => {
   const toggleIndex = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-const [showModal, setShowModal] = useState(false);
+ const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.id]: e.target.value });
@@ -1504,7 +1451,6 @@ const UpdatesSection = () => {
           </div>
            */}
 
-
         </div>
       )}
     </section>
@@ -1545,74 +1491,133 @@ const InvestorPage = () => {
   // Set this to any tab from tabList to choose where the NEW badge appears
   const [newTab] = useState(''); // Change 'Investors' to any of the tabList names as needed
 
+  const images = [
+  '/images/gallery3-2.jpg',
+  '/images/gallery1-5.jpg',
+  '/images/invest1.1.jpg',
+  '/images/invest3.jpg',
+  '/images/gallery3-3.jpg',
+  '/images/invest4.jpg',
+  '/images/1.bmp',
+ 
+];
+const [selectedImage, setSelectedImage] = useState(0);
+
+
   return (
     <div className=" relative left-1/2 right-1/2 w-screen -translate-x-1/2 font-sans bg-[#FFFFFF] text-gray-900">
-      <Header />
-
+      
       {/* Main top content  */}
       <section className="text-center py-8 px-4 md:px-20 font-['Roboto']">
-   <div className="-mt-3 relative left-1/2 right-1/2  w-screen -translate-x-1/2 bg-[#F5F5F5]  "> 
-  
-  <h1 className=" -mt-4 text-3xl md:text-4xl font-bold text-[#021637] mb-1 ">INVEST IN FROST</h1>
-  <p className="text-lg md:text-xl tracking-widest  mb-8">World’s First Smart Wellness Dock</p> 
-  
-  </div> 
-<br />
+  <div className="mt-20 relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-[#F5F5F5]">
+    <h1 className="-mt-4 text-3xl md:text-4xl font-bold text-[#021637] mb-1">
+      INVEST IN FROST
+    </h1>
+    <p className="text-lg md:text-xl tracking-widest mb-8">
+      World’s First Smart Wellness Dock
+    </p>
+  </div>
+  <br />
 
-  <div className=" flex flex-col md:flex-row items-stretch gap-6 w-full">
-    
+  <div className="flex flex-col md:flex-row items-stretch gap-6 w-full">
+    {/* Left Image with Thumbnails */}
     <div className="w-full md:w-[100%] flex flex-col items-center md:items-start">
-      <img src="/images/gallery3-2.jpg" alt="frost" className="md:ml-8 -mt-4 w-[550px] h-[335px] rounded-lg" />
-    </div>
+      {/* Main Image */}
+      <img
+        src={images[selectedImage]}
+        alt="frost"
+        className="md:ml-8 -mt-4 w-[550px] h-[335px]  rounded-lg transition-all duration-300"
+      /> {/* object-cover , object-contain*/}
+      
 
-    <div className="-mt-6  w-full md:w-3/4 flex flex-col justify-start items-start gap-6 p-2 text-left">
-
-   {/* Text Section */}
-   <div className="md:-ml-8 md:max-w-[460px]  w-full">
-    <h3 className="text-2xl font-bold mb-1 tracking-wider">
-      Be Part of the Wellness Revolution
-    </h3>
-    <p className="text-sm text-gray-700 mb-4 leading-relaxed">
-      <span className="text-[#389ED7] text-base font-bold"><b>Frost</b></span> is reshaping how we hydrate, recharge, and refocus by blending science, technology, and mindfulness into one smart wellness dock.
-       <br />
-      With the <span className="text-[#389ED7] font-bold"><b>first ever Smart Wellness Dock</b></span>, you’re not just investing in a product you’re backing a mindful lifestyle and daily wellness movement.
-    </p>
-    <p className="text-base text-[#021637] mb-4 leading-relaxed">
-      Join us early and grow with a brand that is set to redefine the future of everyday well being
-    </p>
-   </div>
-
-   {/* Investment Card — styled exactly like image */}
-   <div className="md:-ml-8 bg-white -mt-6 shadow-md rounded-md px-6 py-4 w-full max-w-[400px] flex justify-between items-center gap-6">
-    
-    {/* ₹50k Section (Left) */}
-    
-    <div className="text-left">
-      <p className="text-[14px] tracking-widest text-[#021637] font-semibold mb-1">Start With Just</p>
-      <div className="flex items-baseline space-x-1">
-        <span className="-ml-1 text-6xl font-bold text-[#021637]">$599</span>
+      {/* Thumbnails */}
+      <div className="mt-4 flex justify-center md:justify-start gap-1 md:ml-[70px] flex-wrap">
+        {images.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt={`thumb-${index}`}
+            onClick={() => setSelectedImage(index)}
+            className={`md:w-16 md:h-18 w-12 h-14 rounded-md object-cover cursor-pointer border-2 ${
+              selectedImage === index
+                ? 'border-[#389ED7]'
+                : 'border-transparent'
+            }  transition-all duration-200`}
+          />
+        ))}
       </div>
     </div>
 
-    {/* Buttons Section (Right) */}
-    <div className="flex flex-col items-start gap-2">
-      <Button 
-        onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSeJycUhnWB_wg4eEXGJLxpj2ED-E4CD4xzTwEbTYOSr3RgeYg/viewform?usp=sharing&ouid=114428934315838563404', '_blank')}
-        className="tracking-wider bg-[#389ED7] hover:bg-[#3a9ad2] text-white text-base font-bold px-4 py-2 rounded-md w-[185px]">
-        💰 INVEST NOW
-      </Button>
+    {/* Right Text + Investment Card */}
+    <div className="-mt-6 w-full md:w-3/4 flex flex-col justify-start items-start gap-6 p-2 text-left">
+      {/* Text Section */}
+      <div className="md:-ml-8 md:max-w-[460px] w-full">
+        <h3 className="text-2xl font-bold mb-1 tracking-wider">
+          Be Part of the Wellness Revolution
+        </h3>
+        <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+          <span className="text-[#389ED7] text-base font-bold">Frost</span> is
+          reshaping how we hydrate, recharge, and refocus by blending science,
+          technology, and mindfulness into one smart wellness dock.
+          <br />
+          With the{' '}
+          <span className="text-[#389ED7] font-bold">
+            first ever Smart Wellness Dock
+          </span>
+          , you’re not just investing in a product you’re backing a mindful
+          lifestyle and daily wellness movement.
+        </p>
+        <p className="text-base text-[#021637] mb-4 leading-relaxed">
+          Join us early and grow with a brand that is set to redefine the
+          future of everyday well being
+        </p>
+      </div>
 
-      <Button
-        onClick={() => window.open('https://koalendar.com/e/frost-early-investor-and-founders-meeting', '_blank')}
-        className="tracking-wider bg-[#389ED7] hover:bg-[#3a9ad2] text-white text-base font-bold px-4 py-2 rounded-md w-[185px]">
-        🤝 BOOK MEETING
-      </Button>
+      {/* Investment Card */}
+      <div className="md:-ml-8 bg-white -mt-6 shadow-md rounded-md px-6 py-4 w-full max-w-[400px] flex justify-between items-center gap-6">
+        {/* ₹50k Section (Left) */}
+        <div className="text-left">
+          <p className="text-[14px] tracking-widest text-[#021637] font-semibold mb-1">
+            Start With Just
+          </p>
+          <div className="flex items-baseline space-x-1">
+            <span className="-ml-1 text-6xl font-bold text-[#021637]">
+              $599
+            </span>
+          </div>
+        </div>
+
+        {/* Buttons Section (Right) */}
+        <div className="flex flex-col items-start gap-2">
+          <Button
+            onClick={() =>
+              window.open(
+                'https://docs.google.com/forms/d/e/1FAIpQLSeJycUhnWB_wg4eEXGJLxpj2ED-E4CD4xzTwEbTYOSr3RgeYg/viewform?usp=sharing&ouid=114428934315838563404',
+                '_blank'
+              )
+            }
+            className="tracking-wider bg-[#389ED7] hover:bg-[#3a9ad2] text-white text-base font-bold px-4 py-2 rounded-md w-[185px]"
+          >
+            💰 INVEST NOW
+          </Button>
+
+          <Button
+            onClick={() =>
+              window.open(
+                'https://koalendar.com/e/frost-early-investor-and-founders-meeting',
+                '_blank'
+              )
+            }
+            className="tracking-wider bg-[#389ED7] hover:bg-[#3a9ad2] text-white text-base font-bold px-4 py-2 rounded-md w-[185px]"
+          >
+            🤝 BOOK MEETING
+          </Button>
+        </div>
+      </div>
     </div>
   </div>
-  
-</div>
-  </div>
 </section>
+
 
 
       {/* Tabs at the Bottom */}

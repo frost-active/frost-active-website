@@ -66,14 +66,26 @@ const Header = () => {
               </span>
             ))}
 
-            {/* Invest Button - Desktop */}
-               <div className="-ml-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
-                    <a href="/invest">Invest</a>
+            {/* Pre-Book Button - Desktop 
+              <div className="-ml-2 -mr-2 mt-0">
+                
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button className="bg-primary/90 hover:bg-primary/90 text-white font-['Roboto'] px-5 sm:px-2 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                    <a href="/order">Pre-order for $1</a>
                   </Button>
                 </motion.div>
               </div>
+              */}
+
+
+            {/* Invest Button - Desktop */}
+                          <div className="-ml-2 -mr-2">
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                              <Button className="bg-[#1F82D1] tracking-wide hover:bg-[#1F82D1] text-white font-['Roboto'] px-5 sm:px-3 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                                <a href="/invest">Invest</a>
+                              </Button>
+                            </motion.div>
+                          </div>
           </nav>
 
           {/* Mobile Menu */}
@@ -102,7 +114,7 @@ const Header = () => {
                                   <DropdownMenuItem asChild>
                                     <div className="w-full px-4 py-2">
                                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
+                                        <Button className="w-full bg-[#1F82D1] tracking-wider hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
                                           <a href="/invest" className="w-full block text-center">
                                             Invest 
                                           </a>
@@ -144,10 +156,10 @@ const Box = ({ children }) => (
 const CommunityPage = () => {
   return (
     <>
-      <Header />
+     {/*<Header />*/}
 
       {/* Hero Section */}
-      <section className="text-center bg-gradient-to-r from-[#CCD6E8] to-[#D9E3F8] h-[480px] sm:h-[1080px] pt-12 px-4 relative overflow-hidden">
+      <section className="mt-20 text-center bg-gradient-to-r from-[#CCD6E8] to-[#D9E3F8] h-[480px] sm:h-[1080px] pt-12 px-4 relative overflow-hidden">
 
   <h1 className="text-3xl sm:text-5xl font-bold text-[#021637]" style={{ fontFamily: 'Roboto' }}>
     Community & Beta
@@ -230,7 +242,7 @@ const CommunityPage = () => {
               className="h-10 w-10 object-contain"
             />
           </a>
-          <a href="https://discord.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://discordapp.com/users/1381888153929121844" target="_blank" rel="noopener noreferrer">
             <img
               src="/images/discord.png"
               alt="Discord"
