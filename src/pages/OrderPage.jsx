@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import { motion } from 'framer-motion';
 
@@ -67,14 +67,26 @@ const Header = () => {
               </span>
             ))}
 
-            {/* Invest Button - Desktop */}
-               <div className="-ml-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 py-3 rounded-lg text-sm sm:text-base shadow-md">
-                    <a href="/invest">Invest</a>
+            {/* Pre-Book Button - Desktop 
+              <div className="-ml-2 -mr-2 mt-0">
+                
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button className="bg-primary/90 hover:bg-primary/90 text-white font-['Roboto'] px-5 sm:px-2 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                    <a href="/order">Pre-order for $1</a>
                   </Button>
                 </motion.div>
               </div>
+              */}
+
+
+            {/* Invest Button - Desktop */}
+                          <div className="-ml-2 -mr-2">
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                              <Button className="bg-[#1F82D1] tracking-wide hover:bg-[#1F82D1] text-white font-['Roboto'] px-5 sm:px-3 py-3 rounded-lg text-sm sm:text-base shadow-md">
+                                <a href="/invest">Invest</a>
+                              </Button>
+                            </motion.div>
+                          </div>
           </nav>
 
           {/* Mobile Menu */}
@@ -103,7 +115,7 @@ const Header = () => {
                                   <DropdownMenuItem asChild>
                                     <div className="w-full px-4 py-2">
                                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
+                                        <Button className="w-full bg-[#1F82D1] tracking-wider hover:bg-primary/90 text-white rounded-md text-sm shadow-md">
                                           <a href="/invest" className="w-full block text-center">
                                             Invest 
                                           </a>
@@ -125,217 +137,217 @@ const Header = () => {
 
 // Google script submission URL
 const GOOGLE_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbz5gexvwLFFbY4pY52icXpOaosAmQdf9QR01rqEFwzbwJkdcyb8udfgajx1kOMZP77Nmg/exec';
+  'https://script.google.com/macros/s/AKfycbz5gexvwLFFbY4pY52icXpOaosAmQdf9QR01rqEFwzbwJkdcyb8udfgajx1kOMZP77Nmg/exec';
 
 // OrderPage component
 const OrderPage = () => {
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    address: '',
-    phone: '',
-    email: '',
-    shareInfo: false,
-    country: 'IN',
-  });
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    address: '',
+    phone: '',
+    email: '',
+    shareInfo: false,
+    country: 'IN',
+  });
 
-  const [submitted, setSubmitted] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
 
-    if (name === 'phone') {
-      const numericValue = value.replace(/\D/g, '');
-      const maxLength = form.country === 'GER' ? 11 : 10;
-      if (numericValue.length <= maxLength) {
-        setForm((prev) => ({ ...prev, [name]: numericValue }));
-      }
-    } else {
-      setForm((prev) => ({
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
-    }
+    if (name === 'phone') {
+      const numericValue = value.replace(/\D/g, '');
+      const maxLength = form.country === 'GER' ? 11 : 10;
+      if (numericValue.length <= maxLength) {
+        setForm((prev) => ({ ...prev, [name]: numericValue }));
+      }
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
 
-    setErrorMsg('');
-  };
+    setErrorMsg('');
+  };
 
-  const handleSubmit = async () => {
-    const { firstName, address, phone, email, shareInfo, country } = form;
+  const handleSubmit = async () => {
+    const { firstName, address, phone, email, shareInfo, country } = form;
 
-    if (!firstName || !address || !phone || !email || !shareInfo) {
-      setErrorMsg('Please complete all required fields and agree to share your booking information.');
-      return;
-    }
+    if (!firstName || !address || !phone || !email || !shareInfo) {
+      setErrorMsg('Please complete all required fields and agree to share your booking information.');
+      return;
+    }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      setErrorMsg('Please enter a valid email address, such as "name@example.com".');
-      return;
-    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setErrorMsg('Please enter a valid email address, such as "name@example.com".');
+      return;
+    }
 
-    const requiredLength = country === 'GER' ? 11 : 10;
-    if (phone.length !== requiredLength) {
-      setErrorMsg(
-        `The phone number must be exactly ${requiredLength} digits for ${
-          country === 'IN' ? 'India' : country === 'US' ? 'United States' : 'Germany'
-        }. Please ensure it is correctly formatted.`
-      );
-      return;
-    }
+    const requiredLength = country === 'GER' ? 11 : 10;
+    if (phone.length !== requiredLength) {
+      setErrorMsg(
+        `The phone number must be exactly ${requiredLength} digits for ${
+          country === 'IN' ? 'India' : country === 'US' ? 'United States' : 'Germany'
+        }. Please ensure it is correctly formatted.`
+      );
+      return;
+    }
 
-    if (!/^\d+$/.test(phone)) {
-      setErrorMsg('The phone number should contain digits only.');
-      return;
-    }
+    if (!/^\d+$/.test(phone)) {
+      setErrorMsg('The phone number should contain digits only.');
+      return;
+    }
 
-    setErrorMsg('');
-    setLoading(true);
+    setErrorMsg('');
+    setLoading(true);
 
-    try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      setSubmitted(true);
-    } catch (err) {
-      setErrorMsg('We encountered an error while submitting your booking. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      setSubmitted(true);
+    } catch (err) {
+      setErrorMsg('We encountered an error while submitting your booking. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleClose = () => {
-    setForm({
-      firstName: '',
-      lastName: '',
-      address: '',
-      phone: '',
-      email: '',
-      shareInfo: false,
-      country: 'IN',
-    });
-    setSubmitted(false);
-  };
+  const handleClose = () => {
+    setForm({
+      firstName: '',
+      lastName: '',
+      address: '',
+      phone: '',
+      email: '',
+      shareInfo: false,
+      country: 'IN',
+    });
+    setSubmitted(false);
+  };
 
-  return (
-    <>
-      <Header />
-      <div className="-mt-16 min-h-screen bg-white pt-24 px-4 flex flex-col items-center">
-        <div className="bg-white shadow-md border w-full max-w-3xl p-8 relative">
-          {!submitted ? (
-            <>
-              <h2 className="text-2xl font-bold text-left mb-6">
-                Booking <span style={{ color: "#389ED7" }}>Information</span>
-              </h2>
-              <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name*"
-                    value={form.firstName}
-                    onChange={handleChange}
-                    className="w-full sm:w-1/2 p-3 bg-blue-50 rounded border border-blue-100"
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name (Optional)"
-                    value={form.lastName}
-                    onChange={handleChange}
-                    className="w-full sm:w-1/2 p-3 bg-blue-50 rounded border border-blue-100"
-                  />
-                </div>
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Address*"
-                  value={form.address}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-blue-50 rounded border border-blue-100"
-                />
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <select
-                    name="country"
-                    value={form.country}
-                    onChange={handleChange}
-                    className="w-full sm:w-1/4 p-3 bg-blue-50 rounded border border-blue-100 text-gray-400"
-                  >
-                    <option value="IN">IN (+91)</option>
-                    <option value="US">US (+1)</option>
-                    <option value="GER">GER (+49)</option>
-                  </select>
-                  <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone Number*"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className="w-full sm:w-3/4 p-3 bg-blue-50 rounded border border-blue-100"
-                  />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email*"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-blue-50 rounded border border-blue-100"
-                />
-                <div className="flex items-center gap-2 mt-2">
-                  <input
-                    type="checkbox"
-                    id="shareInfo"
-                    name="shareInfo"
-                    checked={form.shareInfo}
-                    onChange={handleChange}
-                    className="accent-blue-500"
-                  />
-                  <label htmlFor="shareInfo" className="text-sm text-gray-800">
-                    Share booking information.*
-                  </label>
-                </div>
-                {errorMsg && (
-                  <div className="text-red-600 text-sm mt-2">{errorMsg}</div>
-                )}
-              </div>
-              <div className="flex justify-center">
-                <button
-                  className="mt-6 px-6 py-2 text-white font-semibold rounded-full shadow"
-                  style={{ backgroundColor: '#389ED7' }}
-                  onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#2f8cc2')}
-                  onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#389ED7')}
-                  onClick={handleSubmit}
-                  disabled={loading}
-                >
-                  {loading ? 'Booking...' : 'Book Now'}
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="fixed inset-0 flex items-center justify-center bg-white/80 z-50 px-4">
-              <div className="bg-white border border-blue-200 shadow-lg rounded-xl p-6 w-full max-w-sm text-center">
-                <p className="text-lg font-semibold text-black mb-4">
-                  Thank you! Your booking has been submitted.
-                </p>
-                <button
-                  className="mt-2 px-5 py-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition"
-                  onClick={handleClose}
-                >
-                  OK
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </>
-  );
+  return (
+    <>
+      {/*<Header /> */}
+      <div className="mt-4 min-h-screen bg-white pt-24 px-4 flex flex-col items-center">
+        <div className="bg-white shadow-md border w-full max-w-3xl p-8 relative">
+          {!submitted ? (
+            <>
+              <h2 className="text-2xl font-bold text-left mb-6">
+                Booking <span style={{ color: "#389ED7" }}>Information</span>
+              </h2>
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name*"
+                    value={form.firstName}
+                    onChange={handleChange}
+                    className="w-full sm:w-1/2 p-3 bg-blue-50 rounded border border-blue-100"
+                  />
+                  <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name (Optional)"
+                    value={form.lastName}
+                    onChange={handleChange}
+                    className="w-full sm:w-1/2 p-3 bg-blue-50 rounded border border-blue-100"
+                  />
+                </div>
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Address*"
+                  value={form.address}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-blue-50 rounded border border-blue-100"
+                />
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <select
+                    name="country"
+                    value={form.country}
+                    onChange={handleChange}
+                    className="w-full sm:w-1/4 p-3 bg-blue-50 rounded border border-blue-100 text-gray-400"
+                  >
+                    <option value="IN">IN (+91)</option>
+                    <option value="US">US (+1)</option>
+                    <option value="GER">GER (+49)</option>
+                  </select>
+                  <input
+                    type="text"
+                    name="phone"
+                    placeholder="Phone Number*"
+                    value={form.phone}
+                    onChange={handleChange}
+                    className="w-full sm:w-3/4 p-3 bg-blue-50 rounded border border-blue-100"
+                  />
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email*"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-blue-50 rounded border border-blue-100"
+                />
+                <div className="flex items-center gap-2 mt-2">
+                  <input
+                    type="checkbox"
+                    id="shareInfo"
+                    name="shareInfo"
+                    checked={form.shareInfo}
+                    onChange={handleChange}
+                    className="accent-blue-500"
+                  />
+                  <label htmlFor="shareInfo" className="text-sm text-gray-800">
+                    Share booking information.*
+                  </label>
+                </div>
+                {errorMsg && (
+                  <div className="text-red-600 text-sm mt-2">{errorMsg}</div>
+                )}
+              </div>
+              <div className="flex justify-center">
+                <button
+                  className="mt-6 px-6 py-2 text-white font-semibold rounded-full shadow"
+                  style={{ backgroundColor: '#389ED7' }}
+                  onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#2f8cc2')}
+                  onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#389ED7')}
+                  onClick={handleSubmit}
+                  disabled={loading}
+                >
+                  {loading ? 'Booking...' : 'Book Now'}
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="fixed inset-0 flex items-center justify-center bg-white/80 z-50 px-4">
+              <div className="bg-white border border-blue-200 shadow-lg rounded-xl p-6 w-full max-w-sm text-center">
+                <p className="text-lg font-semibold text-black mb-4">
+                  Thank you! Your booking has been submitted.
+                </p>
+                <button
+                  className="mt-2 px-5 py-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition"
+                  onClick={handleClose}
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default OrderPage;
