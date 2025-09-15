@@ -465,29 +465,17 @@ const HeroSection = () => {
 {/* NEW Features Section */}
 const KeyFeatures = () => {
   const images = [
-    "/images/drink-water.png",
-    "/images/clean-bottle.png",
-    "/images/take-medicine.png",
-    "/images/water-remainder.png",
-    "/images/meditation.png",
-    "/images/walk.png",
-    "/images/exercise.png",
-    "/images/cleanbottle.png",
-    "/images/pomodoro.png",
+    "/images/gif4.gif",
     "/images/waterhealing.png",
+    "/images/take-medicne.png",
+    "/images/waterheling.png",
   ];
 
   const headings = [
-    "Drink Water",
-    "Clean Bottle",
-    "Take Medicine",
-    "Water Remainder",
-    "Meditation, Yoga & Workout",
-    "Short Walk",
-    "Place Bottle",
-    "Short Break",
-    "Pomodoro Activity",
-    "Water Energizing",
+    "Device Reminders",
+    "Water Healing",
+    "App Integration",
+    "Leadboard",
   ];
 
   const descriptions = [
@@ -495,23 +483,17 @@ const KeyFeatures = () => {
     "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it — keeping bacteria at bay.",
     "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
     "Monitor daily water intake, set goals, and get insights via the FROST mobile app — all without micromanaging.",
-    "Activate focused modes for your practice — FROST emits healing vibrations (like 432 Hz) to harmonize body and mind.",
-    "Been sitting too long? FROST encourages short movement breaks to keep your circulation flowing and your head clear.",
-    "Left your bottle behind? FROST gently notifies you to place it back on the dock — so your tracking never skips a beat.",
-    "Protect your focus with short, intentional breaks. Stretch, blink, breathe — let FROST cue your brain to reset.",
-    "Work in deep focus cycles with built-in Pomodoro timers — paired with hydration cues to keep your energy flowing.",
-    "FROST Aura turns hydration into a mindful ritual, infusing water with healing frequencies and mantras to harmonize energy and wellbeing.",
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
-  useEffect(() => {
+   {/* useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
     }, 4000);
     return () => clearInterval(interval);
-  }, [activeIndex]);
+  }, [activeIndex]); */}
 
   const handleNext = () => {
     setFade(false);
@@ -530,29 +512,37 @@ const KeyFeatures = () => {
   };
 
   return (
-    <section id="features">
-      {/* Mobile Heading First */}
-      <div className="lg:hidden text-center py-6">
-        <h2 className="text-4xl text-[#021637] font-bold mb- font-['Roboto'] ">
+    <section id="features" className="relative">
+      {/* Top Center Heading */}
+      <div className="text-center py-10">
+        <h2 className="text-4xl text-[#021637] font-bold font-['Roboto'] leading-tight">
           <span style={{ color: "#021637" }}>KEY </span>
           <span style={{ color: "#389ED7" }}>FEATURES</span>
         </h2>
-        <p className="text-lg text-[#021637] mb-4 font-['Roboto'] ">explore in-depth</p>
+        <p className="text-lg text-[#389ED7] font-['Roboto'] mt-0">
+          <a href=""><u>explore in-depth</u></a>
+        </p>
       </div>
 
-      <div className="font-['Roboto'] flex flex-col lg:flex-row items-center lg:items-start gap-8 px-4 lg:px-20 py-10">
+      {/* Main content */}
+      <div className="-mt-4 font-['Roboto'] flex flex-col lg:flex-row items-center lg:items-start gap-0 px-4 lg:px-20 pb-10">
         {/* Left side - Image + Thumbnails */}
-        <div className="-mt-12 lg:mt-0  lg:pt-2 flex flex-col items-center lg:w-1/2 order-2 lg:order-1">
-          <div className="w-full flex justify-center">
+        <div className="lg:mt-4 lg:ml-20 flex flex-col items-center lg:w-1/2 order-2 lg:order-1">
+          <div className="w-full  flex justify-center">
             <img
               src={images[activeIndex]}
               alt={headings[activeIndex]}
-              className={`w-[300px] sm:w-[350px] md:w-[400px] lg:w-[250px] transition-opacity duration-500 ${
+              className={`transition-opacity duration-500 ${
                 fade ? "opacity-100" : "opacity-0"
+              } ${
+                images[activeIndex].includes("gif4.gif")
+                  ? "w-[380px] sm:w-[420px] md:w-[480px] lg:w-[335px] h-auto"
+                  : "w-[300px] sm:w-[350px] md:w-[400px] lg:w-[250px] h-auto"
               }`}
             />
           </div>
-
+           
+         {/* Thumbnail Images */}
           <div className="flex overflow-x-auto lg:gap-3 mt-4 pb-2 scrollbar-hide">
             {images.map((thumb, index) => (
               <img
@@ -571,16 +561,7 @@ const KeyFeatures = () => {
         </div>
 
         {/* Right side - Text */}
-        <div className="lg:w-1/2 text-center lg:text-left lg:pl-28 lg:pt-4 order-3 lg:order-2">
-          {/* Desktop heading */}
-          <div className="hidden lg:block">
-            <h2 className="text-4xl text-[#021637] font-bold mb-0">
-              <span style={{ color: "#021637" }}>KEY </span>
-              <span style={{ color: "#389ED7" }}>FEATURES</span>
-            </h2>
-            <p className="text-lg text-[#021637] mb-10">explore in-depth</p>
-          </div>
-
+        <div className="lg:w-1/2 text-center lg:text-left lg:pl-6 lg:pt-4 order-3 lg:order-2">
           <h3
             className={`text-[#389ED7] text-xl font-bold transition-opacity duration-500 ${
               fade ? "opacity-100" : "opacity-0"
@@ -598,10 +579,13 @@ const KeyFeatures = () => {
             {descriptions[activeIndex]}
           </p>
           <div className="md:-mt-8">
-          <a href="#" className="text-[#389ED7] font-medium hover:underline transition" > 
-             {/* learn more → */}
+            <a
+              href="#"
+              className="text-[#389ED7] font-medium hover:underline transition"
+            >
+              {/* learn more → */}
             </a>
-            </div>
+          </div>
         </div>
       </div>
 
@@ -1791,7 +1775,7 @@ const MeetOurTeamSection = () => {
             {rightMembers.map((member, index) => renderTeamMember(member, index))}
           </div>
         </div>
-
+      {/*  Curvy Bottom Image */}
         <div className="md:-mt-[50px] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
           <img src="/images/curvy1.png" loading="lazy" alt="curvy" className="w-full h-auto object-cover" />
         </div>
@@ -1814,12 +1798,12 @@ const initialTestimonials = [
   },
   {
     id: 2,
-    name: 'Likith',
-    designation: 'Quality control,Berlin',
-    image: '/images/likith.jpg',
+    name: ' Maxim Bishop (Maitreya Rishi Dasa)',
+    designation: 'Temple President BLISS(Bhaktivedanta Lives In Sound Society), South London',
+    image: '/images/Maxim Bishop.jpg',
     testimonial:
-      "After I moved abroad, between work and busy days full of calls, I would often miss my vitamin D or iron supplements which are really important for me. With Frost Aura on my desk, I get this gentle nudge that says, ‘Hey, take a breath. Take care of you.’ It’s small, but it’s made a big  difference in how I feel.",
-    linkedin: 'https://www.linkedin.com/in/likithgowda-k-r-102296214?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+      "Everybody drinks water. But did you know you can become spiritual by drinking water? FROST transforms our water into a spiritual beverage by vibrating special frequencies. Sometimes, we need a reminder to stretch. Or to take medication. Everyone needs a break from work sometimes. FROST keeps us well by making sure we don't forget to do these simple actions that make our life better. A small device on your desk can change our lives in so many ways. That's why I think FROST is a great product.",
+    linkedin: 'https://www.linkedin.com/',
     email: 'mailto:someone@example.com',
   },
    {
@@ -1991,7 +1975,6 @@ const TestimonialsSection = () => {
                           height: '100%',
                           objectFit: 'contain',
                           borderRadius: '50%',
-                      
                         }}
                       />
                     </div>
@@ -2002,40 +1985,86 @@ const TestimonialsSection = () => {
                       minHeight: 120,
                       marginLeft: -16,
                       zIndex: 1,
-                      marginTop: 20,
+                      marginTop: 25,
                       boxShadow: '0 3px 24px 0 rgba(56,158,215,0.11)',
                     }}
                   >
+                    
                     <div className="absolute -top-8 left-1 z-20 flex gap-2">
-                      {testimonial.linkedin && (
-                        <a
-                          href={testimonial.linkedin}
-                          aria-label="LinkedIn"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={iconWrapperStyle}
-                        >
-                          <svg
-                            fill="currentColor"
-                            viewBox="0 0 448 512"
-                            width="18"
-                            height="18"
-                            style={iconStyle}
-                          >
-                            <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341a53.67 53.67 0 1 1 53.61-53.66 53.64 53.64 0 0 1-53.61 53.66zM447.8 448h-92.4V302.4c0-34.7-12.4-58.4-43.3-58.4-23.6 0-37.6 15.8-43.8 31-2.3 5.6-2.8 13.4-2.8 21.2V448h-92.4s1.2-241.1 0-266.1h92.4v37.7c-.2.3-.5.7-.7 1h.7v-1c12.3-19 34.3-46.1 83.5-46.1 60.9 0 106.7 39.8 106.7 125.4V448z" />
-                          </svg>
-                        </a>
-                      )}
-                      {testimonial.id === 1 && (
-                        <a
-                          href={`mailto:${testimonial.email}`}
-                          aria-label="Email"
-                          style={iconWrapperStyle}
-                        >
-                          <Mail size={20} color="#ffffff" />
-                        </a>
-                      )}
-                    </div>
+  {/* LinkedIn: only show if NOT id 2 */}
+  {testimonial.linkedin && testimonial.id !== 2 && (
+    <a
+      href={testimonial.linkedin}
+      aria-label="LinkedIn"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={iconWrapperStyle}
+    >
+      <svg
+        fill="currentColor"
+        viewBox="0 0 448 512"
+        width="18"
+        height="18"
+        style={iconStyle}
+      >
+        <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341a53.67 53.67 0 1 1 53.61-53.66 53.64 53.64 0 0 1-53.61 53.66zM447.8 448h-92.4V302.4c0-34.7-12.4-58.4-43.3-58.4-23.6 0-37.6 15.8-43.8 31-2.3 5.6-2.8 13.4-2.8 21.2V448h-92.4s1.2-241.1 0-266.1h92.4v37.7c-.2.3-.5.7-.7 1h.7v-1c12.3-19 34.3-46.1 83.5-46.1 60.9 0 106.7 39.8 106.7 125.4V448z" />
+      </svg>
+    </a>
+  )}
+
+  {/* Custom icons for id:2 (Maxim Bishop) */}
+  {testimonial.id === 2 && (
+    <>
+      {/* Globe Website icon */}
+      <a
+        href="https://gopiayurveda.shop/"
+        aria-label="Website"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={iconWrapperStyle}
+      >
+        <div
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: "50%",
+            border: "2px solid #fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 8,
+            fontWeight: "bold",
+            color: "#fff",
+          }}
+        >
+          www
+        </div>
+      </a>
+
+      {/* Instagram icon (lucide-react) */}
+      <a
+        href="#"
+        aria-label="Instagram"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={iconWrapperStyle}
+      >
+        <Instagram size={18} color="#ffffff" />
+      </a>
+    </>
+  )}
+
+  {/* Email for id:1 only */}
+  {testimonial.id === 1 && (
+    <a
+      href={`mailto:${testimonial.email}`}
+      aria-label="Email"
+      style={iconWrapperStyle}
+    >
+      <Mail size={20} color="#ffffff" />
+    </a>
+  )}
+</div>
                     <div>
                       <span className="font-bold text-lg text-[#222]">{testimonial.name}</span>
                       <div className="text-[#222] text-sm">{testimonial.designation}</div>
@@ -2060,7 +2089,7 @@ const TestimonialsSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              {/*see more....*/}
+              {/*see more.... */}
             </motion.button>
           ) : (
             <motion.button
@@ -2345,7 +2374,7 @@ const TryItNowSection = () => {
 
                 {/* Buttons */}
                 <div className="mt-10 md:ml-8 flex flex-col gap-8 items-center relative">
-                  {[{ label: "Book Now", link: "/preorder" }, { label: "Get in Touch", link: "#contact" }].map((btn) => (
+                  {[{ label: "Pre Order", link: "/preorder" }, { label: "Get in Touch", link: "#contact" }].map((btn) => (
                       <motion.div
                         key={btn.label}
                         whileHover={{ scale: 1.05 }}
@@ -2359,7 +2388,7 @@ const TryItNowSection = () => {
                         >
                           <div className="absolute inset-0 bg-[#389ed733] rounded-[40px] border-[5px] border-[#b1e3ff] z-0" />
                           <div className="relative z-10 h-14 md:h-16 w-full bg-[#389ED7] text-white text-lg md:text-xl font-medium flex items-center justify-between px-6 rounded-[40px] shadow-[1px_4px_12.8px_#00000040]">
-                            {btn.label === "Book Now" ? (
+                            {btn.label === "Pre Order" ? ( 
                               <>
                                 <span>{btn.label}</span>
                                 <div className="w-[37px] h-[37px] bg-white rounded-full shadow-[inset_0px_4px_4px_#00000040]" />

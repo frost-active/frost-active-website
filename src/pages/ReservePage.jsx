@@ -117,7 +117,7 @@ const ReservePage = () => {
           style={styles.reserveBtn}
           onClick={() => window.open('https://rzp.io/rzp/frostaura', '_blank')}
         >
-          Reserve discount for $5
+          Reserve discount for $3
         </button>
 
         <button

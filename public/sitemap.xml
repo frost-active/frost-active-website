@@ -5,7 +5,16 @@
     <lastmod>2025-09-03</lastmod>
   </url>
   <url>
-    <loc>https://frostactive.com/order</loc>
+    <loc>https://frostactive.com/preorder</loc>
+    <lastmod>2025-09-03</lastmod>
+  </url>
+  <url>
+    <loc>https://frostactive.com/reserve</loc>
+    <lastmod>2025-09-03</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://frostactive.com/questions</loc>
     <lastmod>2025-09-03</lastmod>
   </url>
   <url>
@@ -44,4 +53,5 @@
     <loc>https://frostactive.com/invest</loc>
     <lastmod>2025-09-03</lastmod>
   </url>
+
 </urlset>

@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence  } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -16,14 +15,20 @@ const PreOrderPage = () => {
   const [mainImage, setMainImage] = useState("/images/preorder.jpg");
   const thumbnails = [
     "/images/preorder.jpg", // First thumbnail same as main preorder image
-    "/images/thumb11.png",
-    "/images/thumb10.png",
-    "/images/gif3.gif",
-    "/images/thumb2.1.jpg",
-    "/images/thumb3.1.jpg",
-    "/images/thumb4.1.jpg",
-    // "/images/thumb5.jpg",
+    "/images/gallery3-2.jpg",
+    // "/images/thumb11.png",
+   // "/images/thumb10.png",
     
+    "/images/thumb12.jpg",
+   "/images/thumb13.jpg",
+   "/images/thumb4.1.png",
+    "/images/gif3.gif",
+   
+    // "/images/thumb3.1.jpg",
+   
+    "/images/gallery3-4.jpg",
+     "/images/thumb2.png",
+    // "/images/thumb5.jpg",
     // "/images/thumb7.jpg",
     
   ];
@@ -69,12 +74,13 @@ const PreOrderPage = () => {
 
 
 
+
 // FAQ Related Const and Google Sheet Link
   const [openIndex, setOpenIndex] = useState(null);
   const [form, setForm] = useState({ question: "", email: "" });
     
     const GOOGLE_SHEET_URL =
-      "https://script.google.com/macros/s/AKfycbzPn46_hc9gYMS1MsyvUNLbMWogzIn2snF8jx4z3V4Imzxa_n_iaJR1LMTSVxFvNbPxag/exec";
+      "https://script.google.com/macros/s/AKfycbyawYwbLt3La9UhYhhNvkdDaID1ScUTeoV58S5qcTfGwlOPRxM2fDModKVyWmOW7Dz2YA/exec";
   
     const toggleIndex = (index) => {
       setOpenIndex(openIndex === index ? null : index);
@@ -115,42 +121,136 @@ const PreOrderPage = () => {
     //  FAQ List  question and answer
     const faqs = [
       {
-        question: "What is Frost Aura and how is it different from other wellness products?",
-        answer: "Frost Aura is a desktop wellness companion that goes beyond hydration. It blends habit-forming hydration reminders, posture and break cues, and sound-based water energizing (using frequencies like 432Hz, mantras, and affirmations). Unlike smart bottles, Frost Aura works with any container — bottle, mug, or glass — turning hydration into a mindful ritual.",
+        question: "What does the $3 preorder mean?",
+        answer: "Your $3 is a *refundable deposit* to secure your spot as an early backer of FROST Aura. This guarantees you access to the *lowest launch price* when the campaign goes live.",
       },
       {
-        question: "What problem does Frost Aura solve?",
-        answer: "In our screen-heavy, fast-paced lives, people often forget to hydrate, stretch, or take mindful breaks. This leads to fatigue, poor focus, posture issues, and long-term health problems. Frost Aura provides gentle nudges to restore balance through hydration and energy alignment — right from your desk.",
+        question: "Do I get the full product for $3?",
+        answer: "No, this is a reservation fee, not the final product cost. When FROST launches, you’ll get an exclusive **early-bird discount* applied to your order.",
       },
       {
-        question: "What stage is the product in?",
-        answer: "We’ve completed the MVP stage with a functional prototype, display logic, and hardware ready. App development is underway, and industrial design is being finalized. Patent application has also been initiated.",
+        question: "Is my $3 deposit refundable?",
+        answer: "Yes ✅. If you decide not to back us later, you can request a *full refund anytime before the campaign ends*.",
       },
       {
-        question: "What is your business model?",
-        answer: "We will initially generate revenue through direct hardware sales (via Kickstarter and D2C website). Long-term revenue will come from premium app features like curated healing sound packs, community features, and future wellness accessories.",
+        question: "When will FROST be available to purchase fully?",
+        answer: "We are preparing for our *Indiegogo crowdfunding launch* soon. Preordering now ensures you’re first in line.",
       },
       {
-        question: "Who is your target audience?",
-        answer: "Professionals and remote workers, Health-conscious individuals and yoga/meditation practitioners, Corporates offering wellness kits for employees, Energy healers, manifestation practitioners, and frequency wellness communities.",
+        question: "How much will the full product cost?",
+        answer: "The retail price will be around $120–$140, but early supporters who preorder with $3 will get access to **exclusive discounted pricing* at launch.",
       },
       {
-        question: "What is the market opportunity?",
-        answer: "Frost Aura sits at the intersection of four growing markets: Hydration tech, Mindfulness & productivity tools, Sound therapy & healing frequencies, Corporate wellness gifting, Combined,these segments contribute to a $7T+ global wellness economy.",
+        question: "What do I get for preordering?",
+        answer: "* Guaranteed early-bird access* Locked-in lowest launch price* Priority updates on the campaign and production progress* Exclusive access to Frost Aura App _ Premium version for 6 months",
       },
       {
-        question: "Are you protected by intellectual property?",
-        answer: "Yes. We have initiated our patent process to cover both the hardware docking station and the frequency-based water energizing mechanism. Trademark and design protections are also being considered.",
+        question: "How will I know when it’s time to complete my purchase?",
+        answer: "We’ll notify you via *email and WhatsApp* when the campaign goes live, with clear instructions to claim your early-bird offer.",
       },
       {
-        question: "How much are you raising and at what valuation?",
-        answer: "We are raising ₹25 lakhs ($30,000) as seed capital at a ₹5 crore ($600,000) valuation. This will support manufacturing, certification, pre-launch campaigns, and Kickstarter execution.",
+        question: "Where will you ship?",
+        answer: "We plan to ship *worldwide 🌍*, with final shipping details and costs shared during the crowdfunding campaign.",
       },
       {
-        question: "How will you scale after crowdfunding?",
-        answer: "After Kickstarter: Direct-to-customer website sales, Strategic partnerships with wellness centers and corporates, Expansion into smart water dispensers (Frost Aura Max), Global distribution via wellness expos, affiliate programs, and Amazon/retail",
+        question: "What happens if the campaign doesn’t succeed?",
+        answer: "If for any reason the campaign doesn’t go forward, your $3 will be *refunded in full*.",
+      },
+      { question: "Why should I preorder now?",
+        answer: "Preordering shows your support early, gives you the *best deal possible*, and helps us bring Frost to life faster.",
       },
     ];
+
+   //Overview Tab - Image Gallery Related Code
+   const images = [
+    "/images/frost1.png",
+    "/images/frost2.png",
+    "/images/frost3.png",
+    "/images/frost4.png",
+    "/images/frost5.png",
+    "/images/frost6.png",
+    "/images/frost7.png",
+    "/images/frost8.png",
+  ];
+
+   const n = images.length;
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
+
+  // start in the middle copy
+  const [index, setIndex] = useState(n);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+
+  const skipTransitionRef = useRef(false);
+  const [slideWidth, setSlideWidth] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // calculate width (half container so 2 images always fit)
+  useEffect(() => {
+    const update = () => {
+      if (!containerRef.current) return;
+      const w = Math.floor(containerRef.current.clientWidth / 2);
+      setSlideWidth(w);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // apply transform when index/slideWidth changes
+  useEffect(() => {
+    if (!trackRef.current) return;
+    trackRef.current.style.transition = skipTransitionRef.current
+      ? "none"
+      : "transform 600ms ease";
+    trackRef.current.style.transform = `translateX(-${index * slideWidth}px)`;
+    if (skipTransitionRef.current) skipTransitionRef.current = false;
+  }, [index, slideWidth]);
+
+  // reset after transition when we go too far
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const onTransitionEnd = () => {
+      setIsAnimating(false);
+      if (indexRef.current >= 2 * n) {
+        const newIndex = indexRef.current - n;
+        skipTransitionRef.current = true;
+        setIndex(newIndex);
+      } else if (indexRef.current < n) {
+        const newIndex = indexRef.current + n;
+        skipTransitionRef.current = true;
+        setIndex(newIndex);
+      }
+    };
+
+    track.addEventListener("transitionend", onTransitionEnd);
+    return () => track.removeEventListener("transitionend", onTransitionEnd);
+  }, [n]);
+
+  // manual navigation
+  const prevImage = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setIndex((prev) => prev - 1);
+  };
+
+  const nextImage = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setIndex((prev) => prev + 1);
+  };
+
+  // build extended slides for smooth loop
+  const slides = [...images, ...images, ...images];
+
+  const goToThumbnailPair = (i) => {
+    skipTransitionRef.current = false;
+    setIndex(n + i);
+  };
+
 
   return (
     <div className="mt-[135px] font-['Roboto'] w-full min-h-screen bg-white flex flex-col items-center px-4 sm:px-6 md:px-10 xl:px-20">
@@ -235,42 +335,187 @@ const PreOrderPage = () => {
           {/* Tabs Section */}
           <div className="w-full mt-8">
          {/* Full width border line with tabs inside */}
-         <div className="w-screen -ml-[calc((100vw-100%)/2)] border-b border-gray-200 flex justify-start">
-          <div className="flex ml-4 md:ml-[60px]"> 
-            <button
-              onClick={() => setActiveTab("overview")}
-              className={`px-6 py-2 font-medium ${
-                activeTab === "overview"
-                  ? "border-b-2 border-[#389ED7] text-[#389ED7]"
-                  : "text-[#021637]"
-              }`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setActiveTab("faq")}
-              className={`px-6 py-2 font-medium ${
-                activeTab === "faq"
-                  ? "border-b-2 border-[#389ED7] text-[#389ED7]"
-                  : "text-[#021637]"
-              }`}
-            >
-              FAQ
-            </button>
-          </div>
+         <div className="w-screen -ml-[calc((100vw-100%)/2)] flex justify-start bg-[#021637]">
+          <div className="flex ml-4 md:ml-[60px]">
+          <button
+            onClick={() => setActiveTab("overview")}
+            className={`relative px-6 py-2 font-medium text-white ${
+              activeTab === "overview"
+                ? "after:content-[''] after:absolute after:left-0 after:right-0 after:bottom-[4px] after:border-b-2 after:border-white"
+                : ""
+            }`}
+          >
+            Overview
+          </button>
+
+          <button
+            onClick={() => setActiveTab("faq")}
+            className={`relative px-6 py-2 font-medium text-white ${
+              activeTab === "faq"
+                ? "after:content-[''] after:absolute after:left-0 after:right-0 after:bottom-[4px] after:border-b-2 after:border-white"
+                : ""
+            }`}
+          >
+            FAQ
+          </button>
+        </div>
+
         </div>
 
         {/* Tab Content */}
         <div className="mt-4 text-sm text-gray-700 leading-relaxed">
           {activeTab === "overview" && (
-            <div>
-              <p>
-                Frost Aura is the world’s first AI-powered hydration dock,
-                designed to energize your water using natural healing
-                frequencies. It’s not just hydration—it’s smarter,
-                cleaner, and built for balance.
-              </p>
-            </div>
+            
+              <div className="-mt-4 w-full font-['Roboto'] text-gray-900">
+      {/* Top Section */}
+      <section className="text-center px-6 md:px-20 py-10">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#021637]">
+          Experience <br />
+          the future of Wellness
+        </h2>
+        <p className="mt-4 text-base md:text-base text-[#021637] max-w-3xl mx-auto">
+          Frost is more than just a docking station; it&apos;s your personal wellness
+          companion, seamlessly integrating into your daily life to promote hydration,
+          focus, and overall well-being. Discover the effortless way to elevate your routine.
+        </p>
+      </section>
+
+      {/* Image Gallery */}
+      <section className="relative">
+        <div ref={containerRef} className="w-full overflow-hidden">
+          <div
+            ref={trackRef}
+            className="flex"
+            style={{
+              width: `${slides.length * slideWidth}px`,
+              willChange: "transform",
+            }}
+          >
+            {slides.map((src, i) => (
+              <div
+                key={i}
+                style={{
+                  minWidth: slideWidth ? `${slideWidth}px` : "50%",
+                  maxWidth: slideWidth ? `${slideWidth}px` : "50%",
+                  boxSizing: "border-box",
+                  padding: "8px",
+                }}
+              >
+                <img
+                  src={src}
+                  alt={`Frost device ${i + 1}`}
+                  className="w-full md:h-[480px] h-full object-cover rounded-lg shadow-md"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <button
+          onClick={prevImage}
+          className="absolute z-20 lg:-left-14 -left-4  top-1/2 -translate-y-1/2 lg:w-10 lg:h-10 w-7 h-7 rounded-full bg-white/80 hover:bg-white border border-[#008cd0] flex items-center justify-center shadow transition"
+          style={{
+            pointerEvents: isAnimating ? "none" : "auto",
+            opacity: isAnimating ? 0.3 : 1,
+          }}
+        >
+          <svg viewBox="0 0 13 20" width="22" height="22">
+            <polyline
+              points="10,3 3,10 10,17"
+              stroke="#008CD0"
+              strokeWidth="2.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+
+        <button
+          onClick={nextImage}
+          className="absolute z-20 lg:-right-14 -right-4 top-1/2 -translate-y-1/2 lg:w-10 lg:h-10 w-7 h-7 rounded-full bg-white/80 hover:bg-white border border-[#008cd0] flex items-center justify-center shadow transition"
+          style={{
+            pointerEvents: isAnimating ? "none" : "auto",
+            opacity: isAnimating ? 0.3 : 1,
+          }}
+        >
+          <svg viewBox="0 0 13 20" width="22" height="22">
+            <polyline
+              points="10,3 3,10 10,17"
+              stroke="#008CD0"
+              strokeWidth="2.5"
+              fill="none"
+              strokeLinecap="round"
+              transform="rotate(180 6.5,10)"
+            />
+          </svg>
+        </button>
+      </section>
+
+      {/* Thumbnails */}
+      <div className="flex justify-center gap-3 mt-2 flex-wrap px-6">
+        {images.map((src, i) => (
+          <button
+            key={i}
+            onClick={() => goToThumbnailPair(i)}
+            className="focus:outline-none"
+          >
+            <img
+              src={src}
+              alt={`Thumbnail ${i + 1}`}
+              className="md:w-24 md:h-24 w-7 h-7 object-cover rounded-md cursor-pointer border-2 border-transparent hover:border-[#389ED7] transition-transform duration-200 hover:scale-110"
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Key Highlights */}
+      <section className="mt-6 w-screen -ml-[calc((100vw-100%)/2)] bg-[#021637] text-white py-12 px-6 md:px-20 text-center">
+        <h3 className="text-xl md:text-2xl font-semibold mb-10">Key Highlights</h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white text-gray-900 rounded-lg p-6 shadow-lg">
+            <h4 className="text-lg font-semibold mb-2 leading-tight">
+              <span className="block">Universal</span> Compatibility
+            </h4>
+            <p className="text-sm">
+              Designed to work with any cup or bottle, Frost ensure your favourite
+              drink-ware becomes smart, without needing specialised containers.
+            </p>
+          </div>
+
+          <div className="bg-white text-gray-900 rounded-lg p-6 shadow-lg">
+            <h4 className="text-lg font-semibold mb-2 leading-tight">
+              <span className="block">Smart Hydration</span> Tracking
+            </h4>
+            <p className="text-sm">
+              Sensors monitor your intake and provide personalised reminders
+              to keep you hydrated and energised throughout the day.
+            </p>
+          </div>
+
+          <div className="bg-white text-gray-900 rounded-lg p-6 shadow-lg">
+            <h4 className="text-lg font-semibold mb-2 leading-tight">
+              <span className="block">Wellness</span> Ecosystem
+            </h4>
+            <p className="text-sm">
+              Connects with the Frost app to configure wellness program, from mindfulness
+              exercise to posture reminders, promoting holistic health.
+            </p>
+          </div>
+        </div>
+
+        {/* CTA Button */}
+        <div className="mt-10">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="bg-white text-[#0B1B3A] px-6 py-3 rounded-lg font-medium shadow-md hover:bg-gray-200 transition"
+          >
+            Secure Your Frost Device Now
+          </button>
+        </div>
+      </section>
+    </div>
           )}
           {activeTab === "faq" && (
             <section
