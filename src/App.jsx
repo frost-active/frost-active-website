@@ -40,7 +40,7 @@ import NoThanksPage from './pages/NoThanksPage';
 import EmailPopup from "./components/EmailPopup";
 import WhatsAppButton from './components/WhatsAppButton';
 
-
+import WaterIntakeCalculator from './pages/WaterCalculator';
 
 
 
@@ -51,8 +51,8 @@ function App() {
     <PageTracker />
     <ScrollToHash />
     <GoogleTranslate/>
-     {/* Email popup Triggers for 30 sec
-     <EmailPopup /> */}
+     {/* Email popup Triggers for 20 sec */}
+     <EmailPopup /> 
 
       <WhatsAppButton />
 
@@ -81,9 +81,11 @@ function App() {
             <Route path="/invest" element={<Investor />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
-            <Route path="/preorder" element={<PreOrderPage />} />
+            <Route path="/prelaunch" element={<PreOrderPage />} />
             <Route path="/reserve" element={<ReservePage />} />
             <Route path="/questions" element={<NoThanksPage />} />
+            <Route path="/waterintakecalculator" element={<WaterIntakeCalculator />} />
+           
           
 
         </Routes>

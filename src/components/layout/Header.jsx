@@ -7,16 +7,15 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 
 const navLinks = [
   { name: 'Features', url: '/', hash: '#features' },
-  // { name: 'Invest', path: '/invest', external: true },
 ];
 
 const aboutLinks = [
-  { name: 'Working', url: '/', hash: '#how-it-works' },
-  { name: 'Team', url: '/', hash: '#team' },
+ // { name: 'Working', url: '/', hash: '#how-it-works' },
+ // { name: 'Team', url: '/', hash: '#team' },
   { name: 'Technical Specification', url: '/', hash: '#technical' },
-  { name: 'Testimonials', url: '/', hash: '#testimonials' },
-  { name: 'Contact Us', url: '/', hash: '#try' },
-  { name: 'Pre-order', url: '/preorder' },
+  // { name: 'Testimonials', url: '/', hash: '#testimonials' },
+  { name: 'Contact Us', url: '/', hash: '#contact' },
+  { name: 'Invest', url: '/invest' },
 ];
 
 const Header = () => {
@@ -38,9 +37,9 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white  ">
+    <header className="fixed top-0 left-0 w-full z-50 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <a
             href="/"
@@ -57,66 +56,67 @@ const Header = () => {
           </a>
 
           {/* Desktop Navigation */}
-<div className="hidden md:flex flex-1 justify-center md:-ml-40">
-  <nav className="flex gap-10 items-center">
-    {navLinks.map((link) => (
-      <span
-        key={link.name}
-        onClick={() => handleNavClick(link.url, link.hash)}
-        className="text-sm  text-gray-800 hover:text-primary hover:underline cursor-pointer transition-all"
-      >
-        {link.name}
-      </span>
-    ))}
+          <div className="hidden md:flex flex-1 justify-center lg:-ml-[150px]">
+            <nav className="flex gap-10 items-center">
+              
+              {/* Pre-launch Button - Desktop (first) */}
+              <div
+                className="text-sm text-gray-800 hover:text-primary hover:underline cursor-pointer transition-all"
+              >
+                <a href="/reserve">Pre-launch</a>
+              </div>
 
-    {/* Pre order Button - Desktop */}
-   <div className="text-sm  text-gray-800 hover:text-primary hover:underline cursor-pointer transition-all">
-      <a href="/preorder">Pre-order</a>
-    </div>
-   
-    {/* Invest Button - Desktop */}
-    <div className="text-sm  text-gray-800 hover:text-primary hover:underline cursor-pointer transition-all">
-      <a href="/invest">Invest</a>
-    </div>
+              {/* Features */}
+              {navLinks.map((link) => (
+                <span
+                  key={link.name}
+                  onClick={() => handleNavClick(link.url, link.hash)}
+                  className="text-sm text-gray-800 hover:text-primary hover:underline cursor-pointer transition-all"
+                >
+                  {link.name}
+                </span>
+              ))}
 
+              {/* Water Intake Calculator Button - Desktop */}
+              <div className="text-sm text-gray-800 hover:text-primary hover:underline cursor-pointer transition-all">
+                <a href="/waterintakecalculator">Water Intake Calculator</a>
+              </div>
 
-    
+              {/* About Dropdown (Now includes Invest inside) */}
+              <div
+                className="relative group cursor-pointer"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="flex items-center gap-1 text-sm text-gray-800 hover:text-primary transition-all">
+                  About <ChevronDown className="w-4 h-4 mt-[1px]" />
+                </div>
 
-    {/* About Dropdown */}
-    <div
-      className="relative group cursor-pointer"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="flex items-center gap-1 text-sm  text-gray-800 hover:text-primary transition-all">
-        About <ChevronDown className="w-4 h-4 mt-[1px]" />
-      </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={isAboutOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  className={`absolute -left-12 mt-4 w-56 bg-white rounded-lg shadow-lg border border-gray-100 z-10 ${
+                    isAboutOpen ? 'pointer-events-auto' : 'pointer-events-none'
+                  }`}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {aboutLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      onClick={() => handleNavClick(link.url, link.hash)}
+                      className="block px-4 py-2 text-gray-700 hover:bg-primary/90 hover:text-black transition-all text-sm cursor-pointer"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </motion.div>
+              </div>
+            </nav>
+          </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={isAboutOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ duration: 0.25, ease: 'easeOut' }}
-        className={`absolute -left-12 mt-4 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-10 ${
-          isAboutOpen ? 'pointer-events-auto' : 'pointer-events-none'
-        }`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {aboutLinks.map((link) => (
-          <a
-            key={link.name}
-            onClick={() => handleNavClick(link.url, link.hash)}
-            className="block px-4 py-2 text-gray-700 hover:bg-primary/90 hover:text-black transition-all text-sm cursor-pointer"
-          >
-            {link.name}
-          </a>
-        ))}
-      </motion.div>
-    </div>
-  </nav>
-</div>
-
-          {/* Mobile Navigation */}
+          {/* Mobile Navigation  */}
           <div className="md:hidden flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -126,6 +126,31 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-white rounded-lg shadow-lg">
+                
+                {/* Pre-launch Button - Mobile (First Item) */} 
+                <DropdownMenuItem asChild>
+                  <div className="">
+                    <motion.div>
+                      <Button className="w-full text-white text-base">
+                        <a href="/reserve" className="w-full block text-center">
+                          Pre Launch
+                        </a>
+                      </Button>
+                    </motion.div>
+                  </div>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild>
+                  <div className="w-full px-4 py-2">
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <a href="/waterintakecalculator" className="w-full block text-center">
+                        Water Intake Calculator
+                      </a>
+                    </motion.div>
+                  </div>
+                </DropdownMenuItem>
+
+                {/* Other nav + about links */}
                 {[...navLinks, ...aboutLinks].map((link) => (
                   <DropdownMenuItem key={link.name} asChild>
                     <span
@@ -136,22 +161,17 @@ const Header = () => {
                     </span>
                   </DropdownMenuItem>
                 ))}
-                  
 
-                
-
-                {/* Invest Button - Mobile */}
+                {/* Invest Button - Mobile 
                 <DropdownMenuItem asChild>
                   <div className="w-full px-4 py-2">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button className="w-full bg-[#1F82D1] text-white rounded-md text-sm shadow-md">
-                        <a href="/invest" className="w-full block text-center">
-                          Invest
-                        </a>
-                      </Button>
+                      <a href="/invest" className="w-full block text-center">
+                        Invest
+                      </a>
                     </motion.div>
                   </div>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

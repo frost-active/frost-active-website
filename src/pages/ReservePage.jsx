@@ -115,7 +115,7 @@ const ReservePage = () => {
         <div className='lg:mt-16'>
         <button
           style={styles.reserveBtn}
-          onClick={() => window.open('https://rzp.io/rzp/frostaura', '_blank')}
+          onClick={() => window.open('https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=explore', '_blank')}
         >
           Reserve discount for $3
         </button>

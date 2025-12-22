@@ -1,0 +1,304 @@
+const Features = () => {
+  const IMAGES = [
+    "/images/feature6.png",
+    "/images/feature2.png",
+    "/images/feature4.png",
+    "/images/feature3.png",
+    "/images/feature5.png",
+    "/images/feature1.png",
+    "/images/feature7.png",
+    "/images/feature8.jpg",
+    "/images/feature9.png",
+  ];
+
+  const TITLES = [
+    "Healing Frequencies at 432Hz",
+    "Pomodoro Focus Cycles",
+    "Micro-Stretch & Posture Alerts",
+    "Breathing & Relaxation Prompts",
+    "Workout Reminders",
+    "Smart Hydration Cues",
+    "Manifestation Mantras & Affirmations",
+    "Frost App Sync",
+    "Frost Spirit – AI Wellness Guide",
+  ];
+
+  const TITLE_COLOR = [
+    "#6B676C",
+    "#636870",
+      "#4B4339",
+    "#5C6242",
+  
+    "#DEDDD9",
+     "#FFFFFF",
+    "#63645E",
+    "#000000",
+    "#E6DFD7",
+  ];
+
+  const TITLE_BG = [
+    "#F5F1EC",
+    "#D2DCE1",
+    "#E1E1E0",
+    "#BBB968",
+  
+    "#6B676C",
+    "#747E6E",
+    "#F0F2EB",
+    "#F7F7F7",
+    "#5C554C",
+  ];
+
+  const HOVER_TEXT = [
+    "Experience soothing soundscapes tuned to natural frequencies that harmonize body, mind, and subtle energy.",
+
+    "Stay productive without fatigue. Frost structures your work and rest with mindful light and tone sequences.",
+
+    "Subtle reminders to stretch, move, or correct posture—helping you beat the hidden dangers of long sitting.",
+
+    "Short guided breathing breaks that lower stress, restore focus, and bring calm back to your desk.",
+
+    "Frost Aura gently reminds you to move beyond your desk — whether it’s a short walk, a stretch session, or your scheduled workout. It syncs with your daily routine to encourage consistent physical activity and balanced energy flow.",
+
+    "Frost Aura learns your rhythm and reminds you to sip water on time through gentle light, sound, and text signals.",
+
+    "Play positive mantras and affirmations that energize your water and reinforce intention and focus.",
+
+    "Personalize hydration, Pomodoro cycles, light themes, and sound modes—all from the Frost mobile app.",
+
+    "A friendly digital guide that encourages healthy habits through responsive light, tone, and vibration cues.",
+  ];
+
+  const GAP = 24;
+  const LEFT_PADDING = 48;
+  const RIGHT_PADDING = 0;
+
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(1200);
+  const [cardsPerView, setCardsPerView] = useState(2.5);
+  const [cardWidth, setCardWidth] = useState(0);
+  const total = IMAGES.length;
+
+  const x = useMotionValue(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const href =
+      "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap";
+    if (!document.querySelector(`link[href='${href}']`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+  }, []);
+
+  // Responsive cards per view
+  useEffect(() => {
+    const calc = () => {
+      const w = containerRef.current
+        ? containerRef.current.clientWidth
+        : window.innerWidth;
+      setContainerWidth(w);
+      if (w >= 1200) setCardsPerView(3.3);
+      else if (w >= 768) setCardsPerView(2.3);
+      else setCardsPerView(1.2);
+    };
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, []);
+
+  // Calculate card width
+  useEffect(() => {
+    const effectiveContainerWidth = Math.max(
+      0,
+      containerWidth - LEFT_PADDING - RIGHT_PADDING
+    );
+    setCardWidth(effectiveContainerWidth / Math.max(0.0001, cardsPerView));
+  }, [containerWidth, cardsPerView]);
+
+  const clampIndex = (i) => {
+    const max = Math.max(0, total - Math.floor(cardsPerView));
+    return Math.min(Math.max(0, i), max);
+  };
+
+  const computeBounds = () => {
+    const visible = Math.max(0, containerWidth - LEFT_PADDING - RIGHT_PADDING);
+    const trackWidth = total * (cardWidth + GAP);
+    const minX = Math.min(0, visible - trackWidth);
+    const maxX = 0;
+    return { minX, maxX, visible, trackWidth };
+  };
+
+  // Sync index with motion
+  useEffect(() => {
+    const unsub = x.onChange((val) => {
+      if (!cardWidth) return;
+      const approxIndex = Math.round(-val / (cardWidth + GAP));
+      setCurrentIndex(clampIndex(approxIndex));
+    });
+    return () => unsub();
+  }, [cardWidth, GAP, total, cardsPerView]);
+
+  // Desktop arrow controls
+  const goToIndex = (i) => {
+    if (!cardWidth) return;
+    const { minX, maxX } = computeBounds();
+    const step = cardWidth + GAP;
+    const target = Math.max(minX, Math.min(maxX, -i * step));
+    animate(x, target, {
+      type: "spring",
+      stiffness: 260,
+      damping: 30,
+      mass: 0.5,
+    });
+    setCurrentIndex(clampIndex(i));
+  };
+  const goRight = () => goToIndex(clampIndex(currentIndex + 1));
+  const goLeft = () => goToIndex(clampIndex(currentIndex - 1));
+
+  /* ---------------- MOBILE SWIPE LOGIC ---------------- */
+  useEffect(() => {
+    if (window.innerWidth >= 768) return; // only for mobile
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    let startX = 0;
+    let currentX = 0;
+    let prevX = x.get();
+    let isDragging = false;
+
+    const { minX, maxX } = computeBounds();
+
+    const onTouchStart = (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      prevX = x.get();
+    };
+
+    const onTouchMove = (e) => {
+      if (!isDragging) return;
+      const dx = e.touches[0].clientX - startX;
+      x.set(Math.max(minX - 50, Math.min(maxX + 50, prevX + dx)));
+    };
+
+    const onTouchEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const step = cardWidth + GAP;
+      const targetIndex = Math.round(-x.get() / step);
+      const snapped = Math.max(minX, Math.min(maxX, -targetIndex * step));
+      animate(x, snapped, {
+        type: "spring",
+        stiffness: 200,
+        damping: 30,
+      });
+    };
+
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: true });
+    container.addEventListener("touchend", onTouchEnd);
+
+    return () => {
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchmove", onTouchMove);
+      container.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [cardWidth, GAP]);
+
+  return (
+    <section
+      id="features"
+      className="w-full px-6 md:px-12 lg:px-10 py-8 bg-[#F5F5F7]"
+      style={{ fontFamily: "Roboto, sans-serif" }}
+    >
+      <div className="max-w-6xl mx-auto mb-6">
+        <h2 className="text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
+        Features{" "}
+          <span className="font-bold text-[#389ED7]">
+           that keep you hydrated and productive
+          </span>
+        </h2>
+      </div>
+
+      <div className="relative lg:ml-10 lg:mr-0 mr-14">
+        {currentIndex > 0 && (
+          <button
+            onClick={goLeft}
+            className="hidden md:flex absolute lg:-left-[75px] -left-8 top-1/2 -translate-y-1/2 z-20 
+              items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        )}
+
+        <button
+          onClick={goRight}
+          disabled={currentIndex >= total - Math.floor(cardsPerView)}
+          className="hidden md:flex absolute lg:-right-10 -right-5 top-1/2 -translate-y-1/2 z-20 
+            items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-40"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Track */}
+        <div
+          ref={containerRef}
+          className="w-screen -ml-[calc((100vw-100%)/2)] overflow-hidden rounded-lg select-none"
+          style={{ paddingTop: 0, paddingBottom: 8 }}
+        >
+          <div style={{ paddingLeft: LEFT_PADDING }}>
+            <motion.div
+              className="flex items-stretch"
+              style={{
+                x,
+                width: total * (cardWidth + GAP),
+                gap: GAP,
+              }}
+            >
+              {IMAGES.map((src, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 rounded-3xl overflow-hidden shadow-md bg-white"
+                  style={{ width: cardWidth, minWidth: cardWidth }}
+                >
+                  <div
+                    className="px-4 py-6 font-semibold text-lg md:text-xl text-center rounded-t-lg"
+                    style={{ background: TITLE_BG[i], color: TITLE_COLOR[i] }}
+                  >
+                    {TITLES[i]}
+                  </div>
+                  <div className="relative h-80 md:h-72 lg:h-[366px] group">
+                    <img
+                      src={src}
+                      alt={TITLES[i]}
+                      className="object-fill w-full lg:h-full h-[350px]"
+                      draggable={false}
+                    />
+                    <div
+                      className="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 
+                        transition-opacity flex items-center justify-center p-6 text-white 
+                        text-sm leading-relaxed text-center"
+                    >
+                      <div>
+                        {HOVER_TEXT[i].split("\n").map((line, idx) => (
+                          <p key={idx}>{line}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

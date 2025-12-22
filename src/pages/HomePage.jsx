@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react"; 
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { motion, AnimatePresence, useAnimation,  useMotionValue, animate } from "framer-motion";
 import { Button } from '@/components/ui/button';
 import { ArrowUpRight, ChevronDown, Bookmark, BookmarkCheck, Menu, ChevronLeft, ChevronRight, Pill, Clock, Brain, Dumbbell, Footprints, CheckCircle, Droplet, Bell, Coffee, HeartPulse, Users, Thermometer, BarChart, Zap, Settings, Smartphone, ArrowRight, Linkedin, Instagram, Twitter, Mail, Phone, MapPin, MessageCircle, Send } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -29,10 +29,1544 @@ import path from 'path';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { Autoplay, Pagination } from "swiper/modules";
+
+
+
+//NEW HOME PAGE BANNER DECEMBER
+const HomeBanner2 = () => {
+  const textColor = "#5B869D";
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbyXWe1qfAIiQWK9C1NRIKF3LbW_izrXivtcZoAIKa9g_-geUFAWIfq5dinc8ialkXM/exec";
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[A-Za-z.]{2,}$/;
+    if (!regex.test(email)) return false;
+
+    const validTLDs = new Set([
+      "com","org","net","info","biz","xyz","dev","app","pro","me","name",
+      "online","site","tech","store","ai","io","cloud","digital","media",
+      "in","us","uk","ca","au","nz","de","fr","jp","sg","ae","sa","pk","lk",
+      "bd","cn","es","it","nl",
+      "co.in","org.in","net.in","ac.in","gov.in","nic.in",
+      "co.uk","org.uk","ac.uk",
+      "co.za","co.jp","com.au","com.sg","com.pk"
+    ]);
+
+    const parts = email.toLowerCase().split("@")[1].split(".");
+    const tld1 = parts[parts.length - 1];
+    const tld2 = parts.length >= 2 ? parts.slice(-2).join(".") : null;
+
+    return validTLDs.has(tld1) || (tld2 && validTLDs.has(tld2));
+  };
+
+  const handleSubscribe = async () => {
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `email=${encodeURIComponent(email)}`,
+      }).catch(() => {});
+
+      const CHEERIO_API_KEY =
+        "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
+
+      await fetch(
+        "https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": CHEERIO_API_KEY,
+          },
+          body: JSON.stringify({
+            email,
+            workflowId: "691d8bd1024212623f2b31b8",
+          }),
+        }
+      );
+
+      setSuccess(true);
+      setEmail("");
+
+      setTimeout(() => navigate("/reserve"), 1500);
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <section
+      style={{
+        width: "100%",
+        background: "#F7FBFD",
+        fontFamily: "Inter, sans-serif",
+        padding: "60px 40px 0",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* TOP CONTENT */}
+      <div
+        className="homeBannerTop"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          maxWidth: "1400px",
+          margin: "auto",
+          gap: "80px",
+          flexWrap: "wrap",
+        }}
+      >
+        {/* LEFT IMAGE */}
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <img
+            src="/images/hb1.png"
+            alt="Aura Device"
+            style={{
+              width: "760px",
+              maxWidth: "100%",
+              display: "block",
+              margin: "0 auto",
+            }}
+          />
+        </div>
+
+        {/* RIGHT CONTENT */}
+        <div
+          className="lg:-mt-[150px] -mt-[120px]"
+          style={{
+            flex: 1,
+            maxWidth: "460px",
+            color: textColor,
+            marginLeft: "auto",
+            textAlign: "right",
+          }}
+        >
+          <h1
+            className="auraTitle"
+            style={{
+              fontFamily: "Anton, sans-serif",
+              fontSize: "90px",
+              letterSpacing: "6px",
+              margin: "0 0 -14px 0",
+            }}
+          >
+            FROST AURA
+          </h1>
+
+          <div
+            className="pill"
+            style={{
+              background: textColor,
+              color: "#fff",
+              display: "inline-block",
+              padding: "10px 36px",
+              borderRadius: "38px",
+              fontSize: "20px",
+              letterSpacing: "1px",
+              marginBottom: "40px",
+              marginRight: "60px",
+            }}
+          >
+            FOCUS || CALM || FLOW
+          </div>
+
+          <h2
+            className="prelaunchTitle"
+            style={{
+              fontFamily: "Anton, sans-serif",
+              fontSize: "40px",
+              margin: "0 0 24px 0",
+              letterSpacing: "4px",
+              marginRight: "115px",
+            }}
+          >
+            PRE-LAUNCH
+          </h2>
+
+          <p
+            className="lg:-mt-6 -mt-4 text-justify"
+            style={{
+              fontSize: "17px",
+              lineHeight: "1.4",
+              marginBottom: "36px",
+            }}
+          >
+            We remind you to drink healed water, breathe, stretch, and move.
+            Rest your eyes and mind, feel relaxed, and stay productive with
+            smart Pomodoro breaks.
+          </p>
+
+          {/* EMAIL + BUTTON */}
+          <div className="lg:-mt-4" style={{ width: "100%" }}>
+            <input
+              type="email"
+              placeholder="Your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "10px",
+                border: `2px solid ${textColor}`,
+                fontSize: "16px",
+                marginBottom: "12px",
+                boxSizing: "border-box",
+                textAlign: "center",
+              }}
+            />
+
+            <button
+              onClick={handleSubscribe}
+              disabled={loading}
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "10px",
+                background: textColor,
+                color: "#fff",
+                border: "none",
+                fontSize: "18px",
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.7 : 1,
+              }}
+            >
+              {loading ? "Subscribing..." : "Subscribe"}
+            </button>
+
+            {error && (
+              <p 
+              
+              style={{ color: "red", marginTop: "10px", fontSize: "14px" }}>
+                {error}
+              </p>
+            )}
+
+            {success && (
+              <p style={{ marginTop: "10px", color: "#021637", fontWeight: 600 }}>
+                ✅ Thanks for subscribing. Please check your inbox for updates.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* BOTTOM FEATURES BAR */}
+      <div
+        className="lg:-mt-24 mt-6 w-screen -ml-[calc((100vw-100%)/2)]"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          background: textColor,
+          color: "#fff",
+        }}
+      >
+        {[
+          { value: "10+", label: "Features" },
+          { value: "10+", label: "Customizable Reminders" },
+          { value: "432Hz", label: "Water Healing" },
+          { value: "360°", label: "Daily Wellness" },
+        ].map((item, index) => (
+          <div
+            key={index}
+            className="featureItem"
+            style={{
+              padding: "30px 20px",
+              textAlign: "center",
+              fontSize: "20px",
+              borderRight:
+                index !== 3 ? "2px solid rgba(255,255,255,0.25)" : "none",
+            }}
+          >
+            <div style={{ fontSize: "28px", fontWeight: "600" }}>
+              {item.value}
+            </div>
+            {item.label}
+          </div>
+        ))}
+      </div>
+
+      {/* MOBILE STYLES */}
+      <style>{`
+        @media (max-width: 768px) {
+          .homeBannerTop {
+            flex-direction: column !important;
+            text-align: center;
+          }
+
+          .homeBannerTop > div {
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            text-align: center !important;
+          }
+
+          .auraTitle {
+            font-size: 56px !important;
+            letter-spacing: 3px !important;
+            white-space: nowrap;
+            text-align: center !important;
+          }
+
+          .prelaunchTitle {
+            margin-right: 0 !important;
+            text-align: center !important;
+          }
+
+          .pill {
+            margin-right: 0 !important;
+          }
+
+          .featureItem {
+            border-right: none !important;
+            border-bottom: 2px solid rgba(255,255,255,0.25);
+          }
+
+          .featureItem:last-child {
+            border-bottom: none;
+          }
+        }
+      `}</style>
+    </section>
+  );
+};
+
+
+
+//new home banner NOVEMBER
+const HomeBanner = () => {
+  const banners = [
+    {
+      bgColor: "#99B9C5",
+      circleColor: "#86ABBE",
+      productSrc: "/images/device.png",
+    },
+    {
+      bgColor: "#B2815C",
+      circleColor: "#845B3C",
+      productSrc: "/images/device2.png",
+    },
+    {
+      bgColor: "#45423F",
+      circleColor: "#1F1E1D",
+      productSrc: "/images/device3.png",
+    },
+  ];
+
+  const [current, setCurrent] = useState(0);
+
+  const handleNext = () => setCurrent((prev) => (prev + 1) % banners.length);
+  const handlePrev = () =>
+    setCurrent((prev) => (prev - 1 + banners.length) % banners.length);
+
+  const { bgColor, circleColor, productSrc } = banners[current];
+
+  return (
+    <section
+      className="home-banner"
+      style={{
+        backgroundColor: bgColor,
+        transition: "background 0.6s ease-in-out",
+      }}
+    >
+      {/* LEFT CONTENT */}
+      <div className="hb-left mt-16 md:ml-14">
+        {/* ✅ BRAND TEXT (Anton only for FROST) */}
+        <h1 className="hb-brand">
+          <span className="frost-text">AURA</span>{" "}
+          {/* <span className="aura-text">AURA</span> */}
+        </h1>
+
+        <div className="hb-pill">
+          <span>FOCUS | CALM | FLOW</span>
+        </div>
+
+        <div className="hb-text">
+          <h2>Your desk’s smart wellness dock</h2>
+          <p>
+            Frost Aura nudges you to hydrate, breathe & move.
+            <br />
+            Breaking long sitting with intelligent display & sound cues.
+          </p>
+        </div>
+      </div>
+
+      {/* PRODUCT IMAGE */}
+      <div className="hb-product">
+        <img src={productSrc} alt="Frost device" />
+      </div>
+
+      {/* CTA + NAV */}
+      <div className="md:mt-0 -mt-8">
+        <button className="hb-cta">
+          <a href="/prelaunch">PRE LAUNCH</a>
+        </button>
+
+        <button
+          className="hb-nav hb-nav-left"
+          onClick={handlePrev}
+          aria-label="prev"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="26"
+            height="26"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <button
+          className="hb-nav hb-nav-right"
+          onClick={handleNext}
+          aria-label="next"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="26"
+            height="26"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* ---------- STYLES ---------- */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+        .home-banner {
+          position: relative;
+          overflow: hidden;
+          min-height: 580px;
+          padding: 56px 48px 120px 92px;
+          box-sizing: border-box;
+          font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+          color: white;
+          display: flex;
+          align-items: flex-start;
+        }
+
+        /* BACKGROUND CIRCLE */
+        .home-banner::before {
+          content: "";
+          position: absolute;
+          right: 30px;
+          top: -240px;
+          width: 1200px;
+          height: 1050px;
+          border-radius: 50%;
+          background: ${circleColor};
+          z-index: 1;
+          transition: background 0.6s ease-in-out;
+        }
+
+        .hb-left {
+          position: relative;
+          z-index: 4;
+          width: 48%;
+          max-width: 620px;
+        }
+
+        .hb-brand {
+          margin: 0;
+          font-size: 120px;
+          line-height: 0.78;
+          font-weight: 900;
+          letter-spacing: 20px;
+          text-transform: uppercase;
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+        }
+
+        .hb-brand .frost-text {
+          font-family: 'Anton', sans-serif;
+          font-weight: 400;
+        }
+
+        .hb-brand .aura-text {
+          font-size: 75px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          opacity: 0.9;
+          margin-left: -26px;
+          transform: translateY(-16px);
+        }
+
+        .hb-pill {
+          display: inline-block;
+          margin-left: -20px;
+          margin-top: -55px;
+          margin-bottom: 28px;
+          padding: 40px 23px;
+          border-radius: 56px;
+          background: rgba(255,255,255,0.08);
+          box-shadow: inset 0 -2px rgba(0,0,0,0.03);
+          position: relative;
+          white-space: nowrap;
+        }
+
+        .hb-pill span {
+          font-size: 21px;
+          font-weight: 600;
+          letter-spacing: 3px;
+          color: rgba(255,255,255,0.95);
+          position: relative;
+          top: 20px;
+          right: 0px;
+          display: inline-block;
+          text-align: center;
+        }
+
+        .hb-text h2 {
+          margin: 0 0 12px 0;
+          font-size: 28px;
+          font-weight: 700;
+          line-height: 1.12;
+          color: rgba(255,255,255,0.96);
+        }
+
+        .hb-text p {
+          margin: 0;
+          font-size: 16px;
+          color: rgba(255,255,255,0.88);
+          max-width: 520px;
+          line-height: 1.6;
+        }
+
+        .hb-product {
+          position: absolute;
+          right: -50px;
+          top: 18px;
+          z-index: 6;
+          pointer-events: none;
+        }
+
+        .hb-product img {
+          display: block;
+          width: 800px;
+          max-width: 68vw;
+          height: auto;
+          transform: translateY(60px);
+          filter: drop-shadow(0 36px 44px rgba(0,0,0,0.45));
+          transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+        }
+
+        .hb-cta {
+          position: absolute;
+          left: 9%;
+          transform: translateX(20%);
+          bottom: 80px;
+          z-index: 7;
+          background: rgba(255,255,255,0.18);
+          color: white;
+          padding: 14px 16px;
+          border-radius: 10px;
+          border: 2px solid rgba(255,255,255,0.12);
+          font-weight: 700;
+          letter-spacing: 1px;
+          transition: background 0.2s ease;
+        }
+
+        .hb-cta:hover { background: rgba(255,255,255,0.28); }
+
+        .hb-nav {
+          position: absolute;
+          bottom: 36px;
+          width: 66px;
+          height: 66px;
+          border-radius: 50%;
+          border: 2px solid rgba(255,255,255,0.35);
+          background: rgba(255,255,255,0.08);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 7;
+          cursor: pointer;
+          transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .hb-nav:hover {
+          background: rgba(255,255,255,0.15);
+          border-color: rgba(255,255,255,0.5);
+        }
+
+        .hb-nav-left { left: 28px; }
+        .hb-nav-right { right: 28px; }
+
+        /* ✅ MOBILE RESPONSIVE (unchanged) */
+        @media (max-width: 960px) {
+          .home-banner {
+            flex-direction: column;
+            padding: 40px 20px 140px 20px;
+            align-items: center;
+            text-align: center;
+          }
+          .hb-left { width: 100%; max-width: 760px; z-index: 6; }
+          .hb-brand { font-size: 88px; letter-spacing: 6px; line-height: 0.9; }
+          .hb-brand .aura-text { font-size: 52px; transform: translateY(6px); }
+          .hb-pill { margin: 10px auto 24px; }
+          .hb-text h2 { font-size: 22px; }
+          .hb-text p { font-size: 15px; margin: 0 auto; max-width: 88%; }
+          .hb-product { position: relative; right: 0; top: 18px; margin-top: 6px; width: 100%; display: flex; justify-content: center; }
+          .hb-product img { width: 72%; max-width: 420px; transform: none; }
+        }
+
+        @media (max-width: 768px) {
+          .hb-pill { margin-top: -35px; padding: 24px 20px; border-radius: 40px; }
+          .hb-pill span {
+            font-size: 12px;
+            top: 10px;
+            right: 0;
+            letter-spacing: 2px;
+          }
+          .hb-cta { left: 50%; transform: translateX(-50%); bottom: 24px; }
+        }
+
+        @media (max-width: 420px) {
+        .hb-brand .frost-text {font-size: 100px;  margin-left: 7px;}
+          .hb-brand { margin-left: 80px; font-size: 56px; letter-spacing: 3px; }
+          .hb-brand .aura-text { font-size: 28px; margin-left: -10px; transform: translateY(-10px); }
+          .hb-pill span { font-size: 15px; }
+          .hb-text h2 { font-size: 18px; }
+          .hb-text p { font-size: 14px; }
+          .hb-product img { width: 86%; max-width: 320px; }          
+        }
+
+        /* ✅ MAC-ONLY FIXES */
+        @supports (-webkit-touch-callout: none) {
+          .hb-brand { transform: translateY(-4px); }
+          .home-banner::before { top: -210px; }
+          .hb-product img { transform: translateY(48px); }
+          .hb-pill span { top: 18px; }
+        }
+      `}</style>
+    </section>
+  );
+};
+
+
+
+// New FEATURES SECTION NOVEMBER
+const Features = () => {
+  const IMAGES = [
+    "/images/feature6.png",
+    "/images/feature2.png",
+    "/images/feature4.png",
+    "/images/feature3.png",
+    "/images/feature5.png",
+    "/images/feature1.png",
+    "/images/feature7.png",
+    "/images/feature8.jpg",
+    "/images/feature9.png",
+  ];
+
+  const TITLES = [
+    "Healing Frequencies at 432Hz",
+    "Pomodoro Focus Cycles",
+    "Micro-Stretch & Posture Alerts",
+    "Breathing & Relaxation Prompts",
+    "Workout Reminders",
+    "Smart Hydration Cues",
+    "Manifestation Mantras & Affirmations",
+    "Frost App Sync",
+    "Frost Spirit – AI Wellness Guide",
+  ];
+
+  const TITLE_COLOR = [
+    "#6B676C",
+    "#636870",
+    "#4B4339",
+    "#5C6242",
+    "#DEDDD9",
+    "#FFFFFF",
+    "#63645E",
+    "#000000",
+    "#E6DFD7",
+  ];
+
+  const TITLE_BG = [
+    "#F5F1EC",
+    "#D2DCE1",
+    "#E1E1E0",
+    "#BBB968",
+    "#6B676C",
+    "#747E6E",
+    "#F0F2EB",
+    "#F7F7F7",
+    "#5C554C",
+  ];
+
+  const HOVER_TEXT = [
+    "Experience soothing soundscapes tuned to natural frequencies that harmonize body, mind, and subtle energy.",
+    "Stay productive without fatigue. Frost structures your work and rest with mindful light and tone sequences.",
+    "Subtle reminders to stretch, move, or correct posture—helping you beat the hidden dangers of long sitting.",
+    "Short guided breathing breaks that lower stress, restore focus, and bring calm back to your desk.",
+    "Frost Aura gently reminds you to move beyond your desk — whether it’s a short walk, a stretch session, or your scheduled workout. It syncs with your daily routine to encourage consistent physical activity and balanced energy flow.",
+    "Frost Aura learns your rhythm and reminds you to sip water on time through gentle light, sound, and text signals.",
+    "Play positive mantras and affirmations that energize your water and reinforce intention and focus.",
+    "Personalize hydration, Pomodoro cycles, light themes, and sound modes—all from the Frost mobile app.",
+    "A friendly digital guide that encourages healthy habits through responsive light, tone, and vibration cues.",
+  ];
+
+  const GAP = 24;
+  const LEFT_PADDING = 48;
+  const RIGHT_PADDING = 0;
+
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(1200);
+  const [cardsPerView, setCardsPerView] = useState(2.5);
+  const [cardWidth, setCardWidth] = useState(0);
+  const total = IMAGES.length;
+
+  const x = useMotionValue(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const href =
+      "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap";
+    if (!document.querySelector(`link[href='${href}']`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+  }, []);
+
+  // Responsive cards per view
+  useEffect(() => {
+    const calc = () => {
+      const w = containerRef.current
+        ? containerRef.current.clientWidth
+        : window.innerWidth;
+      setContainerWidth(w);
+      if (w >= 1200) setCardsPerView(3.3);
+      else if (w >= 768) setCardsPerView(2.3);
+      else setCardsPerView(1.2); // mobile
+    };
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, []);
+
+  // Calculate card width
+  useEffect(() => {
+    const effectiveContainerWidth = Math.max(
+      0,
+      containerWidth - LEFT_PADDING - RIGHT_PADDING
+    );
+    setCardWidth(effectiveContainerWidth / Math.max(0.0001, cardsPerView));
+  }, [containerWidth, cardsPerView]);
+
+  const clampIndex = (i) => {
+    const max = Math.max(0, total - Math.floor(cardsPerView));
+    return Math.min(Math.max(0, i), max);
+  };
+
+  const computeBounds = () => {
+    const visible = Math.max(0, containerWidth - LEFT_PADDING - RIGHT_PADDING);
+    const trackWidth = total * (cardWidth + GAP);
+    const minX = Math.min(0, visible - trackWidth);
+    const maxX = 0;
+    return { minX, maxX, visible, trackWidth };
+  };
+
+  // Sync index with motion
+  useEffect(() => {
+    const unsub = x.onChange((val) => {
+      if (!cardWidth) return;
+      const approxIndex = Math.round(-val / (cardWidth + GAP));
+      setCurrentIndex(clampIndex(approxIndex));
+    });
+    return () => unsub();
+  }, [cardWidth, GAP, total, cardsPerView]);
+
+  // Desktop arrow controls
+  const goToIndex = (i) => {
+    if (!cardWidth) return;
+    const { minX, maxX } = computeBounds();
+    const step = cardWidth + GAP;
+    const target = Math.max(minX, Math.min(maxX, -i * step));
+    animate(x, target, {
+      type: "spring",
+      stiffness: 260,
+      damping: 30,
+      mass: 0.5,
+    });
+    setCurrentIndex(clampIndex(i));
+  };
+  const goRight = () => goToIndex(clampIndex(currentIndex + 1));
+  const goLeft = () => goToIndex(clampIndex(currentIndex - 1));
+
+
+  return (
+    <section
+      id="features"
+      className="w-full px-6 md:px-12 lg:px-10 py-8 bg-[#F5F5F7]"
+      style={{ fontFamily: "Roboto, sans-serif" }}
+    >
+      <div className="max-w-6xl mx-auto mb-6">
+        <h2 className="text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
+          Features{" "}
+          <span className="font-bold text-[#389ED7]">
+            that keep you hydrated and productive
+          </span>
+        </h2>
+      </div>
+
+      <div className="relative lg:ml-10 lg:mr-0 mr-14">
+        {currentIndex > 0 && (
+          <button
+            onClick={goLeft}
+            className="hidden md:flex absolute lg:-left-[75px] -left-8 top-1/2 -translate-y-1/2 z-20 
+              items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        )}
+
+        <button
+          onClick={goRight}
+          disabled={currentIndex >= total - Math.floor(cardsPerView)}
+          className="hidden md:flex absolute lg:-right-10 -right-5 top-1/2 -translate-y-1/2 z-20 
+            items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-40"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Track */}
+        <div
+          ref={containerRef}
+          className="
+            w-screen -ml-[calc((100vw-100%)/2)]
+            rounded-lg
+            select-none
+            overflow-x-auto md:overflow-hidden
+            scrollbar-hide
+          "
+          style={{
+            paddingTop: 0,
+            paddingBottom: 8,
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          <div style={{ paddingLeft: LEFT_PADDING }}>
+            <motion.div
+              className="flex items-stretch"
+              style={{
+                x,
+                width: total * (cardWidth + GAP),
+                gap: GAP,
+              }}
+            >
+              {IMAGES.map((src, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 rounded-3xl overflow-hidden shadow-md bg-white"
+                  style={{ width: cardWidth, minWidth: cardWidth }}
+                >
+                  <div
+                    className="px-4 py-6 font-semibold text-lg md:text-xl text-center rounded-t-lg"
+                    style={{ background: TITLE_BG[i], color: TITLE_COLOR[i] }}
+                  >
+                    {TITLES[i]}
+                  </div>
+                  <div className="relative h-80 md:h-72 lg:h-[366px] group">
+                    <img
+                      src={src}
+                      alt={TITLES[i]}
+                      className="object-fill w-full lg:h-full h-[350px]"
+                      draggable={false}
+                    />
+                    <div
+                      className="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 
+                        transition-opacity flex items-center justify-center p-6 text-white 
+                        text-xl text-semibold leading-relaxed text-center"
+                    >
+                      <div>
+                        {HOVER_TEXT[i].split("\n").map((line, idx) => (
+                          <p key={idx}>{line}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+
+// New REMINDER SECTION
+const Reminder = () => {
+  const cardsPerView = 5;
+  const scrollRef = useRef(null);
+
+  const reminders = [
+    {
+      title: "Drink Water",
+      img: ["/images/rem1b.svg", "/images/rem1c.svg"],
+      desc: "Get personalized nudges to drink water throughout your day, no more guesswork, just natural hydration.",
+    },
+    {
+      title: "Clean Bottle",
+      img: ["/images/rem2.svg", "/images/rem2b.svg"],
+      desc: "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it, keeping bacteria at bay.",
+    },
+    {
+      title: "Place Bottle",
+      img: ["/images/rem3.svg"],
+      desc: "Left your bottle behind? FROST gently notifies you to place it back on the dock so your tracking never skips a beat.",
+    },
+    {
+      title: "Water Healing",
+      img: ["/images/rem4.svg"],
+      desc: "FROST Aura turns hydration into a mindful ritual, infusing water with healing frequencies and mantras to harmonize energy and wellbeing.",
+    },
+    {
+      title: "Pomodoro",
+      img: ["/images/rem5.svg"],
+      desc: "Work in deep focus cycles with built-in Pomodoro timers, paired with hydration cues to keep your energy flowing.",
+    },
+    {
+      title: "Take Medicines",
+      img: ["/images/rem6.svg"],
+      desc: "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
+    },
+    {
+      title: "Meditation",
+      img: ["/images/rem7.svg"],
+      desc: "Activate focused modes for your practice — FROST emits healing vibrations (like 432 Hz) to harmonize body and mind.",
+    },
+    {
+      title: "Take Break",
+      img: ["/images/rem8.svg"],
+      desc: "Protect your focus with short, intentional breaks. Stretch, blink, breathe — let FROST cue your brain to reset.",
+    },
+  ];
+
+  const total = reminders.length;
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoverIndex, setHoverIndex] = useState(null);
+  const [hoveredFullyExpanded, setHoveredFullyExpanded] = useState(null);
+
+  const [mobileExpand, setMobileExpand] = useState(null);
+
+  const goLeft = () => {
+    const newIndex = Math.max(currentIndex - 1, 0);
+    setCurrentIndex(newIndex);
+    const width = scrollRef.current.clientWidth / cardsPerView;
+    scrollRef.current.scrollTo({ left: newIndex * width, behavior: "smooth" });
+  };
+
+  const goRight = () => {
+    const newIndex = Math.min(currentIndex + 1, total - cardsPerView);
+    setCurrentIndex(newIndex);
+    const width = scrollRef.current.clientWidth / cardsPerView;
+    scrollRef.current.scrollTo({ left: newIndex * width, behavior: "smooth" });
+  };
+
+  const getExpandedWidth = (title) => {
+    if (title === "Drink Water") return "w-[560px]";
+    if (title === "Clean Bottle") return "w-[580px]";
+    return "w-[400px]";
+  };
+
+  const getGridShift = () => {
+    if (hoverIndex === total - 1) return "-translate-x-[180px]";
+    return "translate-x-0";
+  };
+
+  React.useEffect(() => {
+    if (hoverIndex !== null) {
+      setHoveredFullyExpanded(null);
+      const timer = setTimeout(() => {
+        setHoveredFullyExpanded(hoverIndex);
+      }, 400);
+      return () => clearTimeout(timer);
+    } else {
+      setHoveredFullyExpanded(null);
+    }
+  }, [hoverIndex]);
+
+  return (
+    <div className="w-full relative flex justify-center font-['Roboto']">
+      <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-12 lg:px-14 py-8 relative">
+        <h2 className="text-[#021637] text-[22px] sm:text-[26px] md:text-[28px] lg:text-[32px] font-bold mb-8">
+          Display Reminders <span className="text-[#389ED7]">that you can customize</span>
+        </h2>
+
+        {/* LEFT BUTTON */}
+        {currentIndex > 0 && (
+          <button
+            onClick={goLeft}
+            className="hidden md:flex absolute lg:left-4 -left-10 bottom-28 -translate-y-1/2 z-50
+            w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300
+            items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        )}
+
+        {/* RIGHT BUTTON */}
+        {currentIndex < total - cardsPerView && (
+          <button
+            onClick={goRight}
+            className="hidden md:flex absolute lg:right-4 -right-10 bottom-28 -translate-y-1/2 z-50
+            w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300
+            items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
+
+        {/* ---------------------------- MOBILE ---------------------------- */}
+        <div className="md:hidden w-full overflow-x-auto flex gap-3 pb-10 no-scrollbar snap-x snap-mandatory">
+          {reminders.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center w-[80%] flex-shrink-0 snap-start"
+            >
+              <div
+                onClick={() => setMobileExpand(mobileExpand === index ? null : index)}
+                className="
+                  bg-white shadow-lg rounded-2xl p-4 w-full flex-shrink-0
+                  transition-all duration-300 relative"
+              >
+                {mobileExpand !== index && (
+                  <div className="flex justify-center items-center py-6">
+                    <img
+                      src={item.img[0]}
+                      className="w-40 h-40 object-contain"
+                    />
+                  </div>
+                )}
+
+                {mobileExpand === index && (
+                  <div className="mt-4">
+                    {(() => {
+                      switch (item.title) {
+                        case "Drink Water":
+                          return (
+                            <div className="flex justify-center items-center h-32 mb-4 relative">
+                              {item.img.map((src, i) => (
+                                <img
+                                  key={i}
+                                  src={src}
+                                  className={`
+                                    w-28 h-28 object-contain absolute
+                                    ${i === 0 ? "left-[35%] -translate-x-1/2 z-30" : ""}
+                                    ${i === 1 ? "left-[43%] z-20" : ""}
+                                    ${i === 2 ? "left-[60%] z-10" : ""}
+                                  `}
+                                />
+                              ))}
+                            </div>
+                          );
+
+                        case "Clean Bottle":
+                          return (
+                            <div className="flex justify-center items-center h-32 mb-4 relative">
+                              {item.img.map((src, i) => (
+                                <img
+                                  key={i}
+                                  src={src}
+                                  className={`
+                                    w-28 h-28 object-contain absolute
+                                    ${i === 0 ? "left-[40%] -translate-x-1/2 z-30" : ""}
+                                    ${i === 1 ? "left-[50%] z-20" : ""}
+                                  `}
+                                />
+                              ))}
+                            </div>
+                          );
+
+                        default:
+                          return (
+                            <div className="flex justify-center items-center h-28 mb-4 relative">
+                              {item.img.map((src, i) => (
+                                <img
+                                  key={i}
+                                  src={src}
+                                  className={`
+                                    w-28 h-28 object-contain absolute
+                                    ${i === 0 ? "left-1/2 -translate-x-1/2 z-30" : ""}
+                                    ${i === 1 ? "left-[58%] z-20" : ""}
+                                    ${i === 2 ? "left-[68%] z-10" : ""}
+                                  `}
+                                />
+                              ))}
+                            </div>
+                          );
+                      }
+                    })()}
+
+                    <p className="text-gray-600 text-[14px] leading-[20px] text-center px-1">
+                      {item.desc}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <p className="text-[18px] font-bold text-[#389ED7] mt-3 text-center">
+                {item.title}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* ---------------------------- DESKTOP ---------------------------- */}
+        <div
+          ref={scrollRef}
+          className="hidden md:block w-screen -ml-[calc((100vw-100%)/2)] overflow-hidden pl-6 md:pl-16"
+        >
+          <div
+            className={`grid grid-flow-col auto-cols-max gap-6 md:gap-8 transition-all duration-500 ${getGridShift()}`}
+          >
+            {reminders.map((item, index) => (
+              <div
+                key={index}
+                className={`
+                  relative flex flex-col items-center transition-all duration-500
+                  ${hoverIndex === index ? getExpandedWidth(item.title) : "w-[220px]"}
+                `}
+                onMouseEnter={() => setHoverIndex(index)}
+                onMouseLeave={() => setHoverIndex(null)}
+              >
+                <div
+                  className={`
+                    rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.12)] bg-white overflow-visible
+                    transition-all duration-500 h-44 lg:h-48 w-full
+                    ${hoverIndex === index ? "flex flex-row" : "flex items-center justify-center"}
+                  `}
+                >
+                  {hoverIndex === index ? (
+                    hoveredFullyExpanded === index ? (
+                      item.title === "Drink Water" || item.title === "Clean Bottle" ? (
+                        <>
+                          <div className="w-1/2 h-full flex items-center p-3">
+                            <div className="w-40 h-40 flex items-center">
+                              {item.img.map((src, i) => (
+                                <img
+                                  key={i}
+                                  src={src}
+                                  className={`w-[92%] h-[92%] object-contain ${i !== 0 ? "-ml-8" : ""}`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* ⭐ TEXT WITH FADE-IN ANIMATION ⭐ */}
+                          <div className="w-1/2 flex flex-col justify-center p-3">
+                            <p
+                              className={`
+                                text-gray-600 text-[13px] leading-[18px]
+                                opacity-0 transition-opacity duration-500
+                                ${hoveredFullyExpanded === index ? "opacity-100" : ""}
+                              `}
+                            >
+                              {item.desc}
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-1/2 h-full flex items-center justify-center p-3">
+                            <img src={item.img[0]} className="w-[92%] h-[92%] object-contain" />
+                          </div>
+
+                          {/* ⭐ TEXT WITH FADE-IN ⭐ */}
+                          <div className="w-1/2 flex flex-col justify-center p-3">
+                            <p
+                              className={`
+                                text-gray-600 text-[13px] leading-[18px]
+                                opacity-0 transition-opacity duration-500
+                                ${hoveredFullyExpanded === index ? "opacity-100" : ""}
+                              `}
+                            >
+                              {item.desc}
+                            </p>
+                          </div>
+                        </>
+                      )
+                    ) : (
+                      item.title === "Drink Water" || item.title === "Clean Bottle" ? (
+                        <>
+                          <div className="w-1/2 h-full flex items-center p-3">
+                            <div className="w-40 h-40 flex items-center">
+                              {item.img.map((src, i) => (
+                                <img
+                                  key={i}
+                                  src={src}
+                                  className={`w-[92%] h-[92%] object-contain ${i !== 0 ? "-ml-8" : ""}`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <div className="w-1/2 flex flex-col justify-center p-3"></div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-1/2 h-full flex items-center justify-center p-3">
+                            <img src={item.img[0]} className="w-[92%] h-[92%] object-contain" />
+                          </div>
+                          <div className="w-1/2 flex flex-col justify-center p-3"></div>
+                        </>
+                      )
+                    )
+                  ) : (
+                    <div className="w-40 h-40 flex justify-center items-center">
+                      <img src={item.img[0]} alt={item.title} className="w-[92%] h-[92%] object-contain" />
+                    </div>
+                  )}
+                </div>
+
+                <p
+                  className={`
+                    text-[18px] md:text-[20px] font-bold text-[#389ED7] transition-all duration-500
+                    ${
+                      hoverIndex === index
+                        ? "absolute left-2 bottom-2 text-left"
+                        : "mt-3 text-center w-full"
+                    }
+                  `}
+                >
+                  {item.title}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+//NEW TECHNICAL SPECIFICATION NOVEMBER
+const TechnicalSpecifications = () => {
+  const specs = [
+    {
+      img: "/images/processor.svg",
+      title: "Smart Core Engine",
+      description: (
+        <>
+          Dual-core 32-bit processor with Wi-Fi + BLE 5.0.
+          <br />
+          Optimized for low-power performance, secure boot, and over-the-air updates.
+        </>
+      ),
+    },
+    {
+      img: "/images/audio.svg",
+      title: "Resonant Audio System",
+      description: (
+        <>
+          Built-in DSP decodes MP3/WAV/WMA with studio-grade clarity.
+          <br />
+          Tuned acoustic chamber delivers calm, 432 Hz water-energizing sound.
+        </>
+      ),
+    },
+    {
+      img: "/images/gesture.svg",
+      title: "Gesture & Dock Detection",
+      description: (
+        <>
+          High-speed IR sensor detects hand-waves and bottle movement.
+          <br />
+          Millisecond-response engine ensures intuitive, touch-free control.
+        </>
+      ),
+    },
+    {
+      img: "/images/ai2.svg",
+      title: "Hydration & Wellness Intelligence",
+      description: (
+        <>
+          AI-driven scheduler learns your hydration rhythm.
+          <br />
+          Sends adaptive reminders, wellness cues, and mindful prompts.
+        </>
+      ),
+    },
+    {
+      img: "/images/vividdisplay.svg",
+      title: "️Circular IPS Display",
+      description: (
+        <>
+          1.28″ 240×240 px vivid screen with fluid animations.
+          <br />
+          Displays time, hydration status, and mood-based visuals.
+        </>
+      ),
+    },
+    {
+      img: "/images/connectivity.svg",
+      title: "Seamless Connectivity",
+      description: (
+        <>
+          Dual-mode Wi-Fi + BLE communication.
+          <br />
+          Syncs time, reminders, and audio cues from your phone effortlessly.
+        </>
+      ),
+    },
+    {
+      img: "/images/current.svg",
+      title: "Power & Safety Optimized",
+      description: (
+        <>
+          USB-C powered with dynamic dimming and power scaling.
+          <br />
+          Built-in surge, thermal, and overcurrent protection.
+        </>
+      ),
+    },
+    {
+      img: "/images/humidity.svg",
+      title: "Built for Real-World Use",
+      description: (
+        <>
+          Operates from –10 °C to +55 °C with humidity protection.
+          <br />
+          Shock-resistant, EMI-safe, and thermally optimized.
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <section id="technical">
+      <div className="bg-[#F5F5F7] py-16 px-6 font-['Roboto']">
+        {/* --- Section Heading --- */}
+        <div className="max-w-6xl mx-auto mb-10">
+          <h2 className="text-2xl md:text-3xl font-semibold text-[#021637] mb-2 text-left">
+            Technical Specifications{" "}
+            <span className="font-bold text-[#389ED7]">
+              Engineered for accuracy, comfort, and longevity
+            </span>
+          </h2>
+        </div>
+
+        {/* --- Specifications Grid --- */}
+        <div className="lg:-mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {specs.map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)] transition-all duration-300 flex flex-col items-center text-center p-8 min-h-[180px]"
+            >
+              {/* Icon */}
+              <div className="mb-5 flex justify-center">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-8 h-8 object-contain"
+                />
+              </div>
+
+              {/* Title */}
+              <h3 className="text-[17px] font-semibold text-[#021637] mb-1 whitespace-nowrap">
+                {item.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-sm text-[#6E6E72] leading-snug">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 
 
 
+//New Testimonials NOVEMBER
+const Testimonials = () => {
+  const testimonials = [
+    {
+      img: "/images/maxim.svg",
+      name: (
+        <>
+          Maxim Bishop 
+          <br />
+          <span className="font-bold">(HG Maitreya Rishi Dasa)</span>
+        </>
+      ),
+      title: "Temple President BLISS, South London",
+      desc: "Everybody drinks water. But did you know you can become spiritual by drinking water?",
+
+      extra: "FROST transforms our water into a spiritual beverage by vibrating special frequencies. Sometimes, we need a reminder to stretch. Or to take medication. Everyone needs a break from work sometimes. FROST keeps us well by making sure we don't forget.",
+      icons: [
+        { src: "/images/globe.svg", link: "https://gopiayurveda.shop/" },
+        { src: "/images/insta.svg", link: "https://www.instagram.com/expandtheblisslondon" },
+      ],
+      titleMb: "mb-1.5",
+      descMb: "mb-2.5",
+    },
+    {
+      img: "/images/aitana.svg",
+      name: "Aitana",
+      title: "Software Engineer, Spain",
+      desc: "Even in its early stage, Frost Aura is already making a difference. As a Software Engineer juggling multiple campaigns, I often struggle to stay centered.",
+
+      extra: "The MVP’s subtle lighting cues and basic breathing guidance have helped me refocus during high-pressure moments. It’s a promising start—and the clean, minimal design already feels like a natural fit on my desk",
+      icons: [
+        { src: "/images/in.svg", link: "https://www.linkedin.com/in/aitana-peinado-contreras-365a27258/" },
+      ],
+      titleMb: "mb-2",
+      descMb: "mb-3",
+    },
+    {
+      img: "/images/khushi.jpg",
+      name: "Khushi",
+      title: "Junior Project Manager",
+      desc: "I didn’t realize how often I was forgetting to drink water until I started using Frost Aura. The gentle glow on my desk is such a calming reminder it doesn’t interrupt my work.",
+
+      extra: "But it nudges me just when I need it. Within the first week, I was drinking more, feeling less tired in the afternoons, and even started using the breathing reminders during stressful meetings. It’s honestly the smartest upgrade I’ve made to my workspace.",
+      icons: [{ src: "/images/mail.svg", link: "mailto:kushikushala2020@gmail.com" }],
+      titleMb: "mb-1",
+      descMb: "mb-4",
+    },
+  ];
+
+  return (
+    <div className="font-['Roboto'] w-full bg-white py-12 px-4 sm:px-6 lg:px-12">
+      {/* Section Heading */}
+      <div className="max-w-6xl mx-auto mb-10">
+        <h2 className="text-2xl md:text-3xl font-semibold text-[#021637]">
+          Testimonials{" "}
+          <span className="font-bold text-[#389ED7]">
+            See what our customers say!
+          </span>
+        </h2>
+      </div>
+
+      {/* Testimonials Grid */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {testimonials.map((t, i) => (
+          <div
+            key={i}
+            className="group bg-[#DEF3FF] rounded-2xl p-6 flex flex-col h-auto shadow-sm hover:shadow-md transition-all duration-500 overflow-hidden hover:scale-[1.02]"
+          >
+            {/* Image with overlay name/title */}
+            <div className="relative flex justify-center mb-4 transition-all duration-500">
+              <img
+                src={t.img}
+                alt={typeof t.name === "string" ? t.name : "testimonial-image"}
+                className="w-80 h-80 sm:w-78 sm:h-78 object-cover rounded-2xl transition-all duration-500"
+              />
+
+              {/* Hover overlay for name/title */}
+              <div className="absolute inset-0 flex flex-col justify-end items-start p-4 bg-black/0 group-hover:bg-black/40 transition-all duration-500 rounded-2xl">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                  <h3 className="text-white text-lg sm:text-xl font-bold leading-snug mb-1">
+                    {t.name}
+                  </h3>
+                  <p className="text-white text-sm sm:text-base">{t.title}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Text Section */}
+            <div className="text-left text-[#021637] flex flex-col flex-grow transition-all duration-500 group-hover:h-auto">
+              {/* Name/Title (visible when not hovered) */}
+              <div className="transition-all duration-500 group-hover:opacity-0 group-hover:-translate-y-4">
+                <h3 className={`text-lg sm:text-xl font-bold leading-snug ${t.titleMb}`}>
+                  {t.name}
+                </h3>
+                <p className={`text-sm sm:text-base ${t.descMb}`}>{t.title}</p>
+              </div>
+
+              {/* Description (moves up on hover) */}
+              <p className="text-sm sm:text-[15px] leading-relaxed mb-3 transition-all duration-500 group-hover:-translate-y-16">
+                {t.desc}
+              </p>
+
+              {/* Extra content appears on hover */}
+              <p className="-mt-16 text-sm sm:text-[15px] leading-relaxed mb-16 max-h-0 group-hover:max-h-40 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-in-out overflow-hidden">
+                {t.extra}
+              </p>
+
+              {/* Icons */}
+              <div className="flex gap-4 mt-auto">
+                {t.icons.map((icon, idx) => (
+                  <a
+                    key={idx}
+                    href={icon.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={icon.src}
+                      alt="social-icon"
+                      className="w-7 h-7 sm:w-8 sm:h-8 cursor-pointer hover:opacity-80 transition"
+                    />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+// Home banner with Animation(OLD)
 function renderSubtitle(subtitle) {
   const idx = subtitle.indexOf("Companion");
   if (idx === -1) return subtitle;
@@ -170,7 +1704,7 @@ const HeroBanner = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="lg:mt-6 flex items-center bg-[#389ED7] text-lg text-white px-2 py-2 rounded-md shadow-md"
         >
-          <a href="/preorder">Pre Order</a>
+          <a href="/prelaunch">Pre Launch</a>
           <span className="ml-2 bg-white w-6 h-6 rounded flex items-center justify-center">
             <ArrowUpRight className="w-6 h-5 text-[#389ED7]" />
           </span>
@@ -192,7 +1726,7 @@ const HeroBanner = () => {
 };
 
 
-
+//Old Home banner with Buttons
 const heroContent = [
   {
     heading: "YOUR NEW",
@@ -462,135 +1996,112 @@ const HeroSection = () => {
 
 
 
-{/* NEW Features Section */}
-const KeyFeatures = () => {
-  const images = [
-    "/images/gif4.gif",
-    "/images/waterhealing.png",
-    "/images/take-medicne.png",
-    "/images/waterheling.png",
-  ];
 
-  const headings = [
-    "Device Reminders",
-    "Water Healing",
-    "App Integration",
-    "Leadboard",
-  ];
 
-  const descriptions = [
-    "Get personalized nudges to drink water throughout your day — no more guesswork, just natural hydration.",
-    "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it — keeping bacteria at bay.",
-    "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
-    "Monitor daily water intake, set goals, and get insights via the FROST mobile app — all without micromanaging.",
-  ];
+// NEW Features Section (SEPTEMBER)
+const tabs = [
+  "Key Reminders",
+  "Hydration",
+  "Water Energisation",
+  "App Integration",
+  "Social & Gamification",
+];
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [fade, setFade] = useState(true);
+// Images for "Key Reminders" tab
+const keyRemindersImages = [
+  { src: "/images/drinkwater.jpg" },
+  { src: "/images/cleanbottle.jpg", },
+  { src: "/images/placebottle.jpg",  },
+  { src: "/images/takemedicine.jpg",  },
+  { src: "/images/meditation.jpg", },
+  { src: "/images/takebreak.jpg" },
+  { src: "/images/pomodoro.jpg"},
+  { src: "/images/tomato.png"},
+];
 
-   {/* useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [activeIndex]); */}
-
-  const handleNext = () => {
-    setFade(false);
-    setTimeout(() => {
-      setActiveIndex((prev) => (prev + 1) % images.length);
-      setFade(true);
-    }, 300);
-  };
-
-  const handleThumbnailClick = (index) => {
-    setFade(false);
-    setTimeout(() => {
-      setActiveIndex(index);
-      setFade(true);
-    }, 300);
-  };
+const KeyFeaturesSection = () => {
+  const [activeTab, setActiveTab] = useState("Key Reminders");
 
   return (
-    <section id="features" className="relative">
-      {/* Top Center Heading */}
-      <div className="text-center py-10">
-        <h2 className="text-4xl text-[#021637] font-bold font-['Roboto'] leading-tight">
-          <span style={{ color: "#021637" }}>KEY </span>
-          <span style={{ color: "#389ED7" }}>FEATURES</span>
+    <section className="w-full px-4 md:px-12 py-8 font-['Roboto']">
+      {/* Header Section */}
+      <div className="flex items-center justify-between mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#021637]">
+          FEATURES by <br /> <span style={{ color: "#389ED7" }}>FROST</span>
         </h2>
-        <p className="text-lg text-[#389ED7] font-['Roboto'] mt-0">
-          <a href=""><u>explore in-depth</u></a>
-        </p>
+        {/* Image on the right */}
+        <img
+          src="/images/features-icons.png"
+          alt="Features Icons"
+          className="w-52 md:w-80"
+        />
       </div>
 
-      {/* Main content */}
-      <div className="-mt-4 font-['Roboto'] flex flex-col lg:flex-row items-center lg:items-start gap-0 px-4 lg:px-20 pb-10">
-        {/* Left side - Image + Thumbnails */}
-        <div className="lg:mt-4 lg:ml-20 flex flex-col items-center lg:w-1/2 order-2 lg:order-1">
-          <div className="w-full  flex justify-center">
-            <img
-              src={images[activeIndex]}
-              alt={headings[activeIndex]}
-              className={`transition-opacity duration-500 ${
-                fade ? "opacity-100" : "opacity-0"
-              } ${
-                images[activeIndex].includes("gif4.gif")
-                  ? "w-[380px] sm:w-[420px] md:w-[480px] lg:w-[335px] h-auto"
-                  : "w-[300px] sm:w-[350px] md:w-[400px] lg:w-[250px] h-auto"
-              }`}
-            />
-          </div>
-           
-         {/* Thumbnail Images */}
-          <div className="flex overflow-x-auto lg:gap-3 mt-4 pb-2 scrollbar-hide">
-            {images.map((thumb, index) => (
-              <img
+      {/* Tabs */}
+      <div className="flex flex-wrap gap-6 md:gap-32 border-b border-gray-300 mb-6">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`pb-2 text-base md:text-lg font-medium ${
+              activeTab === tab ? "text-[#021637] font-bold border-b-2 border-[#021637]" : "text-gray-500"
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
+        {activeTab === "Key Reminders" && (
+          <>
+            {keyRemindersImages.map((item, index) => (
+              <div
                 key={index}
-                src={thumb}
-                alt={`Thumbnail ${index + 1}`}
-                className={`w-10 h-10 sm:w-14 sm:h-14 rounded-full cursor-pointer border-2 flex-shrink-0 ${
-                  activeIndex === index
-                    ? "border-[#389ED7]"
-                    : "border-transparent"
-                } transition duration-300`}
-                onClick={() => handleThumbnailClick(index)}
-              />
+                className="flex flex-col items-center justify-center"
+              >
+                <div className="mt-8 relative w-28 h-28 md:w-52 md:h-52 flex items-center justify-center ">  
+                  <img
+                    src={item.src}
+                    alt={item.label}
+                    className="w-52 h-52 object-contain"  // div:32 , classname:40 
+                  />
+                </div>
+                {item.label && (
+                  <p className="absolute text-[10px] md:text-xs font-bold mt-1 text-center">
+                    {item.label}
+                  </p>
+                )}
+              </div>
             ))}
-          </div>
-        </div>
+          </>
+        )}
 
-        {/* Right side - Text */}
-        <div className="lg:w-1/2 text-center lg:text-left lg:pl-6 lg:pt-4 order-3 lg:order-2">
-          <h3
-            className={`text-[#389ED7] text-xl font-bold transition-opacity duration-500 ${
-              fade ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {headings[activeIndex]}
-          </h3>
-
-          <p
-            className={`text-[#021637] md:mb-16 lg:w-[65%] transition-opacity duration-500 ${
-              fade ? "opacity-100" : "opacity-0"
-            }`}
-            style={{ minHeight: "100px" }}
-          >
-            {descriptions[activeIndex]}
+        {/* Placeholder for other tabs */}
+        {activeTab === "Hydration" && (
+          <p className="col-span-4 text-center text-gray-500">
+            (Hydration tab content will go here)
           </p>
-          <div className="md:-mt-8">
-            <a
-              href="#"
-              className="text-[#389ED7] font-medium hover:underline transition"
-            >
-              {/* learn more → */}
-            </a>
-          </div>
-        </div>
+        )}
+        {activeTab === "Water Energisation" && (
+          <p className="col-span-4 text-center text-gray-500">
+            (Water Energisation tab content will go here)
+          </p>
+        )}
+        {activeTab === "App Integration" && (
+          <p className="col-span-4 text-center text-gray-500">
+            (App Integration tab content will go here)
+          </p>
+        )}
+        {activeTab === "Social & Gamification" && (
+          <p className="col-span-4 text-center text-gray-500">
+            (Social & Gamification tab content will go here)
+          </p>
+        )}
       </div>
-
       {/* Curvy background */}
-      <div className="lg:-mt-12 -mt-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+      <div className="lg:mt-2 -mt-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
         <img
           src="/images/curvy1.png"
           loading="lazy"
@@ -604,6 +2115,166 @@ const KeyFeatures = () => {
 
 
 
+
+
+{/* NEW Features Section */}
+const KeyFeatures = () => {
+  const images = [
+   "/images/drink-water.png",
+    "/images/clean-bottle.png",
+    "/images/take-medicine.png",
+    "/images/water-remainder.png",
+    "/images/meditation.png",
+    "/images/walk.png",
+    "/images/exercise.png",
+    "/images/shortbreak.png",
+    "/images/pomodoro.png",
+    "/images/waterhealing.png",
+  ];
+
+  const headings = [
+    "Drink Water",
+    "Clean Bottle",
+    "Take Medicine",
+    "Water Remainder",
+    "Meditation, Yoga & Workout",
+    "Short Walk",
+    "Place Bottle",
+    "Short Break",
+    "Pomodoro Activity",
+    "Water Energizing",
+  ];
+
+  const descriptions = [
+   "Get personalized nudges to drink water throughout your day — no more guesswork, just natural hydration.",
+    "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it — keeping bacteria at bay.",
+    "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
+    "Monitor daily water intake, set goals, and get insights via the FROST mobile app — all without micromanaging.",
+    "Activate focused modes for your practice — FROST emits healing vibrations (like 432 Hz) to harmonize body and mind.",
+    "Been sitting too long? FROST encourages short movement breaks to keep your circulation flowing and your head clear.",
+    "Left your bottle behind? FROST gently notifies you to place it back on the dock — so your tracking never skips a beat.",
+    "Protect your focus with short, intentional breaks. Stretch, blink, breathe — let FROST cue your brain to reset.",
+    "Work in deep focus cycles with built-in Pomodoro timers — paired with hydration cues to keep your energy flowing.",
+    "FROST Aura turns hydration into a mindful ritual, infusing water with healing frequencies and mantras to harmonize energy and wellbeing.",
+  ];
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
+  const handleNext = () => {
+    setFade(false);
+    setTimeout(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+      setFade(true);
+    }, 300);
+  };
+
+  const handleThumbnailClick = (index) => {
+    setFade(false);
+    setTimeout(() => {
+      setActiveIndex(index);
+      setFade(true);
+    }, 300);
+  };
+
+  return (
+    <section id="features">
+      {/* Mobile Heading First */}
+      <div className="lg:hidden text-center py-6">
+        <h2 className="text-4xl text-[#021637] font-bold mb- font-['Roboto'] ">
+          <span style={{ color: "#021637" }}>KEY </span>
+          <span style={{ color: "#389ED7" }}>FEATURES</span>
+        </h2>
+        <p className="text-lg text-[#021637] mb-4 font-['Roboto'] ">explore in-depth</p>
+      </div>
+
+      <div className="font-['Roboto'] md:-mt-5 flex flex-col lg:flex-row items-center lg:items-start gap-8 px-4 lg:px-20 py-10">
+        {/* Left side - Image + Thumbnails */}
+        <div className="-mt-12 lg:mt-2  lg:pt-2 flex flex-col items-center lg:w-1/2 order-2 lg:order-1">
+          <div className="w-full flex justify-center">
+            <img
+              src={images[activeIndex]}
+              alt={headings[activeIndex]}
+              className={`w-[300px] sm:w-[350px] md:w-[400px] lg:w-[250px] transition-opacity duration-500 ${
+                fade ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+
+          <div className="flex overflow-x-auto lg:gap-3 mt-4 pb-2 scrollbar-hide">
+            {images.map((thumb, index) => (
+              <img
+                key={index}
+                src={thumb}
+                alt={`Thumbnail ${index + 1}`}
+                className={`w-10 h-10 sm:w-14 sm:h-14 rounded-full cursor-pointer border-2   flex-shrink-0 ${
+                  activeIndex === index
+                    ? "border-[#389ED7]"
+                    : "border-transparent"
+                } transition duration-300`}
+                onClick={() => handleThumbnailClick(index)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Right side - Text */}
+        <div className="lg:w-1/2 text-center lg:text-left lg:pl-28 lg:pt-4 order-3 lg:order-2">
+          {/* Desktop heading */}
+          <div className="hidden lg:block">
+            <h2 className="text-4xl text-[#021637] font-bold mb-0">
+              <span style={{ color: "#021637" }}>KEY </span>
+              <span style={{ color: "#389ED7" }}>FEATURES</span>
+            </h2>
+            <p className="text-lg text-[#021637] mb-10">explore in-depth</p>
+          </div>
+
+          <h3
+            className={`text-[#389ED7] text-xl font-bold transition-opacity duration-500 ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {headings[activeIndex]}
+          </h3>
+
+          <p
+            className={`text-[#021637] md:mb-16 lg:w-[65%] transition-opacity duration-500 ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ minHeight: "100px" }}
+          >
+            {descriptions[activeIndex]}
+          </p>
+          <div className="md:-mt-8">
+          <a href="#" className="text-[#389ED7] font-medium hover:underline transition" >
+             {/* learn more → */}
+            </a>
+            </div>
+        </div>
+      </div>
+
+      {/* Curvy background */}
+      <div className="lg:-mt-12 -mt-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-   [50vw] overflow-hidden">
+        <img
+          src="/images/curvy1.png"
+          loading="lazy"
+          alt="curvy"
+          className="w-full h-auto object-cover"
+        />
+      </div>
+    </section>
+  );
+};
+
+
+//OLd Key Featutes Section Code
 const FeaturesSection = () => {
   const features = [
     {
@@ -1027,7 +2698,7 @@ const HowItWorksSection = () => {
 
           <div className="mt-14 pl-0">
             <button className="rounded-full px-6 py-3 text-white bg-[#389ED7] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md">
-              <a href="/preorder">Pre Order</a>
+              <a href="/prelaunch">Pre Launch</a>
             </button>
           </div>
         </div>
@@ -1091,203 +2762,206 @@ const HowItWorksSection = () => {
 
 
 const allImages = [
-  "/images/gallery1-1.jpg", "/images/gallery1-2.jpg", "/images/gallery1-3.jpg",
-  "/images/gallery1-4.jpg", "/images/gallery1-5.jpg", "/images/gallery1-6.jpg",
-  "/images/gallery1-7.jpg", "/images/gallery3-2.jpg", "/images/gallery2-3.jpg",
-  "/images/gallery3-1.jpg", "/images/gallery2-2.jpg", "/images/gallery3-3.jpg",
-  "/images/gallery3-4.jpg", "/images/gallery3-5.jpg",
+  "/images/gallery6.png",  "/images/gallery2.png",
+  "/images/gallery3.png", "/images/gallery4.png", "/images/gallery5.png",
+  "/images/gallery1.png", "/images/gallery7.png", "/images/gallery8.png",
+ "/images/gallery9.png", "/images/gallery10.png", "/images/gallery11.png",
 ];
 
 const VISIBLE = 5;
 
 function getVisibleImages(list, center, visible) {
-  const half = Math.floor(visible / 2);
-  const total = list.length;
-  let res = [];
-  for (let i = -half; i <= half; i++) {
-    let idx = (center + i + total) % total;
-    res.push({ idx, offset: i });
-  }
-  return res;
+  const half = Math.floor(visible / 2);
+  const total = list.length;
+  let res = [];
+  for (let i = -half; i <= half; i++) {
+    let idx = (center + i + total) % total;
+    res.push({ idx, offset: i });
+  }
+  return res;
 }
 
 const GallerySection = () => {
-  const [center, setCenter] = useState(Math.floor(allImages.length / 2));
-  const [isAnimating, setIsAnimating] = useState(false);
-  const carouselRef = useRef(null);
+  const [center, setCenter] = useState(Math.floor(allImages.length / 2));
+  const [isAnimating, setIsAnimating] = useState(false);
+  const carouselRef = useRef(null);
 
-  const prevImage = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCenter((idx) => (idx - 1 + allImages.length) % allImages.length);
-    setTimeout(() => setIsAnimating(false), 450);
-  };
+  const prevImage = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCenter((idx) => (idx - 1 + allImages.length) % allImages.length);
+    setTimeout(() => setIsAnimating(false), 450);
+  };
 
-  const nextImage = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCenter((idx) => (idx + 1) % allImages.length);
-    setTimeout(() => setIsAnimating(false), 450);
-  };
+  const nextImage = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCenter((idx) => (idx + 1) % allImages.length);
+    setTimeout(() => setIsAnimating(false), 450);
+  };
 
-  useEffect(() => {
-    const children = Array.from(carouselRef.current?.querySelectorAll(".carousel-image") || []);
-    children.forEach((child) => {
-      const offset = parseInt(child.getAttribute("data-offset"), 10);
-      let scale = 1, translateX = 0, rotateY = 0, opacity = 1;
+  useEffect(() => {
+    const children = Array.from(carouselRef.current?.querySelectorAll(".carousel-image") || []);
+    children.forEach((child) => {
+      const offset = parseInt(child.getAttribute("data-offset"), 10);
+      let scale = 1, translateX = 0, rotateY = 0, opacity = 1;
 
-      if (offset === 0) {
-        scale = 1.15;
-        translateX = 0;
-        rotateY = 0;
-        opacity = 1;
-      } else if (Math.abs(offset) === 1) {
-        scale = 0.9;
-        translateX = offset * 220;
-        rotateY = offset * -35;
-        opacity = 1;
-      } else if (Math.abs(offset) === 2) {
-        scale = 0.7;
-        translateX = offset * 180;
-        rotateY = offset * -30;
-        opacity = 0.25;
-      } else {
-        scale = 0.5;
-        translateX = offset * 400;
-        rotateY = offset * -40;
-        opacity = 0;
-      }
+      if (offset === 0) {
+        scale = 1.15;
+        translateX = 0;
+        rotateY = 0;
+        opacity = 1;
+      } else if (Math.abs(offset) === 1) {
+        scale = 0.9;
+        translateX = offset * 220;
+        rotateY = offset * -35;
+        opacity = 1;
+      } else if (Math.abs(offset) === 2) {
+        scale = 0.7;
+        translateX = offset * 180;
+        rotateY = offset * -30;
+        opacity = 0.25;
+      } else {
+        scale = 0.5;
+        translateX = offset * 400;
+        rotateY = offset * -40;
+        opacity = 0;
+      }
 
-      child.style.transform = `perspective(1600px) translateX(${translateX}px) scale(${scale}) rotateY(${rotateY}deg)`;
-      child.style.zIndex = 100 - Math.abs(offset);
-      child.style.opacity = opacity;
-      child.style.transition = "transform 0.45s ease, opacity 0.45s";
-    });
-  }, [center]);
+      child.style.transform = `perspective(1600px) translateX(${translateX}px) scale(${scale}) rotateY(${rotateY}deg)`;
+      child.style.zIndex = 100 - Math.abs(offset);
+      child.style.opacity = opacity;
+      child.style.transition = "transform 0.45s ease, opacity 0.45s";
+    });
+  }, [center]);
 
-  useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === "ArrowLeft") prevImage();
-      else if (e.key === "ArrowRight") nextImage();
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [center]);
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "ArrowLeft") prevImage();
+      else if (e.key === "ArrowRight") nextImage();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [center]);
 
-  const visibleImages = getVisibleImages(allImages, center, VISIBLE);
+  const visibleImages = getVisibleImages(allImages, center, VISIBLE);
 
-  // ---- Responsive image style helpers ----
-  // 1. On mobile, use object-fit: contain and 100% width/height for the image
-  // 2. On desktop (sm and above), use original object-cover logic
+  // ---- Responsive image style helpers ----
+  // 1. On mobile, use object-fit: contain and 100% width/height for the image
+  // 2. On desktop (sm and above), use original object-cover logic
 
-  return (
-    <section className="w-full py-14 px-4 relative bg-white overflow-hidden">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-        <span className="text-[#021637]">PRODUCT</span>{" "}
-        <span className="text-[#389ED7]">GALLERY</span>
-      </h2>
-      <p className="text-sm md:text-base max-w-2xl mx-auto mt-2 text-center px-2">
-        Witness how FROST blends into your life from sunrise to sleep. More than a device,
-        it’s your hydration companion. Every sip tells a story of care, energy, and better living.
-      </p>
-
-      <div className="relative max-w-7xl mx-auto mt-14">
-        <button
-          onClick={prevImage}
-          className="absolute z-20 left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-[#008cd0] flex items-center justify-center shadow transition"
-          style={{ pointerEvents: isAnimating ? "none" : "auto", opacity: isAnimating ? 0.3 : 1 }}
-        >
-          <svg viewBox="0 0 13 20" width="22" height="22">
-            <polyline points="10,3 3,10 10,17" stroke="#008CD0" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-          </svg>
-        </button>
-
-        <div
-          className="relative flex justify-center items-center overflow-hidden h-[280px] sm:h-[400px]"
-          ref={carouselRef}
-          style={{ perspective: "2000px" }}
-        >
-          {visibleImages.map(({ idx, offset }) => (
-            <div
-              key={`img-${idx}`}
-              className="carousel-image absolute rounded-xl overflow-hidden shadow-xl cursor-pointer"
-              data-offset={offset}
-              style={{
-                width: "clamp(220px, 50vw, 360px)",
-                height: "100%",
-              }}
-              onClick={() => setCenter(idx)}
-            >
-              <img
-                src={allImages[idx]}
-                alt={`Gallery ${idx + 1}`}
-                className="
-                  w-full h-full
-                  object-contain
-                  sm:object-cover
-                  pointer-events-none select-none
-                  sm:rounded-xl
-                "
-                style={{
-                  // On mobile: contain, full width/height, prevent cropping/letterboxing
-                  // On desktop: object-cover (via Tailwind sm:object-cover)
-                  objectFit: "contain",
-                  // Add background color as fallback for images with transparency/letterboxing
-                  background: "#FFF",
-                  // Remove background on desktop (object-cover)
-                }}
-                loading="lazy"
-                draggable={false}
-              />
-              <style jsx>{`
-                @media (min-width: 640px) {
-                  .carousel-image img {
-                    object-fit: cover !important;
-                    background: none !important;
-                  }
-                }
-              `}</style>
-            </div>
-          ))}
-        </div>
-
-        <button
-          onClick={nextImage}
-          className="absolute z-20 right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-[#008cd0] flex items-center justify-center shadow transition"
-          style={{ pointerEvents: isAnimating ? "none" : "auto", opacity: isAnimating ? 0.3 : 1 }}
-        >
-          <svg viewBox="0 0 13 20" width="22" height="22">
-            <polyline points="10,3 3,10 10,17" stroke="#008CD0" strokeWidth="2.5" fill="none" strokeLinecap="round" transform="rotate(180 6.5,10)" />
-          </svg>
-        </button>
-
-        {/* Dots */}
-        <div className="flex justify-center mt-6 gap-2">
-          {allImages.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCenter(idx)}
-              aria-label={`Go to image ${idx + 1}`}
-              className={`w-2.5 h-2.5 rounded-full border-2 border-[#008CD0] ${idx === center ? "bg-[#008CD0]" : "bg-white"}`}
-              style={{ transition: "background 0.3s, border 0.3s" }}
-            />
-          ))}
-        </div>
+  return (
+    <section className="w-full py-14 px-4 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto mb-10">
+        <h2 className="text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
+      Product Gallery{" "}
+          <span className="font-bold text-[#389ED7]">
+           Story of ours
+          </span>
+        </h2>
       </div>
+      {/* <p className="text-sm md:text-base max-w-2xl mx-auto mt-2 text-center px-2">
+        Witness how FROST blends into your life from sunrise to sleep. More than a device,
+        it’s your hydration companion. Every sip tells a story of care, energy, and better living.
+      </p> */}
 
-      <div className="mt-0 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
-        <motion.img
-          src="/images/curvy.png" loading="lazy"
-          alt="curvy"
-          className="w-screen h-auto object-cover"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-        />
-      </div>
-    </section>
-  );
+      <div className="relative max-w-7xl mx-auto mt-8">
+        <button
+          onClick={prevImage}
+          className="absolute z-20 lg:left-6 left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-[#389ED7] flex items-center justify-center shadow transition"
+          style={{ pointerEvents: isAnimating ? "none" : "auto", opacity: isAnimating ? 0.3 : 1 }}
+        >
+          <svg viewBox="0 0 13 20" width="22" height="22">
+            <polyline points="10,3 3,10 10,17" stroke="#389ED7" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          </svg>
+        </button>
+
+        <div
+          className="relative flex justify-center items-center overflow-hidden h-[280px] sm:h-[400px]"
+          ref={carouselRef}
+          style={{ perspective: "2000px" }}
+        >
+          {visibleImages.map(({ idx, offset }) => (
+            <div
+              key={`img-${idx}`}
+              className="carousel-image absolute rounded-xl overflow-hidden cursor-pointer"
+              data-offset={offset}
+              style={{
+                width: "clamp(220px, 50vw, 360px)",
+                height: "100%",
+              }}
+              onClick={() => setCenter(idx)}
+            >
+              <img
+                src={allImages[idx]}
+                alt={`Gallery ${idx + 1}`}
+                className="
+                  w-full h-full
+                  object-contain
+                  sm:object-cover
+                  pointer-events-none select-none
+                  sm:rounded-xl
+                "
+                style={{
+                  // On mobile: contain, full width/height, prevent cropping/letterboxing
+                  // On desktop: object-cover (via Tailwind sm:object-cover)
+                  objectFit: "contain",
+                  // Add background color as fallback for images with transparency/letterboxing
+                
+                  // Remove background on desktop (object-cover)
+                }}
+                loading="lazy"
+                draggable={false}
+              />
+              <style jsx>{`
+                @media (min-width: 640px) {
+                  .carousel-image img {
+                    object-fit: cover !important;
+                    background: none !important;
+                  }
+                }
+              `}</style>
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={nextImage}
+          className="absolute z-20 lg:right-6 right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white hover:bg-white border border-[#389ED7] flex items-center justify-center shadow transition"
+          style={{ pointerEvents: isAnimating ? "none" : "auto", opacity: isAnimating ? 0.3 : 1 }}
+        >
+          <svg viewBox="0 0 13 20" width="22" height="22">
+            <polyline points="10,3 3,10 10,17" stroke="#389ED7" strokeWidth="2.5" fill="none" strokeLinecap="round" transform="rotate(180 6.5,10)" />
+          </svg>
+        </button>
+
+        {/* Dots */}
+        <div className="flex justify-center mt-4 gap-2">
+          {allImages.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCenter(idx)}
+              aria-label={`Go to image ${idx + 1}`}
+              className={`w-2.5 h-2.5 rounded-full border-2 border-[#389ED7] ${idx === center ? "bg-[#389ED7]" : "bg-white"}`}
+              style={{ transition: "background 0.3s, border 0.3s" }}
+            />
+          ))}
+        </div>
+      </div>
+
+ {/* <div className="mt-0 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+        <motion.img
+          src="/images/curvy.png" loading="lazy"
+          alt="curvy"
+          className="w-screen h-auto object-cover"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+        />
+      </div> */}
+    </section>
+  );
 };
 
 
@@ -1488,7 +3162,7 @@ const ComparisonFrost = () => {
             </ul>
             <div className="mt-6 text-center">
               <button className="rounded-2xl bg-white px-6 py-2 text-base font-semibold text-[#021637]">
-                <a href="/preorder">Pre Order</a>
+                <a href="/prelaunch">Pre Launch</a>
               </button>
             </div>
           </motion.div>
@@ -1525,7 +3199,7 @@ const ComparisonFrost = () => {
         viewport={{ once: true }}
       >
         <img
-          src="/images/curvy.png"
+          src="/images/curvy1.png"
           alt="curvy"
           className="w-full h-auto object-cover"
         />
@@ -1798,7 +3472,7 @@ const initialTestimonials = [
   },
   {
     id: 2,
-    name: ' Maxim Bishop (Maitreya Rishi Dasa)',
+    name: ' Maxim Bishop (HG Maitreya Rishi Dasa)',
     designation: 'Temple President BLISS(Bhaktivedanta Lives In Sound Society), South London',
     image: '/images/Maxim Bishop.jpg',
     testimonial:
@@ -1985,86 +3659,91 @@ const TestimonialsSection = () => {
                       minHeight: 120,
                       marginLeft: -16,
                       zIndex: 1,
-                      marginTop: 25,
+                      marginTop: 25, // 25
                       boxShadow: '0 3px 24px 0 rgba(56,158,215,0.11)',
                     }}
-                  >
+                   >
                     
                     <div className="absolute -top-8 left-1 z-20 flex gap-2">
-  {/* LinkedIn: only show if NOT id 2 */}
-  {testimonial.linkedin && testimonial.id !== 2 && (
-    <a
-      href={testimonial.linkedin}
-      aria-label="LinkedIn"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={iconWrapperStyle}
-    >
-      <svg
-        fill="currentColor"
-        viewBox="0 0 448 512"
-        width="18"
-        height="18"
-        style={iconStyle}
-      >
-        <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341a53.67 53.67 0 1 1 53.61-53.66 53.64 53.64 0 0 1-53.61 53.66zM447.8 448h-92.4V302.4c0-34.7-12.4-58.4-43.3-58.4-23.6 0-37.6 15.8-43.8 31-2.3 5.6-2.8 13.4-2.8 21.2V448h-92.4s1.2-241.1 0-266.1h92.4v37.7c-.2.3-.5.7-.7 1h.7v-1c12.3-19 34.3-46.1 83.5-46.1 60.9 0 106.7 39.8 106.7 125.4V448z" />
-      </svg>
-    </a>
-  )}
+                      {/* LinkedIn: only show if NOT id 2 */}
+                      {testimonial.linkedin && testimonial.id !== 2 && (
+                        <a
+                          href={testimonial.linkedin}
+                          aria-label="LinkedIn"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={iconWrapperStyle}
+                        >
+                          <svg
+                            fill="currentColor"
+                            viewBox="0 0 448 512"
+                            width="18"
+                            height="18"
+                            style={iconStyle}
+                          >
+                            <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341a53.67 53.67 0 1 1 53.61-53.66 53.64 53.64 0 0 1-53.61 53.66zM447.8 448h-92.4V302.4c0-34.7-12.4-58.4-43.3-58.4-23.6 0-37.6 15.8-43.8 31-2.3 5.6-2.8 13.4-2.8 21.2V448h-92.4s1.2-241.1 0-266.1h92.4v37.7c-.2.3-.5.7-.7 1h.7v-1c12.3-19 34.3-46.1 83.5-46.1 60.9 0 106.7 39.8 106.7 125.4V448z" />
+                          </svg>
+                        </a>
+                      )}
 
-  {/* Custom icons for id:2 (Maxim Bishop) */}
-  {testimonial.id === 2 && (
-    <>
-      {/* Globe Website icon */}
-      <a
-        href="https://gopiayurveda.shop/"
-        aria-label="Website"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={iconWrapperStyle}
-      >
-        <div
-          style={{
-            width: 24,
-            height: 24,
-            borderRadius: "50%",
-            border: "2px solid #fff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 8,
-            fontWeight: "bold",
-            color: "#fff",
-          }}
-        >
-          www
-        </div>
-      </a>
+                      {/* Custom icons for id:2 (Maxim Bishop) */}
+                      {testimonial.id === 2 && (
+                        <>
+                          {/* Globe Website icon */}
+                          <div className=" absolute flex gap-1">
+                          <a
+                            href="https://gopiayurveda.shop/"
+                            aria-label="Website"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={iconWrapperStyle}
+                          >
+                            <div
+                              style={{
+                                width: 24,
+                                height: 24,
+                            
+                                borderRadius: "50%",
+                                border: "2px solid #fff",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: 8,
+                                fontWeight: "bold",
+                                color: "#fff",
+                              }}
+                            >
+                              www
+                            </div>
+                          </a>
 
-      {/* Instagram icon (lucide-react) */}
-      <a
-        href="#"
-        aria-label="Instagram"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={iconWrapperStyle}
-      >
-        <Instagram size={18} color="#ffffff" />
-      </a>
-    </>
-  )}
+                          {/* Instagram icon (lucide-react) */}
+                          <a
+                            href="https://www.instagram.com/expandtheblisslondon"
+                            aria-label="Instagram"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={iconWrapperStyle}
+                          >
+                            <Instagram size={24} color="#ffffff" />
+                          </a>
+                          
 
-  {/* Email for id:1 only */}
-  {testimonial.id === 1 && (
-    <a
-      href={`mailto:${testimonial.email}`}
-      aria-label="Email"
-      style={iconWrapperStyle}
-    >
-      <Mail size={20} color="#ffffff" />
-    </a>
-  )}
-</div>
+                          </div>
+                        </>
+                      )}
+
+                      {/* Email for id:1 only */}
+                      {testimonial.id === 1 && (
+                        <a
+                          href={`mailto:${testimonial.email}`}
+                          aria-label="Email"
+                          style={iconWrapperStyle}
+                        >
+                          <Mail size={20} color="#ffffff" />
+                        </a>
+                      )}
+                    </div>
                     <div>
                       <span className="font-bold text-lg text-[#222]">{testimonial.name}</span>
                       <div className="text-[#222] text-sm">{testimonial.designation}</div>
@@ -2114,6 +3793,7 @@ const TestimonialsSection = () => {
     </>
   );
 };
+
 
 
 const BlogSection = () => {
@@ -2292,6 +3972,7 @@ const BlogSection = () => {
 };
 
 
+
 const TryItNowSection = () => {
   return (
     <section className="container" id="try">
@@ -2374,7 +4055,7 @@ const TryItNowSection = () => {
 
                 {/* Buttons */}
                 <div className="mt-10 md:ml-8 flex flex-col gap-8 items-center relative">
-                  {[{ label: "Pre Order", link: "/preorder" }, { label: "Get in Touch", link: "#contact" }].map((btn) => (
+                  {[{ label: "Pre Launch", link: "/prelaunch" }, { label: "Get in Touch", link: "#contact" }].map((btn) => (
                       <motion.div
                         key={btn.label}
                         whileHover={{ scale: 1.05 }}
@@ -2388,7 +4069,7 @@ const TryItNowSection = () => {
                         >
                           <div className="absolute inset-0 bg-[#389ed733] rounded-[40px] border-[5px] border-[#b1e3ff] z-0" />
                           <div className="relative z-10 h-14 md:h-16 w-full bg-[#389ED7] text-white text-lg md:text-xl font-medium flex items-center justify-between px-6 rounded-[40px] shadow-[1px_4px_12.8px_#00000040]">
-                            {btn.label === "Pre Order" ? ( 
+                            {btn.label === "Pre Launch" ? ( 
                               <>
                                 <span>{btn.label}</span>
                                 <div className="w-[37px] h-[37px] bg-white rounded-full shadow-[inset_0px_4px_4px_#00000040]" />
@@ -2444,6 +4125,7 @@ const TryItNowSection = () => {
 };
 
 
+//Contact US Section
 const ContactSection = () => {
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbxv_rlA8zUYbhhN8PuMVbcoh0mhXzlWAetJA9EH8qAGAd3Ya4myK8tt1h3yPFZ3d2TN/exec";
@@ -2466,67 +4148,137 @@ const ContactSection = () => {
       ...prev,
       [name]: value,
     }));
+  
   };
+  
+  
+ const validateEmail = (email) => {
+  // Basic structure check
+  const regex = /^[^\s@]+@[^\s@]+\.[A-Za-z.]{2,}$/;
+  if (!regex.test(email)) return false;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Full valid TLD list (master list)
+  const validTLDs = new Set([
+    // Global & generic TLDs
+    "com","org","net","info","biz","xyz","dev","app","pro","me","name",
+    "online","site","tech","store","ai","io","cloud","digital","media",
 
-    const { name, email, phone, query, message } = formData;
+    // Country-code TLDs
+    "in","us","uk","ca","au","nz","de","fr","jp","sg","ae","sa","pk","lk",
+    "bd","cn","es","it","nl",
 
-    // Front-end validation
-    if (!name || !email || !phone || !query || !message) {
-      toast({
-        title: "All fields are required",
-        description: "Please fill in every field before submitting.",
-        variant: "destructive",
-      });
-      return;
-    }
+    // Multi-level Indian
+    "co.in","org.in","net.in","ac.in","gov.in","nic.in",
 
-    // Email regex validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-      });
-      return;
-    }
+    // Multi-level UK
+    "co.uk","org.uk","ac.uk",
 
-    setSubmitting(true);
+    // More
+    "co.za","co.jp","com.au","com.sg","com.pk"
+  ]);
 
-    try {
-      await fetch(GOOGLE_SCRIPT_URL, {
+  // Split email
+  const parts = email.toLowerCase().split("@")[1].split(".");
+
+  // Build possible TLDs
+  const tld1 = parts[parts.length - 1];                       // "com"
+  const tld2 = parts.length >= 2 ? parts.slice(-2).join(".") : null; // "co.in"
+
+  // Case 1: exact match (single TLD)
+  if (validTLDs.has(tld1)) return true;
+
+  // Case 2: exact match (multi-level TLD)
+  if (tld2 && validTLDs.has(tld2)) return true;
+
+  // ❌ Anything else → invalid (prevents "aiiiii", "commm", etc.)
+  return false;
+};
+
+
+const CHEERIO_API_KEY =
+  "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const { name, email, phone, query, message } = formData;
+
+  // 1️⃣ Validation
+  if (!name || !email || !phone || !query || !message) {
+    toast({
+      title: "All fields are required",
+      description: "Please fill in every field before submitting.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  // 2️⃣ Email validation
+  if (!validateEmail(email)) {
+    toast({
+      title: "Invalid Email",
+      description: "Please enter a valid email address.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  setSubmitting(true);
+
+  try {
+    // 3️⃣ Google Sheet (UNCHANGED — sends all details)
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    }).catch(() => {});
+
+    // 4️⃣ Cheerio Manual Workflow Trigger (UPDATED — email only)
+    await fetch(
+      "https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow",
+      {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": CHEERIO_API_KEY,
+        },
+        body: JSON.stringify({
+          email: email,
+          workflowId: "691d8c61dfc2664a0552732b",
+        }),
+      }
+    );
 
-      toast({
-        title: "Message Sent!",
-        description: "Thanks for reaching out. We'll be in touch soon.",
-        variant: "default",
-      });
+    // 5️⃣ Success
+    toast({
+      title: "Message Sent!",
+      description: "Thanks for reaching out. We'll be in touch soon.",
+      variant: "default",
+    });
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        query: "",
-        message: "",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      query: "",
+      message: "",
+    });
+
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    toast({
+      title: "Error",
+      description: "Something went wrong. Please try again later.",
+      variant: "destructive",
+    });
+  } finally {
+    setSubmitting(false);
+  }
+};
+
+
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -2541,22 +4293,26 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="
+      className="bg-[#F5F5F7]
         container
         py-14 sm:py-10 lg:py-20
-        px-2 sm:px-4 lg:px-8
+        px-4 sm:px-4 lg:px-8
         mt-0
         "
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="lg:-mt-10 max-w-6xl mx-auto">
         <motion.h2
           className="mb-8 md:mb-10 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#021637]"
           initial="initial"
           animate="animate"
           variants={fadeInUp}
         >
-          <span className="text-[#021637]">Contact</span>
-          <span className="text-[#389ED7]"> Us</span>
+          <h2 className=" text-left text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
+          Contact Us{" "}
+          <span className="font-bold text-[#389ED7]">
+          Will love to hear from you
+          </span>
+        </h2>
         </motion.h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 lg:gap-16">
@@ -2567,7 +4323,7 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <motion.h3
+            {/* <motion.h3
               className="mb-4 text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#021637]"
               initial="initial"
               animate="animate"
@@ -2585,7 +4341,7 @@ const ContactSection = () => {
               Have a query or collaboration idea? Drop us a message below!
               Fill out the form and our team will get back to you as soon as possible.
               We’re here to support your journey with FROST.
-            </motion.p>
+            </motion.p> */}
 
             <form
               onSubmit={handleSubmit}
@@ -2617,14 +4373,24 @@ const ContactSection = () => {
               <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
                 <Input
                   name="phone"
-                  type="tel"
+                  type="text"
                   value={formData.phone}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+                    setFormData((prev) => ({ ...prev, phone: onlyNums }));
+                  }}
+                  onPaste={(e) => {
+                    const paste = e.clipboardData.getData("text");
+                    if (!/^[0-9]+$/.test(paste)) {
+                      e.preventDefault();
+                    }
+                  }}
                   placeholder="Phone Number"
                   required
                   className="rounded-lg bg-[#c7ebff] px-5 py-3 text-[#021637cc] placeholder-[#021637cc] focus:ring-[#389ed7] focus:border-[#389ed7]"
                 />
               </motion.div>
+
 
               <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
                 <Input
@@ -2668,10 +4434,10 @@ const ContactSection = () => {
             transition={{ duration: 0.5 }}
             className="flex justify-center items-center"
           >
-            <div className="mt-8 md:mt-15">
+            <div className="mt-8 lg:-mt-20">
               <img
                 src="/images/contactimg.png"
-                width={350}
+                width={280}
                 alt="Contact Graphic"
                 className=""
                 loading="lazy"
@@ -2685,6 +4451,268 @@ const ContactSection = () => {
 };
 
 
+// STORY Section
+const Story = () => {
+  const videos = [
+    "/videos/video3.mp4",
+    "/videos/video2.mp4",
+    "/videos/video4.mp4",
+    "/videos/video1.mp4",
+  ];
+
+  const instaLinks = [
+    "https://www.instagram.com/frost_active?igsh=MXA3N2FoYXY2aDBpbQ%3D%3D&utm_source=qr",
+    "https://www.instagram.com/frost_espana?igsh=MXQ1NnBmc2V2M2V2Ng%3D%3D&utm_source=qr",
+    "https://www.instagram.com/frost.deutschland?igsh=MW5sajVqNGtlZ2Q1eQ%3D%3D&utm_source=qr",
+    "https://www.instagram.com/frost_portugal?igsh=em0ydzZoa2F0NmJy&utm_source=qr",
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  // Move 1 slide at a time
+  const goLeft = () => setIndex(prev => Math.max(prev - 1, 0));
+  const goRight = () => setIndex(prev => Math.min(prev + 1, videos.length - 2));
+
+  return (
+    <section className="py-12 px-6 md:px-16 relative">
+      <h2 className="text-2xl md:text-3xl mb-10">
+        <span className="text-[#021637] font-bold">Know </span>
+        <span className="text-[#389ED7] font-bold">Our Story</span>
+      </h2>
+
+      {/* LEFT BUTTON 
+      {index > 0 && (
+        <button
+          onClick={goLeft}
+          className="hidden md:flex absolute lg:left-3 -left-8 top-1/2 -translate-y-1/2 z-20 
+          items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      )} */}
+
+      {/* RIGHT BUTTON *
+      {index < videos.length - 2 && (
+        <button
+          onClick={goRight}
+          className="hidden md:flex absolute lg:right-3 -right-5 top-1/2 -translate-y-1/2 z-20
+          items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      )} /}
+
+      {/* DESKTOP SLIDER */}
+      <div className="-mt-4 hidden md:block overflow-hidden">
+      <div
+        className="flex justify-between gap-5"
+        style={{
+          width: "100%",
+        }}
+      >
+        {videos.map((src, i) => (
+          <div key={i} className="w-1/4 flex flex-col items-center">
+            
+            {/* VIDEO WRAPPER WITH REDUCED SIZE */}
+            <div className="bg-white rounded-2xl shadow-md p-2 w-full">
+              <video
+                src={src}
+                controls
+                className="w-full h-auto object-contain rounded-2xl"
+              />
+            </div>
+
+            <div className="mt-3 flex justify-start w-full">
+              <a href={instaLinks[i]} target="_blank">
+                <img
+                  src="/images/insta.svg"
+                  className="w-10 h-10 opacity-80 hover:opacity-100 transition"
+                  alt="Instagram"
+                />
+              </a>
+            </div>
+
+          </div>
+        ))}
+      </div>
+    </div>
+
+      {/* MOBILE SLIDER (same) */}
+      <div className="md:hidden flex gap-6 overflow-x-scroll snap-x snap-mandatory no-scrollbar">
+        {videos.map((src, i) => (
+          <div key={i} className="min-w-[80%] snap-start">
+            <div className="bg-white rounded-2xl shadow-md p-2">
+              <video src={src} controls className="w-full h-auto rounded-2xl" />
+            </div>
+
+            <div className="mt-3">
+              <a href={instaLinks[i]} target="_blank">
+                <img
+                  src="/images/insta.svg"
+                  className="w-10 h-10 opacity-80 hover:opacity-100 transition"
+                  alt="Instagram"
+                />
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .no-scrollbar::-webkit-scrollbar { display: none; }
+        }
+      `}</style>
+    </section>
+  );
+};
+
+
+//NEW Testimonials 2
+const Testimonials2 = () => {
+  const data = [
+    {
+      img: "/images/maxim1.svg",
+      name: "Maxim Bishop (HG Maitreya Rishi Dasa)",
+      title: "Temple President BLISS, South London",
+      date: "May 20, 2025",
+      desc: `Everybody drinks water. But did you know you can become spiritual by drinking water?FROST transforms our water into a spiritual beverage by vibrating special frequencies. Sometimes, we need a reminder to stretch or to take medication. Everyone needs a break from work sometimes. FROST keeps us well by making sure we don't forget.`,
+    },
+    {
+      img: "/images/aitana1.png",
+      name: "Aitana",
+      title: "Software Engineer, Spain",
+      date: "June 18, 2025",
+      desc: `Even in its early stage, Frost Aura is already making a difference. As a Software Engineer juggling multiple campaigns, I often struggle to stay centered.The MVP’s subtle lighting cues and basic breathing guidance have helped me refocus during high-pressure moments. It’s a promising start—and the clean, minimal design already feels like a natural fit on my desk`,
+    },
+    {
+      img: "/images/khushi.jpg",
+      name: "Khushi",
+      title: "Junior Project Manager, Bengaluru",
+      date: "July 10, 2025",
+      desc: `I didn’t realize how often I was forgetting to drink water until I started using Frost Aura. The gentle glow on my desk is such a calming reminder it doesn’t interrupt my work.But it nudges me just when I need it. Within the first week, I was drinking more, feeling less tired in the afternoons, and even started using the breathing reminders during stressful meetings. It’s honestly the smartest upgrade I’ve made to my workspace.`,
+    },
+    {
+      img: "/images/channegowda.jpg",
+      name: "Channegowda",
+      title: "Cloud Devops Engineer, Bengaluru",
+      date: "Sep 05, 2025",
+      desc: `I’ve been working remotely for the past six months, and I slowly realized I wasn’t hydrating enough or moving at all during the day. Even though I have a smartwatch, I really wanted something physical something made just for wellness, not just time or steps. Frost Aura changed that completely. The glow reminds me to sip water, stretch, and breathe. It’s like a quiet little coach on my desk.`,
+    },
+  ];
+
+  return (
+    <div className=" bg-[#F5F5F7] w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-12 lg:px-14 font-['Roboto'] py-8 sm:py-10 lg:py-10">
+      {/* Heading */}
+      <h2 className="text-[#021637] text-[22px] sm:text-[26px] md:text-[28px] lg:text-[32px] font-bold mb-5 sm:mb-8 lg:mb-12">
+        Testimonials{" "}
+        <span className="text-[#389ED7] font-bold">
+          See what our customers say!
+        </span>
+      </h2>
+
+      {/* Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-8 lg:gap-10">
+        {data.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-[20px] shadow-[0_4px_30px_rgba(0,0,0,0.08)] p-5 sm:p-7 lg:p-8 flex flex-col transition ease-in-out hover:shadow-lg focus:shadow-lg"
+            tabIndex={0}
+          >
+            {/* Profile Row */}
+            <div className="flex items-center gap-3 sm:gap-5 mb-4">
+              <img
+                src={item.img}
+                alt={`Photo of ${item.name}`}
+                className="w-12 h-12 sm:w-20 sm:h-20 rounded-full object-cover object-center border border-gray-100"
+                loading="lazy"
+              />
+              <div>
+                <div className="text-[15px] sm:text-[17px] lg:text-[18px] font-bold text-[#021637]">{item.name}</div>
+                <div className="text-[13px] sm:text-[15px] text-[#021637]">{item.title}</div>
+                <div className="text-[11px] sm:text-[13px] text-[#ADADAD] mt-1 font-bold">
+                  {item.date}
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="w-full h-[1px] bg-gray-200 mb-3"></div>
+
+            {/* Description */}
+            <p className="text-[14px] sm:text-[15px] lg:text-[16px] text-gray-700 leading-relaxed">
+              {item.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+
+const InstagramReels = () => {
+  const reels = [
+    "https://www.instagram.com/reel/DQuYBdfk6wS/embed",
+    "https://www.instagram.com/reel/DQt_j2QjwK6/embed",
+    "https://www.instagram.com/reel/DQuYBdfk6wS/embed", // duplicate to show 3 slides — replace with new one later
+  ];
+
+  return (
+    <section className="bg-white py-16 px-4 md:px-12 text-center">
+      {/* Section Heading */}
+       <h2 className=" text-left text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
+          Testimonials{" "}
+          <span className="font-normal text-[#389ED7]">
+          See what out customers say!
+          </span>
+        </h2>
+
+      {/* Carousel */}
+      <Swiper
+        modules={[Autoplay, Navigation, Pagination]}
+        spaceBetween={30}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 3500, disableOnInteraction: false }}
+        breakpoints={{
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+        loop
+        className="max-w-7xl mx-auto"
+      >
+        {reels.map((reel, index) => (
+          <SwiperSlide key={index}>
+            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-black">
+              <iframe
+                src={reel}
+                width="100%"
+                height="480"
+                frameBorder="0"
+                allowFullScreen
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                className="w-full h-[480px]"
+              ></iframe>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
+  );
+};
+
+
+
+
 const Home = () => (
   <>
     <style>
@@ -2696,19 +4724,28 @@ const Home = () => (
       `}
     </style>
 
-    
-    <HeroBanner /> 
-    <KeyFeatures/>
-   
-    <HowItWorksSection />
+    <HomeBanner2/>
+   {/* HomeBanner */}
+    <Features/>
+    <Reminder/>
+    <TechnicalSpecifications />
+    {/* <FeaturesSection/> */}
+    {/*HeroBanner /> */}
+    {/* <KeyFeaturesSection/> */}
+     {/* <KeyFeatures/> */}
+    {/*<HowItWorksSection /> */}
     <GallerySection />
-    <TechnicalSpecification />
-    <ComparisonFrost />
-    <MeetOurTeamSection />
-    <TestimonialsSection />
-    <BlogSection />
-    <TryItNowSection />
+    <Testimonials2 />
+    {/* <Testimonials /> */}
+     <Story/>
+     {/* TechnicalSpecification */}
+    {/* <ComparisonFrost /> */}
+    {/*<MeetOurTeamSection /> */}
+  {/* <TestimonialsSection /> */}
+ {/*<BlogSection /> */}
+    {/*<TryItNowSection /> */}
     <ContactSection />
+    {/* <InstagramReels /> */}
   </>
 );
 export default Home;

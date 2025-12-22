@@ -94,7 +94,7 @@ const GoogleTranslate = () => {
   return (
     <div
       ref={wrapperRef}
-      style={{ position: "fixed", top: "20px", right: "12px", zIndex: 99999 }}
+      style={{ position: "fixed", top: "10px", right: "12px", zIndex: 99999 }}
     >
       <button
         onClick={() => setOpen((o) => !o)}

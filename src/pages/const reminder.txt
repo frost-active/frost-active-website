@@ -1,0 +1,321 @@
+// Old code with Hover effect OLD 
+
+const Reminder = () => {
+  const cardsPerView = 5;
+  const scrollRef = useRef(null);
+
+   const reminders = [
+    {
+      title: "Drink Water",
+      img: [ "/images/rem1b.svg", "/images/rem1c.svg"],
+      desc:
+        "Get personalized nudges to drink water throughout your day, no more guesswork, just natural hydration.",
+    },
+    {
+      title: "Clean Bottle",
+      img: ["/images/rem2.svg", "/images/rem2b.svg"],
+      desc:
+        "FROST remembers what you forget. It tracks when you last cleaned your bottle and reminds you to wash it, keeping bacteria at bay.",
+    },
+    {
+      title: "Place Bottle",
+      img: ["/images/rem3.svg"],
+      desc:
+        "Left your bottle behind? FROST gently notifies you to place it back on the dock so your tracking never skips a beat.",
+    },
+    {
+      title: "Water Healing",
+      img: ["/images/rem4.svg"],
+      desc:
+        "FROST Aura turns hydration into a mindful ritual, infusing water with healing frequencies and mantras to harmonize energy and wellbeing.",
+    },
+    {
+      title: "Pomodoro",
+      img: ["/images/rem5.svg"],
+      desc:
+        "Work in deep focus cycles with built-in Pomodoro timers, paired with hydration cues to keep your energy flowing.",
+    },
+    {
+      title: "Take Medicines",
+      img: ["/images/rem6.svg"],
+      desc:
+        "Set gentle, scheduled medicine reminders aligned with your hydration cycle. Stay consistent with your health routine.",
+    },
+    {
+      title: "Meditation",
+      img: ["/images/rem7.svg"],
+      desc:
+        "Activate focused modes for your practice — FROST emits healing vibrations (like 432 Hz) to harmonize body and mind.",
+    },
+    {
+      title: "Take Break",
+      img: ["/images/rem8.svg"],
+      desc:
+        "Protect your focus with short, intentional breaks. Stretch, blink, breathe — let FROST cue your brain to reset.",
+    },
+  ];
+
+  const total = reminders.length;
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoverIndex, setHoverIndex] = useState(null);
+
+  const [mobileExpand, setMobileExpand] = useState(null);
+
+  const goLeft = () => {
+    const newIndex = Math.max(currentIndex - 1, 0);
+    setCurrentIndex(newIndex);
+    const width = scrollRef.current.clientWidth / cardsPerView;
+    scrollRef.current.scrollTo({ left: newIndex * width, behavior: "smooth" });
+  };
+
+  const goRight = () => {
+    const newIndex = Math.min(currentIndex + 1, total - cardsPerView);
+    setCurrentIndex(newIndex);
+    const width = scrollRef.current.clientWidth / cardsPerView;
+    scrollRef.current.scrollTo({ left: newIndex * width, behavior: "smooth" });
+  };
+
+  const getExpandedWidth = (title) => {
+    if (title === "Drink Water") return "w-[560px]";
+    if (title === "Clean Bottle") return "w-[580px]";
+    return "w-[400px]";
+  };
+
+  const getGridShift = () => {
+    if (hoverIndex === total - 1) return "-translate-x-[180px]";
+    return "translate-x-0";
+  };
+
+  return (
+    <div className="w-full relative flex justify-center font-['Roboto']">
+      <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-12 lg:px-14 py-8 relative">
+
+        <h2 className="text-[#021637] text-[22px] sm:text-[26px] md:text-[28px] lg:text-[32px] font-bold mb-8">
+          Display Reminders <span className="text-[#389ED7]">that you can customize</span>
+        </h2>
+
+        {/* LEFT BUTTON */}
+        {currentIndex > 0 && (
+          <button
+            onClick={goLeft}
+            className="hidden md:flex absolute lg:left-4 -left-10 bottom-28 -translate-y-1/2 z-50
+            w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300
+            items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        )}
+
+        {/* RIGHT BUTTON */}
+        {currentIndex < total - cardsPerView && (
+          <button
+            onClick={goRight}
+            className="hidden md:flex absolute lg:right-4 -right-10 bottom-28 -translate-y-1/2 z-50
+            w-14 h-14 rounded-full bg-[#E1E1E5] shadow-md hover:shadow-lg transition-all duration-300
+            items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
+
+        {/* ------------------------------------------------------ */}
+        {/* 🔥 MOBILE — 1 FULL CARD + NEXT CARD 20% VISIBLE */}
+        {/* ------------------------------------------------------ */}
+        <div className="md:hidden w-full overflow-x-auto flex gap-3 pb-10 no-scrollbar snap-x snap-mandatory">
+
+          {reminders.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center w-[80%] flex-shrink-0 snap-start"
+            >
+
+              {/* CARD */}
+              <div
+                onClick={() => setMobileExpand(mobileExpand === index ? null : index)}
+                className="
+                  bg-white shadow-lg rounded-2xl p-4 w-full flex-shrink-0
+                  transition-all duration-300 relative"
+              >
+                {/* NOT EXPANDED → SHOW ONLY SINGLE IMAGE */}
+                {mobileExpand !== index && (
+                  <div className="flex justify-center items-center py-6">
+                    <img
+                      src={item.img[0]}
+                      className="w-40 h-40 object-contain"
+                    />
+                  </div>
+                )}
+
+                {/* EXPANDED */}
+                {mobileExpand === index && (
+                <div className="mt-4">
+
+                {/* IMAGE BLOCK HANDLER */}
+                {(() => {
+                  switch (item.title) {
+                    case "Drink Water":
+
+                      return (
+                        <div className="flex justify-center items-center h-32 mb-4 relative">
+                          {item.img.map((src, i) => (
+                            <img
+                              key={i}
+                              src={src}
+                              className={`
+                                w-28 h-28 object-contain absolute
+                                ${i === 0 ? "left-[35%] -translate-x-1/2 z-30" : ""}
+                                ${i === 1 ? "left-[43%] z-20" : ""}
+                                ${i === 2 ? "left-[60%] z-10" : ""}
+                              `}
+                            />
+                          ))}
+                        </div>
+                      );
+
+                      case "Clean Bottle":
+                        return (
+                        <div className="flex justify-center items-center h-32 mb-4 relative">
+                          {item.img.map((src, i) => (
+                            <img
+                              key={i}
+                              src={src}
+                              className={`
+                                w-28 h-28 object-contain absolute
+                                ${i === 0 ? "left-[40%] -translate-x-1/2 z-30" : ""}
+                                ${i === 1 ? "left-[50%] z-20" : ""}
+ 
+                              `}
+                            />
+                          ))}
+                        </div>
+                      );
+
+                    default:
+                      return (
+                        <div className="flex justify-center items-center h-28 mb-4 relative">
+                          {item.img.map((src, i) => (
+                            <img
+                              key={i}
+                              src={src}
+                              className={`
+                                w-28 h-28 object-contain absolute
+                                ${i === 0 ? "left-1/2 -translate-x-1/2 z-30" : ""}
+                                ${i === 1 ? "left-[58%] z-20" : ""}
+                                ${i === 2 ? "left-[68%] z-10" : ""}
+                              `}
+                            />
+                          ))}
+                        </div>
+                      );
+                  }
+                })()}
+
+                {/* DESCRIPTION */}
+                <p className="text-gray-600 text-[14px] leading-[20px] text-center px-1">
+                  {item.desc}
+                </p>
+              </div>
+            )}
+              </div>
+
+              {/* TITLE */}
+              <p className="text-[18px] font-bold text-[#389ED7] mt-3 text-center">
+                {item.title}
+              </p>
+
+            </div>
+          ))}
+
+        </div>
+
+        {/* ------------------------------------------------------ */}
+        {/* DESKTOP — SAME AS BEFORE */}
+        {/* ------------------------------------------------------ */}
+        <div
+          ref={scrollRef}
+          className="hidden md:block w-screen -ml-[calc((100vw-100%)/2)] overflow-hidden pl-6 md:pl-16"
+        >
+          <div
+            className={`grid grid-flow-col auto-cols-max gap-6 md:gap-8 transition-all duration-500 ${getGridShift()}`}
+          >
+            {reminders.map((item, index) => (
+              <div
+                key={index}
+                className={`
+                  relative flex flex-col items-center transition-all duration-500
+                  ${hoverIndex === index ? getExpandedWidth(item.title) : "w-[220px]"}
+                `}
+                onMouseEnter={() => setHoverIndex(index)}
+                onMouseLeave={() => setHoverIndex(null)}
+              >
+                <div
+                  className={`
+                    rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.12)] bg-white overflow-visible
+                    transition-all duration-500 h-44 lg:h-48 w-full
+                    ${hoverIndex === index ? "flex flex-row" : "flex items-center justify-center"}
+                  `}
+                >
+                  {hoverIndex === index ? (
+                    item.title === "Drink Water" || item.title === "Clean Bottle" ? (
+                      <>
+                        <div className="w-1/2 h-full flex p-3">
+                          <div className="w-40 h-40 flex items-center">
+                            {item.img.map((src, i) => (
+                              <img
+                                key={i}
+                                src={src}
+                                className={`w-[92%] h-[92%] object-contain ${i !== 0 ? "-ml-8" : ""}`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="w-1/2 flex flex-col justify-center p-3">
+                          <p className="text-gray-600 text-[13px] leading-[18px]">{item.desc}</p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-1/2 h-full flex items-center justify-center p-3">
+                          <img src={item.img[0]} className="w-[92%] h-[92%] object-contain" />
+                        </div>
+
+                        <div className="w-1/2 flex flex-col justify-center p-3">
+                          <p className="text-gray-600 text-[13px] leading-[18px]">{item.desc}</p>
+                        </div>
+                      </>
+                    )
+                  ) : (
+                    <div className="w-40 h-40 flex justify-center items-center">
+                      <img src={item.img[0]} alt={item.title} className="w-[92%] h-[92%] object-contain" />
+                    </div>
+                  )}
+                </div>
+
+                <p
+                  className={`
+                    text-[18px] md:text-[20px] font-bold text-[#389ED7] transition-all duration-500
+                    ${
+                      hoverIndex === index
+                        ? "absolute left-2 bottom-2 text-left"
+                        : "mt-3 text-center w-full"
+                    }
+                  `}
+                >
+                  {item.title}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

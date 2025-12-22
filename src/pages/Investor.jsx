@@ -53,6 +53,12 @@ const CommunitySection = () => {
           <a href="https://www.facebook.com/share/16Q37LVMTM/" target="_blank" rel="noopener noreferrer">
           <img src="/images/facebook.png" alt="Facebook" className="w-12 -ml-2 cursor-pointer" />
           </a>
+          {/*
+         <a href="https://x.com/frostactive_07?s=21" target="_blank" rel="noopener noreferrer">
+          <img src="/images/twitter.png" alt="twitter" className="w-14 mt-0 -ml-4 cursor-pointer" />
+          </a>
+          */}
+        
           <a href="https://www.youtube.com/@Frost_active" target="_blank" rel="noopener noreferrer">
           <img src="/images/youtube.png" alt="YouTube" className="-ml-4 mt-2 w-14 cursor-pointer" />
           </a>
@@ -972,32 +978,60 @@ const FAQSection = () => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setSuccess(false);
-    try {
-      const params = new URLSearchParams();
-      params.append("question", form.question);
-      params.append("email", form.email);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-      await fetch(GOOGLE_SHEET_URL, {
-        method: "POST",
-        body: params,
-      });
-      setShowModal(true); // open modal on successful submission
-      setForm({ question: "", email: "" });
-
-      // Automatically hide success message after 3 seconds
-    setTimeout(() => {
-      setShowModal(false);
-    }, 10000);
-
-    } catch (err) {
-      alert("Failed to send. Try again.");
-    }
+  const { question, email } = form;
+  if (!email) {
+    alert("Please enter your email");
     setLoading(false);
-  };
+    return;
+  }
+
+  try {
+    // ✅ Google Sheet
+    const params = new URLSearchParams();
+    params.append("question", question);
+    params.append("email", email);
+
+    await fetch(GOOGLE_SHEET_URL, { method: "POST", body: params });
+
+    // ✅ ConvertKit Form (works safely in browser)
+    const CONVERTKIT_FORM_ID = "8592548";
+    const CONVERTKIT_API_KEY = "f19zF3PqAUMEWKhQJEs0BQ";
+    await fetch(`https://api.convertkit.com/v3/forms/${CONVERTKIT_FORM_ID}/subscribe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ api_key: CONVERTKIT_API_KEY,  
+      email: email, 
+      }),
+    });
+
+    // ✅ ConvertKit Tag (optional — not secure for production)
+    const CONVERTKIT_TAG_ID = "10984046";
+    const CONVERTKIT_API_SECRET = "yPWWBt94zkQpnhckl9HPkaN2NBmZuYgwM_6Zf1N9A0I";
+    await fetch(`https://api.convertkit.com/v3/tags/${CONVERTKIT_TAG_ID}/subscribe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ api_secret: CONVERTKIT_API_SECRET,  
+      email: email,
+       }),
+    });
+
+    setShowModal(true);
+    setForm({ question: "", email: "" });
+    setTimeout(() => setShowModal(false), 10000);
+
+  } catch (err) {
+    console.error("Error submitting:", err);
+    alert("Something went wrong. Please try again.");
+  }
+
+  setLoading(false);
+};
+
+
 
   //  FAQ List with individual question and answer
   const faqs = [
@@ -1037,8 +1071,6 @@ const FAQSection = () => {
       question: "How will you scale after crowdfunding?",
       answer: "After Kickstarter: Direct-to-customer website sales, Strategic partnerships with wellness centers and corporates, Expansion into smart water dispensers (Frost Aura Max), Global distribution via wellness expos, affiliate programs, and Amazon/retail",
     },
-    
-    
     
   ];
 
@@ -1492,7 +1524,7 @@ const InvestorPage = () => {
   const [newTab] = useState(''); // Change 'Investors' to any of the tabList names as needed
 
   const images = [
-  '/images/gallery3-2.jpg',
+  '/images/preorder1.jpg',
   '/images/gallery1-5.jpg',
   '/images/invest1.1.jpg',
   '/images/invest3.jpg',
@@ -1505,32 +1537,34 @@ const [selectedImage, setSelectedImage] = useState(0);
 
 
   return (
-    <div className=" relative left-1/2 right-1/2 w-screen -translate-x-1/2 font-sans bg-[#FFFFFF] text-gray-900">
+  <div className=" relative left-1/2 right-1/2 w-screen -translate-x-1/2 font-sans bg-[#FFFFFF] text-gray-900">
       
       {/* Main top content  */}
       <section className="text-center py-8 px-4 md:px-20 font-['Roboto']">
-  <div className="mt-20 relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-[#F5F5F5]">
-    <h1 className="-mt-4 text-3xl md:text-4xl font-bold text-[#021637] mb-1">
+     <div className="mt-20 relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-[#F5F5F5]">
+     <h1 className="-mt-4 text-3xl md:text-4xl font-bold text-[#021637] mb-1">
       INVEST IN FROST
-    </h1>
-    <p className="text-lg md:text-xl tracking-widest mb-8">
+     </h1>
+     <p className="text-lg md:text-xl tracking-widest mb-8">
       World’s First Smart Wellness Dock
-    </p>
-  </div>
-  <br />
+     </p>
+   </div>
+   <br />
 
-  <div className="flex flex-col md:flex-row items-stretch gap-6 w-full">
-    {/* Left Image with Thumbnails */}
-    <div className="w-full md:w-[100%] flex flex-col items-center md:items-start">
+   <div className="flex flex-col md:flex-row items-stretch gap-0 w-full"> {/* gap-6 */}
+    {/* Left Image with Thumbnails */} 
+    <div className="w-full md:w-[100%] flex flex-col items-center">
+       {/*  md:items-start  */}
+
       {/* Main Image */}
       <img
         src={images[selectedImage]}
         alt="frost"
-        className="md:ml-8 -mt-4 w-[550px] h-[335px]  rounded-lg transition-all duration-300"
-      /> {/* object-cover , object-contain*/}
+        className=" -mt-4 w-[550px] lg:h-[355px]  rounded-lg transition-all duration-300"
+      /> {/* -ml-8  */}    {/* object-cover , object-contain*/}
       
 
-      {/* Thumbnails */}
+      {/* Thumbnails 
       <div className="mt-4 flex justify-center md:justify-start gap-1 md:ml-[70px] flex-wrap">
         {images.map((img, index) => (
           <img
@@ -1545,13 +1579,13 @@ const [selectedImage, setSelectedImage] = useState(0);
             }  transition-all duration-200`}
           />
         ))}
-      </div>
+      </div> */}
     </div>
 
     {/* Right Text + Investment Card */}
-    <div className="-mt-6 w-full md:w-3/4 flex flex-col justify-start items-start gap-6 p-2 text-left">
+    <div className="lg:-mt-5 w-full md:w-3/4 flex flex-col justify-start items-start gap-6 p-2 text-left md:px-0">
       {/* Text Section */}
-      <div className="md:-ml-8 md:max-w-[460px] w-full">
+      <div className="md:max-w-[460px] w-full"> {/* -ml-8 */}
         <h3 className="text-2xl font-bold mb-1 tracking-wider">
           Be Part of the Wellness Revolution
         </h3>
@@ -1574,7 +1608,7 @@ const [selectedImage, setSelectedImage] = useState(0);
       </div>
 
       {/* Investment Card */}
-      <div className="md:-ml-8 bg-white -mt-6 shadow-md rounded-md px-6 py-4 w-full max-w-[400px] flex justify-between items-center gap-6">
+      <div className=" bg-white -mt-6 shadow-md rounded-md px-6 py-4 w-full max-w-[400px] flex justify-between items-center gap-6"> {/* -ml-8 */}
         {/* ₹50k Section (Left) */}
         <div className="text-left">
           <p className="text-[14px] tracking-widest text-[#021637] font-semibold mb-1">
@@ -1617,7 +1651,6 @@ const [selectedImage, setSelectedImage] = useState(0);
     </div>
   </div>
 </section>
-
 
 
       {/* Tabs at the Bottom */}
