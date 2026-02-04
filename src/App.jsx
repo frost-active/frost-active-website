@@ -41,8 +41,7 @@ import EmailPopup from "./components/EmailPopup";
 import WhatsAppButton from './components/WhatsAppButton';
 
 import WaterIntakeCalculator from './pages/WaterCalculator';
-
-
+import QuizPage from './pages/QuizPage';
 
 function App() {
    
@@ -85,6 +84,8 @@ function App() {
             <Route path="/reserve" element={<ReservePage />} />
             <Route path="/questions" element={<NoThanksPage />} />
             <Route path="/waterintakecalculator" element={<WaterIntakeCalculator />} />
+
+             <Route path="/quiz" element={<QuizPage />}  />
            
           
 

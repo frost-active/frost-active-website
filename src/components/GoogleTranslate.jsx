@@ -101,7 +101,7 @@ const GoogleTranslate = () => {
         aria-label="Open language selector"
         style={{ background: "transparent", border: "none", cursor: "pointer", padding: 6 }}
       >
-        <Globe size={30} color="#389ED7" />
+        <Globe size={30} color="#2F6995" />
       </button>
 
       {open && (

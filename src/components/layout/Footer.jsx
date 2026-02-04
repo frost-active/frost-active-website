@@ -11,6 +11,9 @@ const Footer = () => {
   const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzKvZ0eEtE8pt79rgvozrqs6kfkJoTkbcCFXDn9uuDrpg5qsdAsLn-uTVM25fycBsXI/exec";
 
+  const MASTER_GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
+
 const CHEERIO_API_KEY = "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba"; // <-- replace with your key
 
 const handleSubscribe = async (e) => {
@@ -33,6 +36,16 @@ const handleSubscribe = async (e) => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({ email }).toString(),
     });
+
+    fetch(MASTER_GOOGLE_SCRIPT_URL, {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+  body: `email=${encodeURIComponent(email)}&source=Newsletter Subscription`,
+});
+
 
     // 2️⃣ Cheerio Manual Workflow Trigger (UPDATED)
     await fetch(
@@ -69,7 +82,7 @@ const handleSubscribe = async (e) => {
   };
 
   return (
-    <footer className="relative bg-blue-50 px-4 sm:px-6 lg:px-8 flex flex-col pt-8">
+    <footer className="relative  px-4 sm:px-6 lg:px-8 flex flex-col pt-8">
       <div className="flex-1">
 
         {/* Main Content Row */}
@@ -86,19 +99,19 @@ const handleSubscribe = async (e) => {
             <div className="flex flex-col items-center md:items-start">
               <div className="flex flex-row justify-center md:justify-start gap-4 mt-4">
                 <a
-                  href="https://frostplug.com/"
+                  href="https://app.frostactive.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img src="/images/appstore.png" alt="App Store" className="h-10 w-auto object-contain" />
+                  <img src="/images/appstore.svg" alt="App Store" className="h-10 w-auto object-contain" />
                 </a>
 
                 <a
-                  href="https://frostplug.com/"
+                  href="https://app.frostactive.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img src="/images/playstore.png" alt="Google Play" className="h-10 w-auto object-contain" />
+                  <img src="/images/playstore.svg" alt="Google Play" className="h-10 w-auto object-contain" />
                 </a>
 
               </div>
@@ -134,7 +147,7 @@ const handleSubscribe = async (e) => {
           {/* Information Links */}
           <div className="md:pl-6 flex flex-col items-center md:items-start">
             <h4 className="font-semibold mb-0 text-blue-700 text-lg">
-              <span className="text-[#389ED7]">Information</span>
+              <span className="text-[#5B869D]">Information</span>
             </h4>
             <ul className="space-y-0">
               <li><Link to="/about" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">About Us</Link></li>
@@ -147,19 +160,19 @@ const handleSubscribe = async (e) => {
           {/* Contact Info */}
           <div className="md:pl-6 md:-ml-16 flex flex-col items-center md:items-start">
             <h4 className="font-semibold mb-1 text-blue-700 text-lg">
-              <span className="text-[#389ED7]">Contact Info</span>
+              <span className="text-[#5B869D]">Contact Info</span>
             </h4>
             <ul className="space-y-1 text-sm text-[#021637] font-[Roboto]">
               <li className="flex items-center justify-center md:justify-start gap-2">
-                <img src="/images/mail.png" alt="Mail" className="h-5 w-5" />
+                <img src="/images/mail.svg" alt="Mail" className="h-4 w-4" />
                 <a href="mailto:info@frostactive.com">info@frostactive.com</a>
               </li>
               <li className="flex items-center justify-center md:justify-start gap-2">
-                <img src="/images/phone.png" alt="Phone" className="h-5 w-5" />
+                <img src="/images/phone.svg" alt="Phone" className="h-4 w-4" />
                 <a href="tel:+017613892344">017613892344</a>
               </li>
               <li className="flex items-center justify-center md:justify-start gap-2">
-                <img src="/images/location.png" alt="Location" className="h-5 w-5 h-5 w-5 relative sm:left-0 md:left-0 lg:left-0 left-12 sm:bottom-0 md:bottom-0 lg:bottom-0 bottom-2" />
+                <img src="/images/location.svg" alt="Location" className="h-5 w-5 h-5 w-5 relative sm:left-0 md:left-0 lg:left-0 left-12 sm:bottom-0 md:bottom-0 lg:bottom-0 bottom-2" />
                 <span>131 Continental Dr, Suite 305, Newark, DE 19713, United States</span>
               </li>
             </ul>
@@ -168,7 +181,7 @@ const handleSubscribe = async (e) => {
           {/* Newsletter Subscribe */}
           <div className="md:pl-6 flex flex-col items-center md:items-start">
             <h4 className="font-semibold mb-1 text-lg">
-              <span className="text-[#389ED7]">Subscribe to our Newsletter</span>
+              <span className="text-[#5B869D]">Subscribe to our Newsletter</span>
             </h4>
             <form onSubmit={handleSubscribe} className="w-full flex flex-col gap-2">
               <input
@@ -181,7 +194,7 @@ const handleSubscribe = async (e) => {
                 }}
                 placeholder="Enter your email"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#389ED7] text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5B869D] text-sm"
               />
               <button
                 type="submit"
@@ -189,7 +202,7 @@ const handleSubscribe = async (e) => {
                 className={`w-full px-4 py-2 rounded-sm transition-colors text-sm 
                   ${isSubscribing 
                     ? "bg-blue-300 cursor-not-allowed" 
-                    : "bg-[#389ED7] hover:bg-[#2B7ACD] text-white"}`}
+                    : "bg-[#5B869D]  text-white"}`}
               >
                 {isSubscribing ? "Subscribing..." : "Subscribe"}
               </button>
@@ -222,7 +235,7 @@ const handleSubscribe = async (e) => {
       </div>
 
       {/* Bottom Blue Bar */}
-      <div className="w-screen h-[35px] bg-[#389ED7] mt-4 mx-[-1rem] sm:mx-[-1.5rem] lg:mx-[-2rem]"></div>
+      <div className="w-screen h-[35px] bg-[#5B869D] mt-4 mx-[-1rem] sm:mx-[-1.5rem] lg:mx-[-2rem]"></div>
     </footer>
   );
 };

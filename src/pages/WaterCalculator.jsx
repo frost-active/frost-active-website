@@ -11,6 +11,10 @@ const avgHeights = {
 // Google Sheets Web App URL 
 const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbw2pjoG5UvFmWYuQUwXZwmuN4f-S0odsKNU6Do9yIukTJGRvkTB51-W0Xr3KkhR4Pk0uA/exec';
 
+
+const MASTER_SHEET_WEBHOOK_URL =
+  "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
+
 // Helper function to send data to Google Sheets
 async function sendDataToGoogleSheet(data) {
   try {
@@ -24,6 +28,24 @@ async function sendDataToGoogleSheet(data) {
     // Fail silently
   }
 }
+
+// Send ONLY email + source to Master Sheet
+async function sendEmailToMasterSheet(email, source) {
+  try {
+    const formData = new URLSearchParams();
+    formData.append("email", email);
+    formData.append("source", source);
+
+    await fetch(MASTER_SHEET_WEBHOOK_URL, {
+      method: "POST",
+      body: formData,
+    });
+  } catch (err) {
+    // silent fail
+  }
+}
+
+
 
 // Improved, robust calculation logic
 function calculateWaterNeeded({
@@ -644,6 +666,8 @@ export default function WaterCalculator() {
     };
 
     sendDataToGoogleSheet(payload);
+   // 👇 NEW: Master Sheet email-only entry
+    sendEmailToMasterSheet(form.email, "Water Intake Calculator");
 
     setTimeout(() => {
       if (resultBoxRef.current) {

@@ -1,168 +1,239 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+
+const INDIEGOGO_LINK =
+  "https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=explore";
 
 const ReservePage = () => {
   const styles = {
     container: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      fontFamily: 'Roboto, sans-serif',
-      width: '100%',
-      boxSizing: 'border-box',
+      display: "flex",
+      flexWrap: "wrap",
+      alignItems: "stretch",
+      fontFamily: "Inter, sans-serif",
+      width: "100%",
+      marginTop: "80px",
     },
+
+    /* LEFT SECTION */
     left: {
-      flex: '1 1 400px',
-      padding: '20px',
-      display: 'flex',
-      flexDirection: 'column',
+      flex: "1 1 420px",
+      padding: "20px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      color: "#5B869D",
     },
-    right: {
-      flex: '1 1 400px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      padding: '20px',
+
+    leftImage: {
+      width: "100%",
+      maxWidth: "270px",
+      marginBottom: "20px",
+    
     },
-    title: {
-      fontSize: '41px',
-      color: '#021637',
-      fontWeight: '700',
-      marginBottom: '2px',
+
+    prelaunchText: {
+      fontSize: "26px",
+      fontWeight: "500",
+      marginBottom: "30px",
+      color: "#5B869D",
     },
-    subtitle: {
-      fontSize: '15.5px',
-      color: '#021637',
-      marginBottom: '20px',
-    },
-    priceSection: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      marginBottom: '20px',
-    },
-    priceNew: {
-      fontSize: '32px',
-      color: '#021637',
-      fontWeight: '700',
-    },
-    priceOld: {
-      fontSize: '20px',
-      textDecoration: 'line-through',
-      color: '#021637',
-    },
+
     reserveBtn: {
-      backgroundColor: '#389ED7',
-      color: '#fff',
-      border: 'none',
-      padding: '12px 20px',
-      fontSize: '16px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      marginBottom: '10px',
-      width: '98%',
+      backgroundColor: "#5B869D",
+      color: "#fff",
+      border: "none",
+      padding: "10px",
+      fontSize: "24px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      marginBottom: "12px",
+      width: "100%",
+      maxWidth: "420px",
     },
+
     noThanksBtn: {
-      backgroundColor: '#fff',
-      border: '1px solid #000000',
-      padding: '12px 20px',
-      fontSize: '16px',
-      borderRadius: '4px',
-      color: '#021637',
-      cursor: 'pointer',
-      marginBottom: '10px',
-      width: '98%',
+      backgroundColor: "#fff",
+      border: "1px solid #5B869D",
+      padding: "8px",
+      fontSize: "20px",
+      borderRadius: "6px",
+      color: "#5B869D",
+      cursor: "pointer",
+      marginBottom: "12px",
+      width: "100%",
+      maxWidth: "420px",
     },
+
     terms: {
-      fontSize: '16px',
-      color: '#021637',
-      marginBottom: '20px',
-      textAlign: 'center',
+      fontSize: "16px",
+      textAlign: "center",
+      maxWidth: "420px",
+      color: "#5B869D",
     },
+
     link: {
-      color: '#389ED7',
-      textDecoration: 'none',
+      color: "#5B869D",
     },
-    image: {
-      maxWidth: '100%',
-      maxHeight: '90%',
-      objectFit: 'contain',
+
+    /* RIGHT SECTION */
+    right: {
+      flex: "1 1 420px",
+      padding: "20px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    rightImage: {
+      width: "100%",
+      maxWidth: "820px",
+      height: "100%",
+      objectFit: "contain",
+      borderRadius: "16px",
+      cursor: "pointer",
+    },
+
+    /* FOOTER */
+    footer: {
+      width: "100%",
+      backgroundColor: "#5B869D",
+      color: "#fff",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "20px",
+      marginTop: "30px",
+      borderRadius: "10px",
+      fontSize: "18px",
+      gap: "20px",
+      textAlign: "center",
+    },
+
+    footerItem: {
+      padding: "0 10px",
+      whiteSpace: "nowrap",
+    },
+
+    footerDivider: {
+      width: "1px",
+      height: "26px",
+      backgroundColor: "#ffffff",
+      opacity: 0.7,
+    },
+
+    // NOTE: do NOT set `display` here — control display via CSS so media queries can show/hide it.
+    mobileDivider: {
+      width: "100%",
+      height: "1px",
+      backgroundColor: "#ffffff",
+      opacity: 0.6,
+      margin: "12px 0",
     },
   };
 
-  const leftRef = useRef(null);
-  const [imageHeight, setImageHeight] = useState('auto');
-
-  useEffect(() => {
-    if (leftRef.current) {
-      setImageHeight(leftRef.current.offsetHeight - 40); // subtract padding/margin
-    }
-  }, []); 
-
   return (
-    <div className="mt-20" style={styles.container}>
-      {/* Left Section */}
-      <div className="lg:ml-6" style={styles.left} ref={leftRef}>
-        <h1 style={styles.title}>Reserve Your Special Discount</h1>
-        <p style={styles.subtitle}>
-          Only on frostactive.com, pre-order now and reserve 40% for your FROST-Aura device.
-        </p>
-        <div style={styles.priceSection}>
-          <span style={styles.priceNew}>$59</span>
-          <span style={styles.priceOld}>$99</span>
+    <>
+      {/* MOBILE FOOTER CSS */}
+      <style>
+        {`
+          /* default: hide mobile horizontal divider and show vertical divider */
+          .footer-mobile-divider {
+            display: none;
+          }
+
+          .footer-vertical-divider {
+            display: block;
+          }
+
+          @media (max-width: 768px) {
+            /* on mobile: hide vertical divider, show horizontal full-width divider */
+            .footer-vertical-divider {
+              display: none;
+            }
+            .footer-mobile-divider {
+              display: block;
+            }
+          }
+        `}
+      </style>
+
+      <div style={styles.container}>
+        {/* LEFT SECTION */}
+        <div className="lg:ml-20" style={styles.left}>
+          <div className="lg:ml-14 ml-10">
+           
+              <img
+                src="/images/indiegogo.svg"
+                alt="Prelaunch"
+                style={styles.leftImage}
+              />
+         
+            <br />
+            <div style={styles.prelaunchText}>
+              <b>Visit our Prelaunch Page</b>
+            </div>
+          </div>
+
+          <button
+            style={styles.reserveBtn}
+            onClick={() => window.open(INDIEGOGO_LINK, "_blank")}
+          >
+            Reserve discount in Indiegogo
+          </button>
+
+          <button
+            style={styles.noThanksBtn}
+            onClick={() => (window.location.href = "/questions")}
+          >
+            No Thanks
+          </button>
+
+          <p style={styles.terms}>
+            by reserving, you accept the{" "}
+            <Link to="/terms" style={styles.link}>
+              <b>terms and condition</b>
+            </Link>
+          </p>
         </div>
-     
-        <div className='lg:mt-16'>
-        <button
-          style={styles.reserveBtn}
-          onClick={() => window.open('https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=explore', '_blank')}
-        >
-          Reserve discount for $3
-        </button>
 
-        <button
-  style={styles.noThanksBtn}
-  onClick={() => (window.location.href = '/questions')}
->
-  No Thanks
-</button>
-
+        {/* RIGHT SECTION */}
+        <div className="lg:mr-20" style={styles.right}>
+          <a
+            href={INDIEGOGO_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ width: "100%" }}
+          >
+            <img
+              src="/images/reserve.svg"
+              alt="Coming Soon"
+              style={styles.rightImage}
+            />
+          </a>
         </div>
-
-        {/* Terms and Conditions Link */}
-        <p style={styles.terms} className="relative z-10">
-          by reserving, you accept the{' '}
-          <Link to="/terms" style={styles.link}>
-            terms and conditions
-          </Link>
-        </p>
       </div>
 
-      {/* Right Section */}
-      <div className="lg:mt-0 -mt-24" style={styles.right}>
-        <img
-          className="rounded-lg"
-          src="/images/kit.jpg"
-          alt="Preorder Device"
-          style={{ ...styles.image, height: imageHeight }}
-        />
-      </div>
+      {/* FOOTER */}
+      <div style={styles.footer}>
+        <div style={styles.footerItem}>10+ Features</div>
+        <div className="footer-vertical-divider" style={styles.footerDivider} />
+        <div className="footer-mobile-divider" style={styles.mobileDivider} />
 
-      {/* Footer Strip */}
-      <div className="w-full bg-[#389ED7] text-white text-center md:text-lg lg:mt-2 -mt-12 py-3 px-4 rounded-lg overflow-hidden group relative z-0">
-        <div className="scroll-wrapper whitespace-nowrap inline-block group-hover:[animation-play-state:paused] ">
-          <span className="mx-3">100% Money-Back Guarantee</span>
-          <span className="mx-3">||</span>
-          <span className="mx-3">Risk-Free Commitment</span>
-          <span className="mx-3">||</span>
-          <span className="mx-3">Cancel anytime before launch</span>
-          <span className="mx-3">||</span>
-          <span className="mx-3">No strings attached</span>
-          <span className="mx-3">||</span>
-          <span className="mx-3">Just Attention</span>
+        <div style={styles.footerItem}>10+ Customizable Remainders</div>
+        <div className="footer-vertical-divider" style={styles.footerDivider} />
+        <div className="footer-mobile-divider" style={styles.mobileDivider} />
+
+        <div style={styles.footerItem}>432Hz Water Healing</div>
+        <div className="footer-vertical-divider" style={styles.footerDivider} />
+        <div className="footer-mobile-divider" style={styles.mobileDivider} />
+
+        <div style={styles.footerItem}>
+          INDIEGOGO PRELAUNCH CAMPAIGN TARGET
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

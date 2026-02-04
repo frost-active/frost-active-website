@@ -33,7 +33,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 
 
 
-//NEW HOME PAGE BANNER DECEMBER
+//NEW HOME PAGE BANNER DECEMBER LATEST
 const HomeBanner2 = () => {
   const textColor = "#5B869D";
   const navigate = useNavigate();
@@ -42,6 +42,30 @@ const HomeBanner2 = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const images = [
+  "/images/hb1.1.png",
+  "/images/hb2.svg",
+  "/images/hb3.svg",
+ // "/images/hb4.svg",
+  "/images/hb5.svg",
+  // "/images/hb6.svg",
+  // "/images/hb7.svg",
+  // "/images/hb8.svg",
+];
+
+const [currentImage, setCurrentImage] = useState(0);
+const MASTER_GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
+
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentImage((prev) => (prev + 1) % images.length);
+  }, 2000); // 2 second Display Image CHANGING TIME 
+
+  return () => clearInterval(interval);
+}, []);
 
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbyXWe1qfAIiQWK9C1NRIKF3LbW_izrXivtcZoAIKa9g_-geUFAWIfq5dinc8ialkXM/exec";
@@ -86,6 +110,16 @@ const HomeBanner2 = () => {
         body: `email=${encodeURIComponent(email)}`,
       }).catch(() => {});
 
+      fetch(MASTER_GOOGLE_SCRIPT_URL, {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+  body: `email=${encodeURIComponent(email)}&source=Pre Launch`,
+});
+
+
       const CHEERIO_API_KEY =
         "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
 
@@ -104,10 +138,14 @@ const HomeBanner2 = () => {
         }
       );
 
-      setSuccess(true);
-      setEmail("");
+      // Store email in persistent browser storage
+localStorage.setItem("frost_email", email);
 
-      setTimeout(() => navigate("/reserve"), 1500);
+setSuccess(true);
+setEmail("");
+
+setTimeout(() => navigate("/reserve"), 1500);  
+
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -119,13 +157,14 @@ const HomeBanner2 = () => {
     <section
       style={{
         width: "100%",
-        background: "#F7FBFD",
+        background: "#F6FCFF",
         fontFamily: "Inter, sans-serif",
         padding: "60px 40px 0",
         boxSizing: "border-box",
       }}
-    >
+     >
       {/* TOP CONTENT */}
+      <div className="lg:-ml-14 lg:-mt-8">
       <div
         className="homeBannerTop"
         style={{
@@ -137,24 +176,28 @@ const HomeBanner2 = () => {
           gap: "80px",
           flexWrap: "wrap",
         }}
-      >
+       >
         {/* LEFT IMAGE */}
         <div style={{ flex: 1, textAlign: "center" }}>
+          <div className="lg:-mt-8">
           <img
-            src="/images/hb1.png"
+            src={images[currentImage]}
             alt="Aura Device"
             style={{
               width: "760px",
               maxWidth: "100%",
               display: "block",
               margin: "0 auto",
+              transition: "opacity 0.2s ease-in-out",
             }}
           />
+          </div>
+
         </div>
 
         {/* RIGHT CONTENT */}
         <div
-          className="lg:-mt-[150px] -mt-[120px]"
+          className="lg:-mt-[110px] -mt-[120px]"
           style={{
             flex: 1,
             maxWidth: "460px",
@@ -257,7 +300,7 @@ const HomeBanner2 = () => {
 
             {error && (
               <p 
-              
+              className="lg:mr-28"
               style={{ color: "red", marginTop: "10px", fontSize: "14px" }}>
                 {error}
               </p>
@@ -270,9 +313,9 @@ const HomeBanner2 = () => {
             )}
           </div>
         </div>
+       </div>
       </div>
-
-      {/* BOTTOM FEATURES BAR */}
+       {/* BOTTOM FEATURES BAR */}
       <div
         className="lg:-mt-24 mt-6 w-screen -ml-[calc((100vw-100%)/2)]"
         style={{
@@ -292,7 +335,7 @@ const HomeBanner2 = () => {
             key={index}
             className="featureItem"
             style={{
-              padding: "30px 20px",
+              padding: "20px 20px",
               textAlign: "center",
               fontSize: "20px",
               borderRight:
@@ -350,6 +393,7 @@ const HomeBanner2 = () => {
     </section>
   );
 };
+
 
 
 
@@ -835,13 +879,13 @@ const Features = () => {
   return (
     <section
       id="features"
-      className="w-full px-6 md:px-12 lg:px-10 py-8 bg-[#F5F5F7]"
+      className="w-full px-6 md:px-12 lg:px-10 py-8 bg-[#FFFFFF]"
       style={{ fontFamily: "Roboto, sans-serif" }}
     >
       <div className="max-w-6xl mx-auto mb-6">
         <h2 className="text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
           Features{" "}
-          <span className="font-bold text-[#389ED7]">
+          <span className="font-bold text-[#5B869D]">
             that keep you hydrated and productive
           </span>
         </h2>
@@ -939,7 +983,7 @@ const Features = () => {
 
 
 
-// New REMINDER SECTION
+// New DISPLAY REMINDER SECTION
 const Reminder = () => {
   const cardsPerView = 5;
   const scrollRef = useRef(null);
@@ -1033,10 +1077,10 @@ const Reminder = () => {
   }, [hoverIndex]);
 
   return (
-    <div className="w-full relative flex justify-center font-['Roboto']">
+    <div className="bg-[#F6FCFF] w-full relative flex justify-center font-['Roboto']">
       <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-12 lg:px-14 py-8 relative">
         <h2 className="text-[#021637] text-[22px] sm:text-[26px] md:text-[28px] lg:text-[32px] font-bold mb-8">
-          Display Reminders <span className="text-[#389ED7]">that you can customize</span>
+          Display Reminders <span className="text-[#5B869D]">that you can customize</span>
         </h2>
 
         {/* LEFT BUTTON */}
@@ -1157,7 +1201,7 @@ const Reminder = () => {
                 )}
               </div>
 
-              <p className="text-[18px] font-bold text-[#389ED7] mt-3 text-center">
+              <p className="text-[18px] font-bold text-[#5B869D] mt-3 text-center">
                 {item.title}
               </p>
             </div>
@@ -1272,7 +1316,7 @@ const Reminder = () => {
 
                 <p
                   className={`
-                    text-[18px] md:text-[20px] font-bold text-[#389ED7] transition-all duration-500
+                    text-[18px] md:text-[20px] font-bold text-[#5B869D] transition-all duration-500
                     ${
                       hoverIndex === index
                         ? "absolute left-2 bottom-2 text-left"
@@ -1328,7 +1372,7 @@ const TechnicalSpecifications = () => {
       ),
     },
     {
-      img: "/images/ai2.svg",
+      img: "/images/ai.svg",
       title: "Hydration & Wellness Intelligence",
       description: (
         <>
@@ -1386,12 +1430,12 @@ const TechnicalSpecifications = () => {
 
   return (
     <section id="technical">
-      <div className="bg-[#F5F5F7] py-16 px-6 font-['Roboto']">
+      <div className="bg-[#FFFFFF] py-16 px-6 font-['Roboto']">
         {/* --- Section Heading --- */}
         <div className="max-w-6xl mx-auto mb-10">
           <h2 className="text-2xl md:text-3xl font-semibold text-[#021637] mb-2 text-left">
             Technical Specifications{" "}
-            <span className="font-bold text-[#389ED7]">
+            <span className="font-bold text-[#5B869D]">
               Engineered for accuracy, comfort, and longevity
             </span>
           </h2>
@@ -1488,7 +1532,7 @@ const Testimonials = () => {
       <div className="max-w-6xl mx-auto mb-10">
         <h2 className="text-2xl md:text-3xl font-semibold text-[#021637]">
           Testimonials{" "}
-          <span className="font-bold text-[#389ED7]">
+          <span className="font-bold text-[#5B869D]">
             See what our customers say!
           </span>
         </h2>
@@ -1683,7 +1727,7 @@ const HeroBanner = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-[28px] xl:text-[38px] text-[#389ED7] font-bold"
+          className="text-[28px] xl:text-[38px] text-[#5B869D] font-bold"
         >
           {renderSubtitle(subtitles[currentIndex % mainImages.length])}
         </motion.h2>
@@ -1702,11 +1746,11 @@ const HeroBanner = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="lg:mt-6 flex items-center bg-[#389ED7] text-lg text-white px-2 py-2 rounded-md shadow-md"
+          className="lg:mt-6 flex items-center bg-[#5B869D] text-lg text-white px-2 py-2 rounded-md shadow-md"
         >
           <a href="/prelaunch">Pre Launch</a>
           <span className="ml-2 bg-white w-6 h-6 rounded flex items-center justify-center">
-            <ArrowUpRight className="w-6 h-5 text-[#389ED7]" />
+            <ArrowUpRight className="w-6 h-5 text-[#5B869D]" />
           </span>
         </motion.button>
       </div>
@@ -1898,7 +1942,7 @@ const HeroSection = () => {
                 </h1>
                 <h2
                   ref={subheadingRef}
-                  className={`font-roboto font-semibold text-[28px] md:text-[34px] text-[#389ED7] ${
+                  className={`font-roboto font-semibold text-[28px] md:text-[34px] text-[#5B869D] ${
                     isMultiLine ? "mt-2" : ""
                   }`}
                   style={{ lineHeight: "1.3" }}
@@ -2027,7 +2071,7 @@ const KeyFeaturesSection = () => {
       {/* Header Section */}
       <div className="flex items-center justify-between mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-[#021637]">
-          FEATURES by <br /> <span style={{ color: "#389ED7" }}>FROST</span>
+          FEATURES by <br /> <span style={{ color: "#5B869D" }}>FROST</span>
         </h2>
         {/* Image on the right */}
         <img
@@ -2190,7 +2234,7 @@ const KeyFeatures = () => {
       <div className="lg:hidden text-center py-6">
         <h2 className="text-4xl text-[#021637] font-bold mb- font-['Roboto'] ">
           <span style={{ color: "#021637" }}>KEY </span>
-          <span style={{ color: "#389ED7" }}>FEATURES</span>
+          <span style={{ color: "#5B869D" }}>FEATURES</span>
         </h2>
         <p className="text-lg text-[#021637] mb-4 font-['Roboto'] ">explore in-depth</p>
       </div>
@@ -2216,7 +2260,7 @@ const KeyFeatures = () => {
                 alt={`Thumbnail ${index + 1}`}
                 className={`w-10 h-10 sm:w-14 sm:h-14 rounded-full cursor-pointer border-2   flex-shrink-0 ${
                   activeIndex === index
-                    ? "border-[#389ED7]"
+                    ? "border-[#5B869D]"
                     : "border-transparent"
                 } transition duration-300`}
                 onClick={() => handleThumbnailClick(index)}
@@ -2231,13 +2275,13 @@ const KeyFeatures = () => {
           <div className="hidden lg:block">
             <h2 className="text-4xl text-[#021637] font-bold mb-0">
               <span style={{ color: "#021637" }}>KEY </span>
-              <span style={{ color: "#389ED7" }}>FEATURES</span>
+              <span style={{ color: "#5B869D" }}>FEATURES</span>
             </h2>
             <p className="text-lg text-[#021637] mb-10">explore in-depth</p>
           </div>
 
           <h3
-            className={`text-[#389ED7] text-xl font-bold transition-opacity duration-500 ${
+            className={`text-[#5B869D] text-xl font-bold transition-opacity duration-500 ${
               fade ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -2253,7 +2297,7 @@ const KeyFeatures = () => {
             {descriptions[activeIndex]}
           </p>
           <div className="md:-mt-8">
-          <a href="#" className="text-[#389ED7] font-medium hover:underline transition" >
+          <a href="#" className="text-[#5B869D] font-medium hover:underline transition" >
              {/* learn more → */}
             </a>
             </div>
@@ -2446,10 +2490,10 @@ const FeaturesSection = () => {
     >
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-foreground" style={{ fontFamily: "Roboto", fontWeight: "600" }}>
         <span style={{ color: "#021637" }}>KEY </span>
-        <span style={{ color: "#389ED7" }}>FEATURES</span>
+        <span style={{ color: "#5B869D" }}>FEATURES</span>
       </h2>
       <p className="text-center text-muted-foreground mb-8">
-        <span style={{ color: "#389ED7" }}>Explore here </span>
+        <span style={{ color: "#5B869D" }}>Explore here </span>
         <span style={{ color: "#021637" }}>in-depth </span>
       </p>
 
@@ -2491,7 +2535,7 @@ const FeaturesSection = () => {
                     <button
                       onClick={() => toggleExpand(feature.id)}
                       className="text-sm font-medium hover:underline focus:outline-none"
-                      style={{ color: "#389ED7" }}
+                      style={{ color: "#5B869D" }}
                     >
                       {expandedRows.includes(feature.id) ? "Hide details ↑" : "Learn more →"}
                     </button>
@@ -2525,7 +2569,7 @@ const FeaturesSection = () => {
           <span
             key={i}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              activeIndex === i ? "bg-[#389ED7]" : "bg-[#B3DDF3]"
+              activeIndex === i ? "bg-[#5B869D]" : "bg-[#B3DDF3]"
             }`}
           />
         ))}
@@ -2653,13 +2697,13 @@ const HowItWorksSection = () => {
             >
               <span className="text-[#021637]">How it </span>
               <br />
-              <span className="text-[#389ED7]">WORKS?</span>
+              <span className="text-[#5B869D]">WORKS?</span>
             </h2>
             
             <button
               onClick={handleAllowSound}
              
-              className="transform md:-translate-x-56 -translate-x-10 bg-[#389ED7] text-white px-5 py-2 rounded-full font-medium hover:bg-[#2CA4E0]/90 animate-pulse whitespace-nowrap"
+              className="transform md:-translate-x-56 -translate-x-10 bg-[#5B869D] text-white px-5 py-2 rounded-full font-medium hover:bg-[#2CA4E0]/90 animate-pulse whitespace-nowrap"
             >
               🎧 Allow Sound
             </button>
@@ -2697,7 +2741,7 @@ const HowItWorksSection = () => {
           </div>
 
           <div className="mt-14 pl-0">
-            <button className="rounded-full px-6 py-3 text-white bg-[#389ED7] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md">
+            <button className="rounded-full px-6 py-3 text-white bg-[#5B869D] hover:bg-[#2CA4E0]/90 text-base font-medium shadow-md">
               <a href="/prelaunch">Pre Launch</a>
             </button>
           </div>
@@ -2759,7 +2803,7 @@ const HowItWorksSection = () => {
 };
 
 
-
+// GALLERY SECTION UPDATED 
 
 const allImages = [
   "/images/gallery6.png",  "/images/gallery2.png",
@@ -2851,11 +2895,11 @@ const GallerySection = () => {
   // 2. On desktop (sm and above), use original object-cover logic
 
   return (
-    <section className="w-full py-14 px-4 relative overflow-hidden">
+    <section className="bg-[#F6FCFF] w-full py-14 px-4 relative overflow-hidden">
       <div className="max-w-6xl mx-auto mb-10">
         <h2 className="text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
       Product Gallery{" "}
-          <span className="font-bold text-[#389ED7]">
+          <span className="font-bold text-[#5B869D]">
            Story of ours
           </span>
         </h2>
@@ -2868,11 +2912,11 @@ const GallerySection = () => {
       <div className="relative max-w-7xl mx-auto mt-8">
         <button
           onClick={prevImage}
-          className="absolute z-20 lg:left-6 left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-[#389ED7] flex items-center justify-center shadow transition"
+          className="absolute z-20 lg:left-6 left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-[#5B869D] flex items-center justify-center shadow transition"
           style={{ pointerEvents: isAnimating ? "none" : "auto", opacity: isAnimating ? 0.3 : 1 }}
         >
           <svg viewBox="0 0 13 20" width="22" height="22">
-            <polyline points="10,3 3,10 10,17" stroke="#389ED7" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <polyline points="10,3 3,10 10,17" stroke="#5B869D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
           </svg>
         </button>
 
@@ -2927,11 +2971,11 @@ const GallerySection = () => {
 
         <button
           onClick={nextImage}
-          className="absolute z-20 lg:right-6 right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white hover:bg-white border border-[#389ED7] flex items-center justify-center shadow transition"
+          className="absolute z-20 lg:right-6 right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white hover:bg-white border border-[#5B869D] flex items-center justify-center shadow transition"
           style={{ pointerEvents: isAnimating ? "none" : "auto", opacity: isAnimating ? 0.3 : 1 }}
         >
           <svg viewBox="0 0 13 20" width="22" height="22">
-            <polyline points="10,3 3,10 10,17" stroke="#389ED7" strokeWidth="2.5" fill="none" strokeLinecap="round" transform="rotate(180 6.5,10)" />
+            <polyline points="10,3 3,10 10,17" stroke="#5B869D" strokeWidth="2.5" fill="none" strokeLinecap="round" transform="rotate(180 6.5,10)" />
           </svg>
         </button>
 
@@ -2942,7 +2986,7 @@ const GallerySection = () => {
               key={idx}
               onClick={() => setCenter(idx)}
               aria-label={`Go to image ${idx + 1}`}
-              className={`w-2.5 h-2.5 rounded-full border-2 border-[#389ED7] ${idx === center ? "bg-[#389ED7]" : "bg-white"}`}
+              className={`w-2.5 h-2.5 rounded-full border-2 border-[#5B869D] ${idx === center ? "bg-[#5B869D]" : "bg-white"}`}
               style={{ transition: "background 0.3s, border 0.3s" }}
             />
           ))}
@@ -2981,7 +3025,7 @@ const TechnicalSpecification = () => {
       >
     
         <span className="text-[#021637]">TECHNICAL</span>
-        <span className="text-[#389ED7]"> SPECIFICATIONS</span>
+        <span className="text-[#5B869D]"> SPECIFICATIONS</span>
       </motion.h2>
 
       {/* Description */}
@@ -3093,7 +3137,7 @@ const ComparisonFrost = () => {
           viewport={{ once: true }}
         >
           <span className="text-[#021637]">COMPARISION</span>
-          <span className="text-[#389ED7]"> why FROST AURA?</span>
+          <span className="text-[#5B869D]"> why FROST AURA?</span>
         </motion.h2>
 
         {/* Paragraph */}
@@ -3145,7 +3189,7 @@ const ComparisonFrost = () => {
 
           {/* Frost Aura */}
           <motion.div
-            className="relative md:-top-20 rounded-xl bg-[#389ed7] p-6 shadow-md max-w-sm w-full mx-auto"
+            className="relative md:-top-20 rounded-xl bg-[#5B869D] p-6 shadow-md max-w-sm w-full mx-auto"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
@@ -3329,7 +3373,7 @@ const MeetOurTeamSection = () => {
         {!showMore ? (
           <div ref={viewMoreRef}>
             <button
-              className="mt-2 text-sm text-[#389ED7] underline"
+              className="mt-2 text-sm text-[#5B869D] underline"
               onClick={() => setShowMore(true)}
               style={{ fontFamily: 'Roboto', font: 'medium' }}
             >
@@ -3350,7 +3394,7 @@ const MeetOurTeamSection = () => {
               Whether on stage or in silent meditation, she weaves together the seen and unseen, making her a rare artist-healer who is both performer and priestess. Through Sound of Vedas, she now brings this sacred fusion to the world — one frequency at a time.
             </p>
             <button
-              className="mt-4 text-sm text-[#389ED7] underline"
+              className="mt-4 text-sm text-[#5B869D] underline"
               onClick={handleClose}
               style={{ fontFamily: 'Roboto', font: 'medium' }}
             >
@@ -3391,7 +3435,7 @@ const MeetOurTeamSection = () => {
               className="flex h-8 w-8 items-center justify-center rounded-full"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ backgroundColor: '#389ED7' }}
+              style={{ backgroundColor: '#5B869D' }}
             >
               {member.id === 11 ? (
                 <Instagram size={20} color="white" />
@@ -3409,7 +3453,7 @@ const MeetOurTeamSection = () => {
             <Link to="/djangel">
               <button
                 className="ml-3 px-3 py-1 rounded-full text-white text-sm"
-                style={{ backgroundColor: '#389ED7', fontFamily: 'Roboto', fontWeight: '500' }}
+                style={{ backgroundColor: '#5B869D', fontFamily: 'Roboto', fontWeight: '500' }}
               >
                 Read More
               </button>
@@ -3431,7 +3475,7 @@ const MeetOurTeamSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold" style={{ fontFamily: 'Roboto', font: 'semibold' }}>
-            <span className="text-[#389ED7]">Meet Our</span>
+            <span className="text-[#5B869D]">Meet Our</span>
             <br />
             <span className="text-[#021637]">Team</span>
           </h2>
@@ -3541,7 +3585,7 @@ const iconWrapperStyle = {
   width: 32,
   height: 32,
   borderRadius: 8,
-  backgroundColor: '#389ED7',
+  backgroundColor: '#5B869D',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -3600,11 +3644,11 @@ const TestimonialsSection = () => {
             }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-[#389ED7] block">What Our</span>
+            <span className="text-[#5B869D] block">What Our</span>
             <span className="text-[#021637]">Customers Says!!</span>
           </motion.h2>
           <motion.p
-            className="mb-6 text-base text-[#389ED7] max-w-xl break-words"
+            className="mb-6 text-base text-[#5B869D] max-w-xl break-words"
             style={{ fontFamily: 'Roboto' }}
             variants={{
               visible: { opacity: 1, y: 0 },
@@ -3761,7 +3805,7 @@ const TestimonialsSection = () => {
           {showMore ? (
             <motion.button
               onClick={handleSeeMore}
-              className="text-[#389ed7] -mt-4 text-base font-medium cursor-pointer"
+              className="text-[#5B869D] -mt-4 text-base font-medium cursor-pointer"
               style={{ textDecoration: 'none', fontWeight: 400, fontSize: 18, marginTop: 1 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -3773,7 +3817,7 @@ const TestimonialsSection = () => {
           ) : (
             <motion.button
               onClick={handleHide}
-              className="text-[#389ed7] text-base font-medium cursor-pointer"
+              className="text-[#5B869D] text-base font-medium cursor-pointer"
               style={{ textDecoration: 'none', fontWeight: 400, fontSize: 18, marginTop: 24 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -3883,7 +3927,7 @@ const BlogSection = () => {
           style={{ fontFamily: "Roboto", fontWeight: 600 }}
         >
           <span className="text-[#021637]">Blogs/</span>
-          <span className="text-[#389ED7]"> Resources</span>
+          <span className="text-[#5B869D]"> Resources</span>
         </h2>
         <p
           className="max-w-2xl mx-auto text-base sm:text-lg leading-relaxed "
@@ -3947,7 +3991,7 @@ const BlogSection = () => {
                   <div className="flex gap-2 mt-auto">
                     <a
                       href={post.url}
-                      className="relative flex items-center justify-between border-2 border-[#389ED7] text-[#389ED7] font-medium px-6 py-2 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:bg-[#e6f4fb] transition-all duration-300 w-fit"
+                      className="relative flex items-center justify-between border-2 border-[#5B869D] text-[#5B869D] font-medium px-6 py-2 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:bg-[#e6f4fb] transition-all duration-300 w-fit"
                       style={{ fontFamily: "Roboto" }}
                     >
                       <span>Read More</span>
@@ -4008,7 +4052,7 @@ const TryItNowSection = () => {
             >
               <h1 className="font-semibold text-4xl md:text-5xl leading-tight">
                 <span className="text-[#021637]">TRY it </span>
-                <span className="text-[#389ed7]">NOW!!</span>
+                <span className="text-[#5B869D]">NOW!!</span>
               </h1>
               <p className="font-semibold text-lg md:text-xl text-[#021637] mt-3">
                 Hurry UP, Go Ahead
@@ -4067,8 +4111,8 @@ const TryItNowSection = () => {
                           href={btn.link}
                           className="group relative block w-full rounded-[40px] overflow-hidden no-underline"
                         >
-                          <div className="absolute inset-0 bg-[#389ed733] rounded-[40px] border-[5px] border-[#b1e3ff] z-0" />
-                          <div className="relative z-10 h-14 md:h-16 w-full bg-[#389ED7] text-white text-lg md:text-xl font-medium flex items-center justify-between px-6 rounded-[40px] shadow-[1px_4px_12.8px_#00000040]">
+                          <div className="absolute inset-0 bg-[#5B869D33] rounded-[40px] border-[5px] border-[#b1e3ff] z-0" />
+                          <div className="relative z-10 h-14 md:h-16 w-full bg-[#5B869D] text-white text-lg md:text-xl font-medium flex items-center justify-between px-6 rounded-[40px] shadow-[1px_4px_12.8px_#00000040]">
                             {btn.label === "Pre Launch" ? ( 
                               <>
                                 <span>{btn.label}</span>
@@ -4108,13 +4152,13 @@ const TryItNowSection = () => {
               <div className="absolute bottom-0 right-0 scale-75 sm:scale-90 md:scale-100 w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] md:w-[240px] md:h-[240px]">
                 <div className="absolute inset-0 bg-[#b1e3ff88] rounded-full"></div>
                 <div className="absolute inset-[10px] md:inset-[20px] bg-[#7ad6fb88] rounded-full"></div>
-                <div className="absolute inset-[24px] md:inset-[60px] bg-[#389ed7] rounded-full"></div>
+                <div className="absolute inset-[24px] md:inset-[60px] bg-[#5B869D] rounded-full"></div>
               </div>
               {/* Small Circles */}
               <div className="absolute top-32 left-24 sm:top-16 sm:left-24 md:top-60 md:left-30 w-[50px] h-[50px] sm:w-[70px] sm:h-[70px] md:w-[120px] md:h-[120px]">
                 <div className="absolute inset-0 bg-[#b1e3ff88] rounded-full"></div>
                 <div className="absolute inset-[5px] md:inset-[12px] bg-[#7ad6fb88] rounded-full"></div>
-                <div className="absolute inset-[10px] md:inset-[30px] bg-[#389ed7] rounded-full"></div>
+                <div className="absolute inset-[10px] md:inset-[30px] bg-[#5B869D] rounded-full"></div>
               </div>
             </motion.div>
           </CardContent>
@@ -4129,6 +4173,9 @@ const TryItNowSection = () => {
 const ContactSection = () => {
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbxv_rlA8zUYbhhN8PuMVbcoh0mhXzlWAetJA9EH8qAGAd3Ya4myK8tt1h3yPFZ3d2TN/exec";
+
+      const MASTER_GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
 
   const { toast } = useToast();
 
@@ -4233,6 +4280,18 @@ const handleSubmit = async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     }).catch(() => {});
+   
+
+    // a Master Email Sheet (EMAIL ONLY)
+    fetch(MASTER_GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `email=${encodeURIComponent(email)}&source=Contact Us`,
+    }).catch(() => {});
+
 
     // 4️⃣ Cheerio Manual Workflow Trigger (UPDATED — email only)
     await fetch(
@@ -4293,7 +4352,7 @@ const handleSubmit = async (e) => {
   return (
     <section
       id="contact"
-      className="bg-[#F5F5F7]
+      className="bg-[#E3F6FF]
         container
         py-14 sm:py-10 lg:py-20
         px-4 sm:px-4 lg:px-8
@@ -4309,7 +4368,7 @@ const handleSubmit = async (e) => {
         >
           <h2 className=" text-left text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
           Contact Us{" "}
-          <span className="font-bold text-[#389ED7]">
+          <span className="font-bold text-[#5B869D]">
           Will love to hear from you
           </span>
         </h2>
@@ -4329,7 +4388,7 @@ const handleSubmit = async (e) => {
               animate="animate"
               variants={fadeInUp}
             >
-              Get in Touch <span className="text-[#389ed7]">with Us</span>
+              Get in Touch <span className="text-[#5B869D]">with Us</span>
             </motion.h3>
 
             <motion.p
@@ -4354,7 +4413,7 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   placeholder="Name"
                   required
-                  className="rounded-lg bg-[#c7ebff] px-5 py-3 text-[#021637cc] placeholder-[#021637cc] focus:ring-[#389ed7] focus:border-[#389ed7]"
+                  className="rounded-lg bg-[#FFFFFF] px-5 py-3 text-[#115384] placeholder-[#115384] ring-[#115384] border-[#115384]"
                 />
               </motion.div>
 
@@ -4366,7 +4425,7 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   placeholder="Email"
                   required
-                  className="rounded-lg bg-[#c7ebff] px-5 py-3 text-[#021637cc] placeholder-[#021637cc] focus:ring-[#389ed7] focus:border-[#389ed7]"
+                  className="rounded-lg bg-[#FFFFFF] px-5 py-3 text-[#021637cc] placeholder-[#021637cc] ring-[#115384] border-[#115384]"
                 />
               </motion.div>
 
@@ -4387,7 +4446,7 @@ const handleSubmit = async (e) => {
                   }}
                   placeholder="Phone Number"
                   required
-                  className="rounded-lg bg-[#c7ebff] px-5 py-3 text-[#021637cc] placeholder-[#021637cc] focus:ring-[#389ed7] focus:border-[#389ed7]"
+                  className="rounded-lg bg-[#FFFFFF] px-5 py-3 text-[#021637] placeholder-[#021637] ring-[#115384] border-[#115384]"
                 />
               </motion.div>
 
@@ -4399,7 +4458,7 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   placeholder="Query"
                   required
-                  className="rounded-lg bg-[#c7ebff] px-5 py-3 text-[#021637cc] placeholder-[#021637cc] focus:ring-[#389ed7] focus:border-[#389ed7]"
+                  className="rounded-lg bg-[#FFFFFF] px-5 py-3 text-[#021637] placeholder-[#021637] ring-[#115384] border-[#115384]"
                 />
               </motion.div>
 
@@ -4409,7 +4468,7 @@ const handleSubmit = async (e) => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Feedback"
-                  className="h-36 w-full rounded-lg bg-[#c7ebff] px-5 py-4 text-base text-[#021637cc] placeholder-[#021637cc] focus:ring-[#389ed7] focus:border-[#389ed7]"
+                  className="h-36 w-full rounded-lg bg-[#FFFFFF] px-5 py-4 text-base text-[#021637] placeholder-[#021637] ring-[#115384] border-[#115384]"
                   required
                 />
               </motion.div>
@@ -4417,7 +4476,7 @@ const handleSubmit = async (e) => {
               <motion.div className="sm:col-span-2" {...buttonTap}>
                 <Button
                   type="submit"
-                  className="w-full rounded-lg bg-[#389ed7] py-3 text-center text-lg font-medium text-white hover:bg-[#2b7ec5] transition"
+                  className="w-full rounded-lg bg-[#5B869D] py-3 text-center text-lg font-medium text-white transition"
                   disabled={submitting}
                 >
                   {submitting ? "Sending..." : "Send Message"}
@@ -4436,8 +4495,8 @@ const handleSubmit = async (e) => {
           >
             <div className="mt-8 lg:-mt-20">
               <img
-                src="/images/contactimg.png"
-                width={280}
+                src="/images/contactimg1.jpeg"
+                width={520}
                 alt="Contact Graphic"
                 className=""
                 loading="lazy"
@@ -4460,6 +4519,14 @@ const Story = () => {
     "/videos/video1.mp4",
   ];
 
+  // Thumbnail images (only for 2nd & 4th video)
+  const thumbnails = [
+    null,
+    "/images/video2thumb.png", // 👉 add your 2nd video thumbnail
+    null,
+    "/images/video4thumb.png", // 👉 add your 4th video thumbnail
+  ];
+
   const instaLinks = [
     "https://www.instagram.com/frost_active?igsh=MXA3N2FoYXY2aDBpbQ%3D%3D&utm_source=qr",
     "https://www.instagram.com/frost_espana?igsh=MXQ1NnBmc2V2M2V2Ng%3D%3D&utm_source=qr",
@@ -4467,92 +4534,56 @@ const Story = () => {
     "https://www.instagram.com/frost_portugal?igsh=em0ydzZoa2F0NmJy&utm_source=qr",
   ];
 
-  const [index, setIndex] = useState(0);
-
-  // Move 1 slide at a time
-  const goLeft = () => setIndex(prev => Math.max(prev - 1, 0));
-  const goRight = () => setIndex(prev => Math.min(prev + 1, videos.length - 2));
-
   return (
-    <section className="py-12 px-6 md:px-16 relative">
+    <section className="bg-[#F6FCFF] py-12 px-6 md:px-16 relative">
       <h2 className="text-2xl md:text-3xl mb-10">
         <span className="text-[#021637] font-bold">Know </span>
-        <span className="text-[#389ED7] font-bold">Our Story</span>
+        <span className="text-[#5B869D] font-bold">Our Story</span>
       </h2>
 
-      {/* LEFT BUTTON 
-      {index > 0 && (
-        <button
-          onClick={goLeft}
-          className="hidden md:flex absolute lg:left-3 -left-8 top-1/2 -translate-y-1/2 z-20 
-          items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-      )} */}
-
-      {/* RIGHT BUTTON *
-      {index < videos.length - 2 && (
-        <button
-          onClick={goRight}
-          className="hidden md:flex absolute lg:right-3 -right-5 top-1/2 -translate-y-1/2 z-20
-          items-center justify-center w-14 h-14 rounded-full bg-[#E1E1E5]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      )} /}
-
-      {/* DESKTOP SLIDER */}
+      {/* DESKTOP */}
       <div className="-mt-4 hidden md:block overflow-hidden">
-      <div
-        className="flex justify-between gap-5"
-        style={{
-          width: "100%",
-        }}
-      >
-        {videos.map((src, i) => (
-          <div key={i} className="w-1/4 flex flex-col items-center">
-            
-            {/* VIDEO WRAPPER WITH REDUCED SIZE */}
-            <div className="bg-white rounded-2xl shadow-md p-2 w-full">
-              <video
-                src={src}
-                controls
-                className="w-full h-auto object-contain rounded-2xl"
-              />
-            </div>
-
-            <div className="mt-3 flex justify-start w-full">
-              <a href={instaLinks[i]} target="_blank">
-                <img
-                  src="/images/insta.svg"
-                  className="w-10 h-10 opacity-80 hover:opacity-100 transition"
-                  alt="Instagram"
+        <div className="flex justify-between gap-5">
+          {videos.map((src, i) => (
+            <div key={i} className="w-1/4 flex flex-col items-center">
+              <div className="bg-white rounded-2xl shadow-md p-2 w-full">
+                <video
+                  src={src}
+                  controls
+                  poster={thumbnails[i] || undefined}
+                  className="w-full h-auto object-contain rounded-2xl"
                 />
-              </a>
+              </div>
+
+              <div className="mt-3 flex justify-start w-full">
+                <a href={instaLinks[i]} target="_blank" rel="noreferrer">
+                  <img
+                    src="/images/insta.svg"
+                    className="w-10 h-10 opacity-80 hover:opacity-100 transition"
+                    alt="Instagram"
+                  />
+                </a>
+              </div>
             </div>
-
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
 
-      {/* MOBILE SLIDER (same) */}
+      {/* MOBILE */}
       <div className="md:hidden flex gap-6 overflow-x-scroll snap-x snap-mandatory no-scrollbar">
         {videos.map((src, i) => (
           <div key={i} className="min-w-[80%] snap-start">
             <div className="bg-white rounded-2xl shadow-md p-2">
-              <video src={src} controls className="w-full h-auto rounded-2xl" />
+              <video
+                src={src}
+                controls
+                poster={thumbnails[i] || undefined}
+                className="w-full h-auto rounded-2xl"
+              />
             </div>
 
             <div className="mt-3">
-              <a href={instaLinks[i]} target="_blank">
+              <a href={instaLinks[i]} target="_blank" rel="noreferrer">
                 <img
                   src="/images/insta.svg"
                   className="w-10 h-10 opacity-80 hover:opacity-100 transition"
@@ -4566,7 +4597,9 @@ const Story = () => {
 
       <style>{`
         @media (max-width: 768px) {
-          .no-scrollbar::-webkit-scrollbar { display: none; }
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
         }
       `}</style>
     </section>
@@ -4608,11 +4641,11 @@ const Testimonials2 = () => {
   ];
 
   return (
-    <div className=" bg-[#F5F5F7] w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-12 lg:px-14 font-['Roboto'] py-8 sm:py-10 lg:py-10">
+    <div className=" bg-[#FFFFF] w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-12 lg:px-14 font-['Roboto'] py-8 sm:py-10 lg:py-10">
       {/* Heading */}
       <h2 className="text-[#021637] text-[22px] sm:text-[26px] md:text-[28px] lg:text-[32px] font-bold mb-5 sm:mb-8 lg:mb-12">
         Testimonials{" "}
-        <span className="text-[#389ED7] font-bold">
+        <span className="text-[#5B869D] font-bold">
           See what our customers say!
         </span>
       </h2>
@@ -4670,7 +4703,7 @@ const InstagramReels = () => {
       {/* Section Heading */}
        <h2 className=" text-left text-2xl md:text-3xl font-semibold text-[#021637] mb-2">
           Testimonials{" "}
-          <span className="font-normal text-[#389ED7]">
+          <span className="font-normal text-[#5B869D]">
           See what out customers say!
           </span>
         </h2>
@@ -4742,7 +4775,7 @@ const Home = () => (
     {/* <ComparisonFrost /> */}
     {/*<MeetOurTeamSection /> */}
   {/* <TestimonialsSection /> */}
- {/*<BlogSection /> */}
+  {/*<BlogSection /> */}
     {/*<TryItNowSection /> */}
     <ContactSection />
     {/* <InstagramReels /> */}

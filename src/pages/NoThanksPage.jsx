@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
+import { useEffect } from "react";
+
 
 const NoThanksPage = () => {
   const questions = [
     {
-      question: " Price feels high, what’s your ideal range?",
+      question: "What’s your ideal range for this product?",
       options: ["Under $30", "$30–$50", "$50–$70", " Above $70 is fine if value is clear"],
     },
     {
@@ -53,11 +55,19 @@ const NoThanksPage = () => {
       textInput: true,
     },
   ];
+  
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("frost_email");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
 
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(null));
   const [showModal, setShowModal] = useState(false);
-
+  
   const handleOptionClick = (optionIndex) => {
     const q = questions[current];
     const newAnswers = [...answers];
@@ -103,7 +113,12 @@ const NoThanksPage = () => {
   };
 
   const handleSubmit = () => {
-  const payload = { answers };
+  const payload = {
+  email: email || "unknown",
+  answers: answers,
+  timestamp: new Date().toISOString(),
+  page: "NoThanks"
+};
 
   fetch(
     "https://script.google.com/macros/s/AKfycbzhFh1Yjgen6NSFpXz38YxYG0FqHKQkEdFQJC9BSJfHIWt_qxLYhKhwip18zTSwdkmB/exec",

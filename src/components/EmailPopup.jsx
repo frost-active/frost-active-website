@@ -66,6 +66,9 @@ export default function EmailPopup() {
 
   const CHEERIO_API_KEY = "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba"; // ← replace with your real key
 
+const MASTER_GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   setError("");
@@ -86,6 +89,16 @@ const handleSubmit = async (e) => {
         body: new URLSearchParams({ email }),
       }
     );
+
+  fetch(MASTER_GOOGLE_SCRIPT_URL, {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+  body: `email=${encodeURIComponent(email)}&source=Welcome Email`,
+});
+
 
     if (!response.ok) {
       setError("Failed to submit. Please try again later.");
