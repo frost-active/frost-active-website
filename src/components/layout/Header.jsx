@@ -15,12 +15,10 @@ const navLinks = [
 ];
 
 const aboutLinks = [
-  { name: 'Technical Specification', url: '/', hash: '#technical' },
-  { name: 'Contact Us', url: '/', hash: '#contact' },
+  { name: 'Water Intake Calculator', url: '/', hash: '/waterintakecalculator' },
   { name: 'Invest', url: '/invest' },
 
-  // ✅ Web App link
-  { name: 'Web App', url: 'https://app.frostactive.com' },
+ 
 ];
 
 const Header = () => {
@@ -58,14 +56,14 @@ const Header = () => {
         }
       `}</style>
 
-      <header className="fixed top-0 left-0 w-full z-50 bg-white">
+      <header className="fixed top-0 left-0 w-full z-50 bg-[#E7F7FF]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <a href="/" className="flex items-center gap-2 font-extrabold text-xl text-primary cursor-pointer">
               <div className="relative left-[-20px] top-[0px]">
                 <img
-                  src="/images/logo3.png"
+                  src="/images/logosvg.svg"
                   loading="lazy"
                   alt="FROST Aura Smart Hydration dock on a desk"
                   className="h-40 w-auto object-contain max-w-[160px]"
@@ -80,14 +78,14 @@ const Header = () => {
                   <span
                     key={link.name}
                     onClick={() => handleNavClick(link.url, link.hash)}
-                    className="text-base text-[#2F6995] hover:text-primary hover:underline cursor-pointer transition-all"
+                    className="text-base text-[#41587E] hover:text-primary hover:underline cursor-pointer transition-all"
                   >
                     {link.name}
                   </span>
                 ))}
 
-                <div className="text-base text-[#2F6995] hover:text-primary hover:underline cursor-pointer transition-all">
-                  <a href="/waterintakecalculator">Water Intake Calculator</a>
+                <div className="text-base text-[#41587E] hover:text-primary hover:underline cursor-pointer transition-all">
+                  <a href="https://app.frostactive.com" target="_blank" rel="noopener noreferrer">Web App</a>
                 </div>
 
                 {/* About Dropdown */}
@@ -96,7 +94,7 @@ const Header = () => {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="flex items-center gap-1 text-base text-[#2F6995] hover:text-primary transition-all">
+                  <div className="flex items-center gap-1 text-base text-[#41587E] hover:text-primary transition-all">
                     About <ChevronDown className="w-4 h-4 mt-[1px]" />
                   </div>
 
@@ -122,71 +120,98 @@ const Header = () => {
                   </motion.div>
                 </div>
 
-                {/* QUIZ */}
+                {/* QUIZ 
                 <div className="text-lg font-semibold text-[#2F6995] hover:underline cursor-pointer transition-all quiz-blink">
                   <a href="/quiz">QUIZ</a>
-                </div> 
+                </div> */}
               </nav>
             </div>
 
-            {/* Mobile Navigation */}
-            <div className="md:hidden flex items-center gap-2">
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-[#2F6995]">
-                    <Menu className="h-6 w-6 -ml-[60px]" />
-                  </Button>
-                </DropdownMenuTrigger>
+        {/* Mobile Navigation */}
+<div className="md:hidden flex items-center gap-2">
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="ghost" size="icon" className="text-[#41587E]">
+        <Menu className="h-6 w-6 -ml-[60px]" />
+      </Button>
+    </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end" className="bg-white rounded-lg shadow-lg">
+    <DropdownMenuContent align="end" className="bg-white rounded-lg shadow-lg w-56 p-2">
 
-  {/* Existing nav links */}
-  {navLinks.map((link) => (
-    <DropdownMenuItem key={link.name} asChild>
-      <span
-        onClick={() => handleNavClick(link.url, link.hash)}
-        className="text-[#2F6995] hover:bg-primary/90 rounded-md px-4 py-2 transition-all cursor-pointer"
-      >
-        {link.name}
-      </span>
-    </DropdownMenuItem>
-  ))}
+      {/* Features */}
+      <DropdownMenuItem asChild>
+        <span
+          onClick={() => handleNavClick('/', '#features')}
+          className="text-[#41587E] hover:bg-gray-100 rounded-md px-4 py-2 transition-all cursor-pointer block"
+        >
+          Features
+        </span>
+      </DropdownMenuItem>
 
-  {/* ✅ ADD Water Intake Calculator for MOBILE ONLY */}
-  <DropdownMenuItem asChild>
-    <span
-      onClick={() => handleNavClick('/waterintakecalculator')}
-      className="text-[#2F6995] hover:bg-primary/90 rounded-md px-4 py-2 transition-all cursor-pointer"
-    >
-      Water Intake Calculator
-    </span>
-  </DropdownMenuItem>
+      {/* Web App */}
+      <DropdownMenuItem asChild>
+        <a
+          href="https://app.frostactive.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#41587E] hover:bg-gray-100 rounded-md px-4 py-2 transition-all cursor-pointer block w-full"
+        >
+          Web App
+        </a>
+      </DropdownMenuItem>
 
-  {/* About links */}
-  {aboutLinks.map((link) => (
-    <DropdownMenuItem key={link.name} asChild>
-      <span
-        onClick={() => handleNavClick(link.url, link.hash)}
-        className="text-[#2F6995] hover:bg-primary/90 rounded-md px-4 py-2 transition-all cursor-pointer"
-      >
-        {link.name}
-      </span>
-    </DropdownMenuItem>
-  ))}
- 
- 
-                      {/*QUIZ */}
-                   <div className="w-full px-4 py-2 quiz-blink">
-                    <a href="/quiz" className="w-full block text-[#2F6995] font-semibold">
-                      QUIZ
-                    </a>
-                  </div> 
+      {/* About Dropdown Toggle */}
+      <div className="w-full">
+        <button
+          onClick={() => setIsAboutOpen(!isAboutOpen)}
+          className="w-full flex items-center justify-between text-[#41587E] px-4 py-2 hover:bg-gray-100 rounded-md transition-all"
+        >
+          About
+          <ChevronDown
+            className={`w-4 h-4 transition-transform duration-300 ${
+              isAboutOpen ? "rotate-180" : ""
+            }`}
+          />
+        </button>
 
-</DropdownMenuContent>
+        {/* Smooth Animated Dropdown */}
+        <motion.div
+          initial={false}
+          animate={{
+            height: isAboutOpen ? "auto" : 0,
+            opacity: isAboutOpen ? 1 : 0,
+          }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <div className="flex flex-col mt-1">
+            <span
+              onClick={() => handleNavClick('/waterintakecalculator')}
+              className="text-[#41587E] pl-8 py-2 hover:bg-gray-100 rounded-md cursor-pointer transition-all"
+            >
+              Water Intake Calculator
+            </span>
 
-              </DropdownMenu>
-            </div>
+            <span
+              onClick={() => handleNavClick('/invest')}
+              className="text-[#41587E] pl-8 py-2 hover:bg-gray-100 rounded-md cursor-pointer transition-all"
+            >
+              Invest
+            </span>
+          </div>
+        </motion.div>
+      </div>
+
+      {/*QUIZ 
+      <div className="w-full px-4 py-2 quiz-blink">
+        <a href="/quiz" className="w-full block text-[#2F6995] font-semibold">
+          QUIZ
+        </a>
+      </div> */}
+
+    </DropdownMenuContent>
+  </DropdownMenu>
+</div>
           </div>
         </div>
       </header>

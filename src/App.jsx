@@ -85,7 +85,7 @@ function App() {
             <Route path="/questions" element={<NoThanksPage />} />
             <Route path="/waterintakecalculator" element={<WaterIntakeCalculator />} />
 
-             <Route path="/quiz" element={<QuizPage />}  />
+            <Route path="/quiz" element={<QuizPage />}  />
            
           
 
