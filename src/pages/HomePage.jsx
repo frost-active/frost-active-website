@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useToast } from '@/components/ui/use-toast';
+import { useNavigate } from "react-router-dom";
 
 
 const HomePage = () => {
@@ -202,6 +203,40 @@ const [activeAI, setActiveAI] = useState(2);
     "/images/ai4.svg",
     "/images/ai5.svg",
   ];
+  const [touchStartX1, setTouchStartX1] = useState(null);
+const [touchEndX1, setTouchEndX1] = useState(null);
+
+const isMobile = window.innerWidth <= 768; // mobile breakpoint
+const swipeThreshold = 50; // minimum swipe distance
+
+  const handleTouchStart1 = (e) => {
+  if (!isMobile) return;
+  setTouchEndX(null);
+  setTouchStartX1(e.targetTouches[0].clientX);
+};
+
+const handleTouchMove1 = (e) => {
+  if (!isMobile) return;
+  setTouchEndX1(e.targetTouches[0].clientX);
+};
+
+const handleTouchEnd1 = () => {
+  if (!isMobile || !touchStartX1 || !touchEndX1) return;
+
+  const distance = touchStartX1 - touchEndX1;
+
+  if (distance > swipeThreshold) {
+    // Swiped Left → Next
+    setActiveAI((prev) => (prev + 1) % aiImages.length);
+  } else if (distance < -swipeThreshold) {
+    // Swiped Right → Previous
+    setActiveAI((prev) =>
+      prev === 0 ? aiImages.length - 1 : prev - 1
+    );
+  }
+};
+
+
   /* ---------------- VIDEO AUTOPLAY WHEN IN VIEW ---------------- */
   const videoRef = useRef(null);
 
@@ -251,6 +286,104 @@ const [activeAI, setActiveAI] = useState(2);
     }, [charIndex, isDeleting]);  
 
 
+    // ================= EMAIL SUBSCRIBE LOGIC OF HERO BANNER ================= 
+
+    const navigate = useNavigate();
+const [email, setEmail] = useState("");
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState("");
+const [success, setSuccess] = useState(false);
+
+const GOOGLE_SCRIPT =
+  "https://script.google.com/macros/s/AKfycbyXWe1qfAIiQWK9C1NRIKF3LbW_izrXivtcZoAIKa9g_-geUFAWIfq5dinc8ialkXM/exec";
+
+const MASTER_GOOGLE_SCRIPT =
+  "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
+
+
+const validateEmails = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[A-Za-z.]{2,}$/;
+  if (!regex.test(email)) return false;
+
+  const validTLDs = new Set([
+    "com","org","net","info","biz","xyz","dev","app","pro","me","name",
+    "online","site","tech","store","ai","io","cloud","digital","media",
+    "in","us","uk","ca","au","nz","de","fr","jp","sg","ae","sa","pk","lk",
+    "bd","cn","es","it","nl",
+    "co.in","org.in","net.in","ac.in","gov.in","nic.in",
+    "co.uk","org.uk","ac.uk",
+    "co.za","co.jp","com.au","com.sg","com.pk"
+  ]);
+
+  const parts = email.toLowerCase().split("@")[1].split(".");
+  const tld1 = parts[parts.length - 1];
+  const tld2 = parts.length >= 2 ? parts.slice(-2).join(".") : null;
+
+  return validTLDs.has(tld1) || (tld2 && validTLDs.has(tld2));
+};
+
+
+const handleSubscribe = async () => {
+  if (!validateEmails(email)) {
+    setError("Please enter a valid email address.");
+    return;
+  }
+
+  setError("");
+  setLoading(true);
+
+  try {
+    fetch(GOOGLE_SCRIPT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `email=${encodeURIComponent(email)}`,
+    }).catch(() => {});
+
+    fetch(MASTER_GOOGLE_SCRIPT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `email=${encodeURIComponent(email)}&source=Pre Launch`,
+    });
+
+    const CHEERIO_API_KEY =
+      "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
+
+    await fetch(
+      "https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": CHEERIO_API_KEY,
+        },
+        body: JSON.stringify({
+          email,
+          workflowId: "691d8bd1024212623f2b31b8",
+        }),
+      }
+    );
+
+    // Store email in browser
+    localStorage.setItem("frost_email", email);
+
+    setSuccess(true);
+    setEmail("");
+
+    // Navigate after 1 second
+    setTimeout(() => navigate("/reserve"), 1000);
+
+  } catch (err) {
+    setError("Something went wrong. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
    return (
     <div style={{ fontFamily: "Rethink Sans, sans-serif" }}>
       
@@ -306,7 +439,7 @@ const [activeAI, setActiveAI] = useState(2);
 
           {/* RIGHT SIDE TEXT */}
           <div
-          className="lg:-mt-56 -mt-[320px]"
+          className="lg:-mt-20 -mt-[320px]"
             style={{
               flex: "0 1 450px",
               display: "flex",
@@ -349,12 +482,58 @@ const [activeAI, setActiveAI] = useState(2);
                 color: "#7184A4",
                 WebkitTextStroke: "0.3px #000000",
               }}
-            >
-            <span className="typewriter">
+             >
+             <span className="typewriter">
                 {displayText}
                 <span className="cursor">|</span>
               </span>
             </div>
+            {/* EMAIL SUBSCRIBE SECTION */}
+            <div className="lg:mt-16 mt-4 lg:ml-0 ml-8">
+<div className="subscribe-wrapper">
+  <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
+  
+  <input
+    type="email"
+    placeholder="Email to Subscribe"
+    className="subscribe-input"
+    value={email}
+    onChange={(e) => {
+      setEmail(e.target.value);
+      setError("");
+    }}
+  />
+
+  {/* ✅ ERROR MESSAGE */}
+  <span className={`email-error ${error ? "show" : ""}`}>
+    Please enter a valid e-mail address
+  </span>
+</div>
+
+        <button
+          className="subscribe-arrow"
+          onClick={handleSubscribe}
+          disabled={loading}
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="arrow-svg"
+          >
+            <path
+              d="M0 12H22M22 12L16 6M22 12L16 18"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        </div>
+        </div>
           </div>
         </div>
 
@@ -392,6 +571,99 @@ const [activeAI, setActiveAI] = useState(2);
           50% { opacity: 0; }
           100% { opacity: 1; }
         }
+          /* ================= EMAIL SUBSCRIBE SECTION ================= */
+
+            .subscribe-wrapper {
+              margin-top: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 24px;
+              flex-wrap: nowrap;
+            }
+
+            /* Input Field */
+            .subscribe-input {
+              width: 260px;
+              max-width: 100%;
+              padding: 8px 24px;
+              border: 2px solid #497187;
+              border-radius: 8px;
+              font-size: 16px;
+              color: #497187;
+              background: transparent;
+              outline: none;
+            }
+
+            .subscribe-input::placeholder {
+              color: #497187;
+            }
+
+            /* Arrow Button (Exact Design Based on Image) */
+            .subscribe-arrow {
+                  width: 45px;
+                  height: 45px;
+                  background: #41587E; /* Exact soft dark blue like image */
+                  border-radius: 50%;
+                  border: none;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  cursor: pointer;
+                  transition: transform 0.3s ease;
+                }
+
+                .subscribe-arrow:hover {
+                  transform: scale(1.05);
+                }
+
+                .arrow-svg {
+                  width: 26px;
+                  height: 26px;
+                }
+
+            
+
+            /* ================= RESPONSIVE ================= */
+
+            @media (max-width: 900px) {
+              .subscribe-wrapper {
+                flex-direction: row;
+                gap: 16px;
+              }
+
+              .subscribe-input {
+                width: 100;
+              }
+
+              .subscribe-arrow {
+                width: 40px;
+                height: 40px;
+              }
+
+              .arrow-icon {
+                font-size: 22px;
+              }
+            }
+              .email-error {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+              font-size: 14px;
+              color: red;
+              margin-top: 8px;
+
+              opacity: 0;
+              transform: translateY(-4px);
+              transition: opacity 0.3s ease, transform 0.3s ease;
+              pointer-events: none;
+            }
+
+              .email-error.show {
+                opacity: 1;
+                transform: translateY(0);
+                }
         `}
       </style>
       </section>
@@ -399,7 +671,7 @@ const [activeAI, setActiveAI] = useState(2);
       {/* ================= HYDRATION SECTION ================= */}
       <section
       id="features"
-      className="-mt-80 lg:-mt-20"
+      className="-mt-60 lg:-mt-20"
         style={{
           background: "#E6F6FF",
           padding: "100px 20px",
@@ -605,14 +877,17 @@ className="-mt-10"
 
   {/* Carousel */}
   <div
-    style={{
-      position: "relative",
-      width: "100%",
-      maxWidth: "1000px",
-      height: "480px",
-      margin: "80px auto 0",
-    }}
-  >
+  style={{
+    position: "relative",
+    width: "100%",
+    maxWidth: "1000px",
+    height: "480px",
+    margin: "80px auto 0",
+  }}
+  onTouchStart={handleTouchStart1}
+  onTouchMove={handleTouchMove1}
+  onTouchEnd={handleTouchEnd1}
+>
     {aiImages.map((img, index) => {
       const total = aiImages.length;
       const diff = (index - activeAI + total) % total;
@@ -789,12 +1064,12 @@ className="-mt-14"
   {/* Gallery Grid */}
   <div
     style={{
-      marginTop: "clamp(30px, 6vw, 70px)", // 🔥 Less space above grid on mobile
+      marginTop: "clamp(30px, 6vw, 70px)", // Less space above grid on mobile
       maxWidth: "1100px",
       marginInline: "auto",
       display: "grid",
-      gridTemplateColumns: "repeat(3, 1fr)",
-      gap: "clamp(0px, 3vw, 10px)", // 40 px🔥 Smaller gap on mobile, normal on desktop
+      gridTemplateColumns: "repeat(4, 1fr)",
+      gap: "clamp(0px, 3vw, 10px)", // 40 px Smaller gap on mobile, normal on desktop
     }}
   >
     {Array.from({ length: 12 }).map((_, index) => (
