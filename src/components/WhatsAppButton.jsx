@@ -3,7 +3,7 @@ import React from "react";
 import { FaWhatsapp } from "react-icons/fa";
 
 export default function WhatsAppButton() {
-  const phoneNumber = "4917613892344"; // Your WhatsApp number (with country code, no + sign)
+  const phoneNumber = "918660538505"; // Your WhatsApp number (with country code, no + sign)
 
   return (
     <a

@@ -46,6 +46,7 @@ const HomePage = () => {
 
   ];
 
+
 //CONTACT US FORM LOGIC and INTEGRATIONS
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbxv_rlA8zUYbhhN8PuMVbcoh0mhXzlWAetJA9EH8qAGAd3Ya4myK8tt1h3yPFZ3d2TN/exec";
@@ -204,7 +205,7 @@ const [activeAI, setActiveAI] = useState(2);
     "/images/ai5.svg",
   ];
   const [touchStartX1, setTouchStartX1] = useState(null);
-const [touchEndX1, setTouchEndX1] = useState(null);
+  const [touchEndX1, setTouchEndX1] = useState(null);
 
 const isMobile = window.innerWidth <= 768; // mobile breakpoint
 const swipeThreshold = 50; // minimum swipe distance
@@ -258,7 +259,7 @@ const handleTouchEnd1 = () => {
   }, []);
 
 
-   // ================= TYPEWRITER EFFECT  =================
+   // ================= TYPEWRITER EFFECT for HERO BANNER  =================
   const fullText = "FOCUS || CALM || FLOW";
     const [displayText, setDisplayText] = React.useState("");
     const [isDeleting, setIsDeleting] = React.useState(false);
@@ -286,6 +287,7 @@ const handleTouchEnd1 = () => {
     }, [charIndex, isDeleting]);  
 
 
+
     // ================= EMAIL SUBSCRIBE LOGIC OF HERO BANNER ================= 
 
     const navigate = useNavigate();
@@ -293,6 +295,7 @@ const [email, setEmail] = useState("");
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState("");
 const [success, setSuccess] = useState(false);
+const [isFocused, setIsFocused] = useState(false);
 
 const GOOGLE_SCRIPT =
   "https://script.google.com/macros/s/AKfycbyXWe1qfAIiQWK9C1NRIKF3LbW_izrXivtcZoAIKa9g_-geUFAWIfq5dinc8ialkXM/exec";
@@ -419,7 +422,7 @@ const handleSubscribe = async () => {
             }}
           >
             <a
-              href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=explore"
+              // href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=explore"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -488,27 +491,34 @@ const handleSubscribe = async () => {
                 <span className="cursor">|</span>
               </span>
             </div>
+            
             {/* EMAIL SUBSCRIBE SECTION */}
             <div className="lg:mt-16 mt-4 lg:ml-0 ml-8">
-<div className="subscribe-wrapper">
-  <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
-  
-  <input
-    type="email"
-    placeholder="Email to Subscribe"
-    className="subscribe-input"
-    value={email}
-    onChange={(e) => {
-      setEmail(e.target.value);
-      setError("");
-    }}
-  />
+        <div className="subscribe-wrapper">
+          <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
 
-  {/* ✅ ERROR MESSAGE */}
-  <span className={`email-error ${error ? "show" : ""}`}>
-    Please enter a valid e-mail address
-  </span>
-</div>
+            <input
+              type="email"
+              placeholder={isFocused ? "" : "Email to Subscribe"}
+              className="subscribe-input"
+              value={email}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => {
+                if (email === "") {
+                  setIsFocused(false);
+                }
+              }}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError("");
+              }}
+            />
+            
+            {/* ✅ ERROR MESSAGE */}
+        <span className={`email-error ${error ? "show" : ""}`}>
+          Please enter a valid e-mail address
+        </span>
+      </div>
 
         <button
           className="subscribe-arrow"
@@ -584,20 +594,23 @@ const handleSubscribe = async () => {
 
             /* Input Field */
             .subscribe-input {
-              width: 260px;
-              max-width: 100%;
-              padding: 8px 24px;
-              border: 2px solid #497187;
-              border-radius: 8px;
-              font-size: 16px;
-              color: #497187;
-              background: transparent;
-              outline: none;
-            }
+                width: 260px;
+                max-width: 100%;
+                padding: 10px 24px;
+                border: 2px solid #497187;
+                border-radius: 8px;
+                font-size: 16px;
+                color: #497187;
+                background: transparent;
+                outline: none;
+                height: 45px;
+                text-align: center;              /* ✅ Center text */
+              }
 
-            .subscribe-input::placeholder {
-              color: #497187;
-            }
+              .subscribe-input::placeholder {
+                color: #497187;
+                text-align: center;              /* ✅ Center placeholder */
+              }
 
             /* Arrow Button (Exact Design Based on Image) */
             .subscribe-arrow {
@@ -1029,16 +1042,16 @@ className="-mt-10"
   
 {/* ================= KNOW MORE SECTION ================= */}
 <section
-className="-mt-14"
+  className="-mt-14"
   style={{
     background: "#3881A4",
-    padding: "clamp(60px, 8vw, 120px) 20px", // 🔥 Less vertical padding on mobile
+    padding: "clamp(60px, 8vw, 120px) 20px",
     textAlign: "center",
   }}
 >
   {/* Title */}
   <h2
-  className="lg:-mt-10 -mt-0"
+    className="lg:-mt-10 -mt-0"
     style={{
       letterSpacing: "6px",
       color: "#E6F0FE",
@@ -1062,7 +1075,7 @@ className="-mt-14"
   </p>
 
   {/* Gallery Grid */}
-  <div
+<div
     style={{
       marginTop: "clamp(30px, 6vw, 70px)", // Less space above grid on mobile
       maxWidth: "1100px",
@@ -1072,20 +1085,122 @@ className="-mt-14"
       gap: "clamp(0px, 3vw, 10px)", // 40 px Smaller gap on mobile, normal on desktop
     }}
   >
-    {Array.from({ length: 12 }).map((_, index) => (
-      <img
+    {[
+      "Smart hydration dock keeps water within reach at your workspace.",
+      "Work smarter: Frost Aura gently nudges you to stay hydrated.",
+      "Effortless hydration: Frost Aura tracks your intake so you focus.",
+      "Even a silver flask: Frost Aura supports all bottle types.",
+      "Focus on creation: Frost Aura keeps hydration in your workspace.",
+      "Portable hydration: Frost Aura goes with you wherever you are.",
+      "Sleek ergonomic design: Frost Aura feels natural in your hand.",
+      "Sleek and compact: Frost Aura’s smart dock fits any workspace.",
+      "Personalize your desk: Frost Aura available in black or orange.",
+      "Stay connected: Frost Aura syncs hydration data to your computer.",
+      "Productivity station: Frost Aura keeps hydration part of your workflow.",
+      "Home comfort: Frost Aura brings hydration to your cozy workspace.",
+    ].map((text, index) => (
+      <div
         key={index}
-        src={`/gallery/gallery${index + 1}.png`}
-        alt={`Frost Aura ${index + 1}`}
+        className="glass-card"
         style={{
-          width: "100%",
-          aspectRatio: "1 / 1",
-          objectFit: "fill",
-          borderRadius: "4px",
+          position: "relative",
+          overflow: "hidden",
+          borderRadius: "8px",
+          cursor: "pointer",
         }}
-      />
+      >
+        <img
+          src={`/gallery/gallery${index + 1}.png`}
+          alt={`Frost Aura ${index + 1}`}
+          className="glass-img"
+          style={{
+            width: "100%",
+            aspectRatio: "1 / 1",
+            objectFit: "cover",
+            display: "block",
+            transition: "transform 0.6s ease",
+          }}
+        />
+
+        {/* Glass Overlay */}
+        <div className="glass-overlay">
+          <span className="glass-text">{text}</span>
+        </div>
+      </div>
     ))}
   </div>
+
+  {/* All Styles Inside Section */}
+<style>{`
+
+  .glass-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.55) 40%,
+      rgba(0, 0, 0, 0.35) 70%,
+      rgba(0, 0, 0, 0.15) 100%
+    );
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .glass-text {
+    color: white;
+    font-size: clamp(12px, 1.4vw, 16px);
+    letter-spacing: 1px;
+    transform: translateY(20px);
+    transition: transform 0.5s ease;
+    max-width: 85%;
+  }
+
+  /* ✅ HOVER EFFECTS ONLY FOR DEVICES THAT SUPPORT HOVER (DESKTOP) */
+  @media (hover: hover) and (pointer: fine) {
+
+    .glass-card:hover .glass-overlay {
+      opacity: 1;
+    }
+
+    .glass-card:hover .glass-text {
+      transform: translateY(0);
+    }
+
+    .glass-card:hover .glass-img {
+      transform: scale(1.08);
+    }
+
+  }
+
+  /* ✅ MOBILE DEVICES (NO HOVER SUPPORT) */
+  @media (hover: none) {
+
+    .glass-overlay {
+      opacity: 0 !important;
+    }
+
+    .glass-img {
+      transform: none !important;
+    }
+
+    .glass-text {
+      transform: none !important;
+    }
+
+  }
+
+`}</style>
 </section>
 
 
