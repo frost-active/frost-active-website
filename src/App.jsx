@@ -49,7 +49,7 @@ function App() {
     <Router>
     <PageTracker />
     <ScrollToHash />
-    <GoogleTranslate/>
+    {/* <GoogleTranslate/>
      {/* Email popup Triggers for 20 sec */}
      <EmailPopup /> 
 

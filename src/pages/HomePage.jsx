@@ -1075,17 +1075,18 @@ className="-mt-10"
   </p>
 
   {/* Gallery Grid */}
-<div
+   <div
     style={{
       marginTop: "clamp(30px, 6vw, 70px)", // Less space above grid on mobile
       maxWidth: "1100px",
       marginInline: "auto",
       display: "grid",
-      gridTemplateColumns: "repeat(4, 1fr)",
-      gap: "clamp(0px, 3vw, 10px)", // 40 px Smaller gap on mobile, normal on desktop
-    }}
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "clamp(8px, 10vw, 5px)", // 40 px Smaller gap on mobile, normal on desktop
+     }}
+      className="gallery-grid"
   >
-    {[
+     {[
       "Smart hydration dock keeps water within reach at your workspace.",
       "Work smarter: Frost Aura gently nudges you to stay hydrated.",
       "Effortless hydration: Frost Aura tracks your intake so you focus.",
@@ -1095,10 +1096,10 @@ className="-mt-10"
       "Sleek ergonomic design: Frost Aura feels natural in your hand.",
       "Sleek and compact: Frost Aura’s smart dock fits any workspace.",
       "Personalize your desk: Frost Aura available in black or orange.",
-      "Stay connected: Frost Aura syncs hydration data to your computer.",
+      "Stay connected: Frost Aura syncs hydration data to your App.",
       "Productivity station: Frost Aura keeps hydration part of your workflow.",
       "Home comfort: Frost Aura brings hydration to your cozy workspace.",
-    ].map((text, index) => (
+     ].map((text, index) => (
       <div
         key={index}
         className="glass-card"
@@ -1109,6 +1110,7 @@ className="-mt-10"
           cursor: "pointer",
         }}
       >
+        
         <img
           src={`/gallery/gallery${index + 1}.png`}
           alt={`Frost Aura ${index + 1}`}
@@ -1116,7 +1118,7 @@ className="-mt-10"
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
-            objectFit: "cover",
+            objectFit: "fill",
             display: "block",
             transition: "transform 0.6s ease",
           }}
@@ -1199,6 +1201,13 @@ className="-mt-10"
     }
 
   }
+
+  /* ✅ Desktop View (4 per row) */
+@media (min-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
 
 `}</style>
 </section>

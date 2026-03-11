@@ -1,49 +1,26 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ChevronDown, Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-
-const navLinks = [
-  { name: 'Features', url: '/', hash: '#features' },
-];
-
-const aboutLinks = [
-  { name: 'Water Intake Calculator', url: '/waterintakecalculator' },
-  { name: 'Invest', url: '/invest' },
-];
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const closeTimeout = useRef(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleMouseEnter = () => {
-    if (closeTimeout.current) clearTimeout(closeTimeout.current);
-    setIsAboutOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    closeTimeout.current = setTimeout(() => setIsAboutOpen(false), 150);
-  };
-
   const handleNavClick = (url, hash = '') => {
-    setIsAboutOpen(false);
-    setIsMobileMenuOpen(false);
-
+    setIsMenuOpen(false);
     if (url.startsWith('http')) {
       window.open(url, '_self');
     } else {
       navigate(`${url}${hash}`);
     }
   };
+
+  const menuItems = [
+    { label: 'Features', action: () => handleNavClick('/', '#features') },
+    { label: 'WebApp', action: () => handleNavClick('https://app.frostactive.com') },
+    { label: 'Water Intake Calculator', action: () => handleNavClick('/waterintakecalculator') },
+    { label: 'Invest', action: () => handleNavClick('/invest') },
+  ];
 
   return (
     <>
@@ -57,160 +34,135 @@ const Header = () => {
                 <img
                   src="/images/logo3.png"
                   loading="lazy"
-                  alt="FROST Aura Smart Hydration dock on a desk"
+                  alt="FROST Aura"
                   className="h-40 w-auto object-contain max-w-[160px]"
                 />
               </div>
             </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex flex-1 justify-center lg:-ml-[150px]">
-              <nav className="flex gap-10 items-center">
-                {navLinks.map((link) => (
-                  <span
-                    key={link.name}
-                    onClick={() => handleNavClick(link.url, link.hash)}
-                    className="text-base text-[#41587E] hover:text-primary hover:underline cursor-pointer transition-all"
-                  >
-                    {link.name}
-                  </span>
-                ))}
+            {/* Center Announcement */}
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center top-1/2 -translate-y-1/2 max-md:left-[62%] max-md:scale-40">
+              <motion.a
+                href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=search"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ width: "auto" }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className="flex items-center justify-center gap-2 h-8 md:h-9 px-3 md:px-4 text-[11px] sm:text-xs md:text-base rounded-full bg-white text-[#41587E] font-medium shadow-lg border border-[#41587E]/100 overflow-hidden cursor-pointer hover:shadow-[0_0_25px_rgba(235,20,120,0.6)] transition-all duration-300"
+              >
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EB1478] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#EB1478]"></span>
+                </span>
 
-                <div className="text-base text-[#41587E] hover:text-primary hover:underline cursor-pointer transition-all">
-                  <a
-                    href="https://app.frostactive.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    WebApp
-                  </a>
-                </div>
-
-                {/* Desktop About Dropdown */}
-                <div
-                  className="relative group cursor-pointer"
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="flex items-center gap-1 text-base text-[#41587E] hover:text-primary transition-all">
-                    About
-                    <ChevronDown
-                      className={`w-4 h-4 mt-[1px] transition-transform duration-300 ${
-                        isAboutOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={isAboutOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
-                    className={`absolute -left-12 mt-4 w-56 bg-white rounded-lg shadow-lg border border-gray-100 z-10 ${
-                      isAboutOpen ? 'pointer-events-auto' : 'pointer-events-none'
-                    }`}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    {aboutLinks.map((link) => (
-                      <span
-                        key={link.name}
-                        onClick={() => handleNavClick(link.url)}
-                        className="block px-4 py-2 text-gray-700 hover:bg-primary/90 hover:text-black transition-all text-sm cursor-pointer"
-                      >
-                        {link.name}
-                      </span>
-                    ))}
-                  </motion.div>
-                </div>
-              </nav>
+                <span className="whitespace-nowrap">
+                  Pre-Launch on
+                  <span className="ml-1 font-semibold text-[#EB1478]">Indiegogo</span>
+                </span>
+              </motion.a>
             </div>
 
-            {/* Mobile Navigation */}
-            <div className="md:hidden flex items-center gap-2">
-              <DropdownMenu
-                open={isMobileMenuOpen}
-                onOpenChange={setIsMobileMenuOpen}
+            {/* MENU BUTTON */}
+            <div className="relative lg:-mr-2 -mr-3 ">
+              <motion.button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="
+                  relative flex items-center gap-2 px-3 py-2 rounded-full
+                  font-semibold text-sm tracking-wide
+                  border border-[#2F6995]/30
+                  bg-white text-[#2F6995]
+                  shadow-[0_0_15px_rgba(47,105,149,0.25)]
+                  hover:shadow-[0_0_25px_rgba(47,105,149,0.5)]
+                  transition-all duration-300
+                  overflow-hidden
+                "
               >
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-[#41587E]">
-                    <Menu className="h-6 w-6 -ml-[60px]" />
-                  </Button>
-                </DropdownMenuTrigger>
 
-                <DropdownMenuContent
-                  align="end"
-                  className="bg-white rounded-lg shadow-lg w-56 p-2"
-                >
-                  <DropdownMenuItem asChild>
-                    <span
-                      onClick={() => handleNavClick('/', '#features')}
-                      className="text-[#41587E] hover:bg-gray-100 rounded-md px-4 py-2 transition-all cursor-pointer block"
-                    >
-                      Features
-                    </span>
-                  </DropdownMenuItem>
+                {/* Shimmer */}
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2F6995]/10 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-700" />
 
-                  <DropdownMenuItem asChild>
-                    <span
-                      onClick={() =>
-                        handleNavClick('https://app.frostactive.com')
-                      }
-                      className="text-[#41587E] hover:bg-gray-100 rounded-md px-4 py-2 transition-all cursor-pointer block"
-                    >
-                      Web App
-                    </span>
-                  </DropdownMenuItem>
+                {/* Hamburger Animation */}
+                <span className="flex flex-col justify-center gap-[4px] w-4 h-4">
+                  <motion.span
+                    animate={isMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="block h-[1.5px] w-4 bg-[#2F6995] rounded-full origin-center"
+                  />
+                  <motion.span
+                    animate={isMenuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="block h-[1.5px] w-3 bg-[#2F6995] rounded-full"
+                  />
+                  <motion.span
+                    animate={isMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="block h-[1.5px] w-4 bg-[#2F6995] rounded-full origin-center"
+                  />
+                </span>
 
-                  {/* Mobile About */}
-                  <div className="w-full">
-                    <button
-                      onClick={() => setIsAboutOpen(!isAboutOpen)}
-                      className="w-full flex items-center justify-between text-[#41587E] px-4 py-2 hover:bg-gray-100 rounded-md transition-all"
-                    >
-                      About
-                      <ChevronDown
-                        className={`w-4 h-4 transition-transform duration-300 ${
-                          isAboutOpen ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
+                {isMenuOpen && (
+                  <span className="absolute inset-0 rounded-full border border-[#2F6995]/40 animate-ping" />
+                )}
+              </motion.button>
 
-                    <motion.div
-                      initial={false}
-                      animate={{
-                        height: isAboutOpen ? 'auto' : 0,
-                        opacity: isAboutOpen ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="flex flex-col mt-1">
-                        <span
-                          onClick={() =>
-                            handleNavClick('/waterintakecalculator')
-                          }
-                          className="text-[#41587E] pl-8 py-2 hover:bg-gray-100 rounded-md cursor-pointer transition-all"
+              {/* DROPDOWN MENU */}
+              <AnimatePresence>
+                {isMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+
+                    /* MOBILE WIDTH SMALLER */
+                    className="absolute right-0 mt-3 w-52 md:w-52 rounded-2xl overflow-hidden z-50 bg-white border border-[#2F6995]/15 shadow-xl"
+                  >
+                    <div className="p-2">
+
+                      {menuItems.map((item, i) => (
+                        <motion.div
+                          key={item.label}
+                          initial={{ opacity: 0, x: 10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.06 }}
+                          onClick={item.action}
+                          className="
+                            group flex items-center px-4 py-3
+                            rounded-xl cursor-pointer
+                            text-[#2F6995] font-medium text-sm
+                            hover:bg-gray-100
+                            transition-all duration-200
+                          "
                         >
-                          Water Intake Calculator
-                        </span>
+                          {item.label}
 
-                        <span
-                          onClick={() => handleNavClick('/invest')}
-                          className="text-[#41587E] pl-8 py-2 hover:bg-gray-100 rounded-md cursor-pointer transition-all"
-                        >
-                          Invest
-                        </span>
-                      </div>
-                    </motion.div>
-                  </div>
+                          <motion.span
+                            initial={{ opacity: 0, x: -4 }}
+                            whileHover={{ opacity: 1, x: 0 }}
+                            className="ml-auto text-[#2F6995]/40 text-xs"
+                          >
+                            →
+                          </motion.span>
+                        </motion.div>
+                      ))}
 
-                </DropdownMenuContent>
-              </DropdownMenu>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
             </div>
 
           </div>
         </div>
       </header>
+
+      {/* Click outside to close */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40" onClick={() => setIsMenuOpen(false)} />
+      )}
     </>
   );
 };
