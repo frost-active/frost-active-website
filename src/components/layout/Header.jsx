@@ -1,170 +1,331 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap');
 
-  const handleNavClick = (url, hash = '') => {
-    setIsMenuOpen(false);
-    if (url.startsWith('http')) {
-      window.open(url, '_self');
-    } else {
-      navigate(`${url}${hash}`);
+  :root {
+    --blue: #579CD3;
+    --blue-mid: #4A8EC7;
+    --blue-light: #EBF4FC;
+    --blue-pale: #F0F7FC;
+    --blue-glow: rgba(87,156,211,.12);
+    --cyan: #5BB8D4;
+    --pink: #FF3D8B;
+    --pink-light: #FFF0F6;
+    --pink-glow: rgba(255,61,139,.18);
+    --white: #FFFFFF;
+    --gray-200: #E2E8F0;
+    --gray-400: #94A3B8;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-900: #0F172A;
+  }
+
+  .ticker-bar {
+    background: linear-gradient(90deg, var(--blue), #7BB8E0, var(--blue));
+    background-size: 200% 100%;
+    animation: gradmove 5s ease infinite;
+    padding: 10px 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 210;
+  }
+
+  @keyframes gradmove {
+    0%,100% { background-position:0% 50% }
+    50% { background-position:100% 50% }
+  }
+
+  .ticker-track {
+    display: flex;
+    animation: tickroll 26s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  .ticker-track span {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 0 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    opacity: .95;
+  }
+
+  .ticker-track span::after {
+    content: '◆';
+    font-size: 7px;
+    opacity: .55;
+  }
+
+  @keyframes tickroll {
+    from { transform:translateX(0) }
+    to { transform:translateX(-50%) }
+  }
+
+  .navbar {
+    position: fixed;
+    top: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 80px);
+    max-width: 1200px;
+    z-index: 200;
+    background: rgba(255,255,255,.88);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(87,156,211,.18);
+    border-radius: 100px;
+    padding: 0 10px 0 20px;
+    box-shadow: 0 8px 40px rgba(87,156,211,.1);
+    transition: top .3s, box-shadow .3s;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .navbar.scrolled {
+    top: 12px;
+    box-shadow: 0 12px 60px rgba(30,111,255,.15);
+  }
+
+  .nav-inner {
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img {
+    height: 40px;
+    width: auto;
+    max-width: 410px;
+    object-fit: contain;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-600);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 100px;
+    transition: .22s;
+  }
+
+  .nav-links a:hover {
+    color: var(--blue);
+    background: var(--blue-pale);
+  }
+
+  .nav-links a.active {
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--pink), #FF6BAD);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 11px 24px;
+    border-radius: 100px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  .hamburger span {
+    width: 22px;
+    height: 2px;
+    background: var(--gray-700);
+  }
+
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,.97);
+    padding: 20px 28px;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .mobile-menu.open {
+    display: flex;
+  }
+
+  .mobile-menu a {
+    padding: 10px 0;
+    text-decoration: none;
+    color: var(--gray-600);
+  }
+
+  /* ✅ MOBILE FIX ONLY */
+  @media (max-width: 960px) {
+    .ticker-bar {
+      padding-top: 0;
     }
-  };
 
-  const menuItems = [
-    { label: 'Features', action: () => handleNavClick('/', '#features') },
-    { label: 'WebApp', action: () => handleNavClick('https://app.frostactive.com') },
-    { label: 'Water Intake Calculator', action: () => handleNavClick('/waterintakecalculator') },
-    { label: 'Invest', action: () => handleNavClick('/invest') },
+    .navbar {
+      width: calc(100% - 40px);
+      top: 52px;   /* moved below ticker */
+      border-radius: 16px;
+    }
+
+    .navbar.scrolled {
+      top: 52px;   /* keep same on scroll */
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    .logo-img {
+      height: 24px;
+      max-width: 120px;
+    }
+  }
+`;
+
+const tickerItems = [
+  "Up to 51% Off",
+  "Early Access on Indiegogo",
+  "AI Desk Wellness Device",
+  "No apps. No alarms.",
+  "Tracks Hydration · Focus · Movement",
+  "Limited Units Available",
+];
+
+export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 60);
+
+      const sections = ["home", "about", "how", "pricing", "gallery", "contact"];
+      let current = "home";
+
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 120) {
+          current = id;
+        }
+      });
+
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { href: "/#about", label: "About" },
+    { href: "/#how", label: "How It Works" },
+    { href: "/#pricing", label: "Pricing" },
+    { href: "/#gallery", label: "Gallery" },
+    { href: "/#contact", label: "Contact" },
   ];
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#E7F7FF]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
+      <style>{styles}</style>
 
-            {/* Logo */}
-            <a href="/" className="flex items-center gap-2 font-extrabold text-xl text-primary cursor-pointer">
-              <div className="relative left-[-20px] top-[0px]">
-                <img
-                  src="/images/logo3.png"
-                  loading="lazy"
-                  alt="FROST Aura"
-                  className="h-40 w-auto object-contain max-w-[160px]"
-                />
-              </div>
-            </a>
-
-            {/* Center Announcement */}
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center top-1/2 -translate-y-1/2 max-md:left-[62%] max-md:scale-40">
-              <motion.a
-                href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=search"
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ width: "auto" }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="flex items-center justify-center gap-2 h-8 md:h-9 px-3 md:px-4 text-[11px] sm:text-xs md:text-base rounded-full bg-white text-[#41587E] font-medium shadow-lg border border-[#41587E]/100 overflow-hidden cursor-pointer hover:shadow-[0_0_25px_rgba(235,20,120,0.6)] transition-all duration-300"
-              >
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EB1478] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#EB1478]"></span>
-                </span>
-
-                <span className="whitespace-nowrap">
-                  Pre-Launch on
-                  <span className="ml-1 font-semibold text-[#EB1478]">Indiegogo</span>
-                </span>
-              </motion.a>
-            </div>
-
-            {/* MENU BUTTON */}
-            <div className="relative lg:-mr-2 -mr-3 ">
-              <motion.button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="
-                  relative flex items-center gap-2 px-3 py-2 rounded-full
-                  font-semibold text-sm tracking-wide
-                  border border-[#2F6995]/30
-                  bg-white text-[#2F6995]
-                  shadow-[0_0_15px_rgba(47,105,149,0.25)]
-                  hover:shadow-[0_0_25px_rgba(47,105,149,0.5)]
-                  transition-all duration-300
-                  overflow-hidden
-                "
-              >
-
-                {/* Shimmer */}
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2F6995]/10 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-700" />
-
-                {/* Hamburger Animation */}
-                <span className="flex flex-col justify-center gap-[4px] w-4 h-4">
-                  <motion.span
-                    animate={isMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="block h-[1.5px] w-4 bg-[#2F6995] rounded-full origin-center"
-                  />
-                  <motion.span
-                    animate={isMenuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-                    transition={{ duration: 0.2 }}
-                    className="block h-[1.5px] w-3 bg-[#2F6995] rounded-full"
-                  />
-                  <motion.span
-                    animate={isMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="block h-[1.5px] w-4 bg-[#2F6995] rounded-full origin-center"
-                  />
-                </span>
-
-                {isMenuOpen && (
-                  <span className="absolute inset-0 rounded-full border border-[#2F6995]/40 animate-ping" />
-                )}
-              </motion.button>
-
-              {/* DROPDOWN MENU */}
-              <AnimatePresence>
-                {isMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-
-                    /* MOBILE WIDTH SMALLER */
-                    className="absolute right-0 mt-3 w-52 md:w-52 rounded-2xl overflow-hidden z-50 bg-white border border-[#2F6995]/15 shadow-xl"
-                  >
-                    <div className="p-2">
-
-                      {menuItems.map((item, i) => (
-                        <motion.div
-                          key={item.label}
-                          initial={{ opacity: 0, x: 10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.06 }}
-                          onClick={item.action}
-                          className="
-                            group flex items-center px-4 py-3
-                            rounded-xl cursor-pointer
-                            text-[#2F6995] font-medium text-sm
-                            hover:bg-gray-100
-                            transition-all duration-200
-                          "
-                        >
-                          {item.label}
-
-                          <motion.span
-                            initial={{ opacity: 0, x: -4 }}
-                            whileHover={{ opacity: 1, x: 0 }}
-                            className="ml-auto text-[#2F6995]/40 text-xs"
-                          >
-                            →
-                          </motion.span>
-                        </motion.div>
-                      ))}
-
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-            </div>
-
-          </div>
+      <div className="ticker-bar">
+        <div className="ticker-track mt-2 lg:mt-0">
+          {[...tickerItems, ...tickerItems].map((item, i) => (
+            <span key={i}>{item}</span>
+          ))}
         </div>
-      </header>
+      </div>
 
-      {/* Click outside to close */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setIsMenuOpen(false)} />
-      )}
+      <nav className={`navbar -mt-4  lg:mt-1${scrolled ? " scrolled" : ""}`}>
+        <div className="nav-inner">
+
+          <a className="logo" href="/">
+            <img src="/images/logo4.png" alt="Company Logo" className="logo-img" />
+          </a>
+
+          <div className="nav-links">
+            {navLinks.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                className={activeSection === href.split("#")[1] ? "active" : ""}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+
+          <div className="nav-right">
+            <a
+              href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura"
+              className="nav-cta"
+            >
+              Back on Indiegogo →
+            </a>
+          </div>
+
+          <button
+            className="hamburger"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
+            {navLinks.map(({ href, label }) => (
+              <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+                {label}
+              </a>
+            ))}
+          </div>
+
+        </div>
+      </nav>
     </>
   );
-};
-
-export default Header;
+}

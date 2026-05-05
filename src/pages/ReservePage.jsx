@@ -22,7 +22,7 @@ const ReservePage = () => {
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      color: "#5B869D",
+      color: "#579CD3",
     },
 
     leftImage: {
@@ -36,11 +36,11 @@ const ReservePage = () => {
       fontSize: "26px",
       fontWeight: "500",
       marginBottom: "30px",
-      color: "#5B869D",
+      color: "#579CD3",
     },
 
     reserveBtn: {
-      backgroundColor: "#5B869D",
+      backgroundColor: "#579CD3",
       color: "#fff",
       border: "none",
       padding: "10px",
@@ -54,11 +54,11 @@ const ReservePage = () => {
 
     noThanksBtn: {
       backgroundColor: "#fff",
-      border: "1px solid #5B869D",
+      border: "1px solid #579CD3",
       padding: "8px",
       fontSize: "20px",
       borderRadius: "6px",
-      color: "#5B869D",
+      color: "#579CD3",
       cursor: "pointer",
       marginBottom: "12px",
       width: "100%",
@@ -69,11 +69,11 @@ const ReservePage = () => {
       fontSize: "16px",
       textAlign: "center",
       maxWidth: "420px",
-      color: "#5B869D",
+      color: "#579CD3",
     },
 
     link: {
-      color: "#5B869D",
+      color: "#579CD3",
     },
 
     /* RIGHT SECTION */
@@ -97,7 +97,7 @@ const ReservePage = () => {
     /* FOOTER */
     footer: {
       width: "100%",
-      backgroundColor: "#5B869D",
+      backgroundColor: "#579CD3",
       color: "#fff",
       display: "flex",
       flexWrap: "wrap",
@@ -207,7 +207,7 @@ const ReservePage = () => {
             style={{ width: "100%" }}
           >
             <img
-              src="/images/reserve.svg"
+              src="/images/reserve.jpeg"
               alt="Coming Soon"
               style={styles.rightImage}
             />

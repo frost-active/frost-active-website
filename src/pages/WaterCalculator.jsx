@@ -29,6 +29,33 @@ async function sendDataToGoogleSheet(data) {
   }
 }
 
+
+
+// Send ONLY email to Cheerio Workflow
+async function sendEmailToCheerio(email) {
+  const CHEERIO_API_KEY =
+    "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
+
+  try {
+    await fetch(
+      "https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": CHEERIO_API_KEY,
+        },
+        body: JSON.stringify({
+          email: email, // ✅ ONLY EMAIL
+          workflowId: "691d8bd1024212623f2b31b8", // ✅ Your specific workflow ID
+        }),
+      }
+    );
+  } catch (err) {
+    // silent fail
+  }
+}
+
 // Send ONLY email + source to Master Sheet
 async function sendEmailToMasterSheet(email, source) {
   try {
@@ -669,6 +696,9 @@ export default function WaterCalculator() {
    // 👇 NEW: Master Sheet email-only entry
     sendEmailToMasterSheet(form.email, "Water Intake Calculator");
 
+
+    sendEmailToCheerio(form.email);
+
     setTimeout(() => {
       if (resultBoxRef.current) {
         const element = resultBoxRef.current;
@@ -1277,9 +1307,9 @@ export default function WaterCalculator() {
             </button>
             
             <button
-              className="flex-1 bg-white text-[#389ED7]  py-2 rounded font-medium"
+              className="flex-1 bg-white text-[#389ED7] py-2 rounded font-medium"
             >
-              <a href="/prelaunch">Join Early Access</a>
+              <a href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=search">Join Early Access</a>
             </button>
           </div>
 

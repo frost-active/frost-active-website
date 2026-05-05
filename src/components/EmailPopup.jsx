@@ -14,8 +14,8 @@ export default function EmailPopup() {
   // All possible popup messages
   const popupMessages = [
     {
-      title: "🧠Use our free water intake calculator.",
-      desc: "Overhydration is real. So is dehydration. Find your real hydration number today.",
+      title: "🧠Track Your Daily Water Intake for Free",
+      desc: "Start building better hydration habits today—get your free tracker and improve your routine effortlessly.",
     },
     {
       title: "🌊Heal Naturally with Every Sip",
@@ -157,7 +157,7 @@ const handleSubmit = async (e) => {
             {/* Left Side Image */}
             <div className="md:w-1/2 w-full h-60 md:h-auto">
               <img
-                src="/images/preorder1.jpg"
+                src="/images/product.jpeg"
                 alt="Stay hydrated"
                 className="w-full h-full object-cover"
               />
