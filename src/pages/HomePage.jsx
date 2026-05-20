@@ -739,7 +739,7 @@ function HeroSection() {
             A smart hydration & wellness tracker that builds better habits
           </p>
 
-          <div className="hero-form">
+          <div className="hero-form lg:-mt-4">
             <div style={{ width: "100%" }}>
               <input
                 className="hf-input"
@@ -749,7 +749,8 @@ function HeroSection() {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-
+            
+            
             <div className="hf-row">
               <input
                 className="hf-input"
@@ -807,7 +808,7 @@ function HeroSection() {
         <div className="hero-right">
           <div className="hero-img-wrap">
             <img
-              src="/images/heroimg.svg"
+              src="/images/heroimg.jpeg"
               alt="Minimal desk setup with water bottle and laptop"
             />
           </div>
@@ -1140,12 +1141,12 @@ function GallerySection() {
   const scrollLeft = useRef(0);
 
   const cards = [
-    { src: "/gallery/1.jpeg", sub: "Clean desk, clear mind" },
-    { src: "/gallery/2.jpeg", title: "Developer's Corner", sub: "Focus mode, activated" },
+    { src: "/gallery/1.jpeg", title: "Desk Companion", sub: "Clean desk, clear mind" },
+    { src: "/images/heroimg1.jpeg", title: "Developer's Corner", sub: "Focus mode, activated" },
     { src: "/gallery/3.jpeg", title: "Creative Space", sub: "Where ideas flow freely" },
     { src: "/gallery/4.jpeg", title: "Home Office Bliss", sub: "Wellness, built in" },
     { src: "/gallery/5.jpeg", title: "Peak Productivity", sub: "Hydrated & focused" },
-    { src: "/gallery/6.jpeg", title: "Wellness at Work", sub: "Habits made effortless" },
+    { src: "/gallery/6.png", title: "Wellness at Work", sub: "Habits made effortless" },
       { src: "/gallery/7.jpeg", title: "Work Station ", sub: "Wellness, seamlessly built in" },
   ];
 
