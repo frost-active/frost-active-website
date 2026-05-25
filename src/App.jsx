@@ -14,6 +14,7 @@ import GoogleTranslate from './components/GoogleTranslate';
 
 
 import OrderPage from '@/pages/OrderPage'; 
+import Blogs from '@/pages/Blogs';
 import BlogsPage1 from '@/pages/BlogsPage1'; 
 import BlogsPage2 from '@/pages/BlogsPage2'; 
 import BlogsPage3 from '@/pages/BlogsPage3'; 
@@ -69,11 +70,12 @@ function App() {
 
           <Route path="/order" element={<OrderPage />} />
            <Route path="/getin" element={<GetInTouch />} />
-
-           <Route path="/blogs" element={<BlogsPage1 />} />
-           <Route path="/blogs2" element={<BlogsPage2 />} />
-           <Route path="/blogs3" element={<BlogsPage3 />} />
-           <Route path="/blogs4" element={<BlogsPage4 />} />
+        
+          <Route path="/blogs" element={<Blogs />} />
+           <Route path="/blog1" element={<BlogsPage1 />} />
+           <Route path="/blog2" element={<BlogsPage2 />} />
+           <Route path="/blog3" element={<BlogsPage3 />} />
+           <Route path="/blog4" element={<BlogsPage4 />} />
             <Route path="/djangel" element={<DJAngelPage />} />
 
             <Route path="/community" element={<CommunityPage />} />

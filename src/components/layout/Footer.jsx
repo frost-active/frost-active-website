@@ -152,9 +152,12 @@ const handleSubscribe = async (e) => {
             <ul className="space-y-0">
               <li><Link to="/about" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">About Us</Link></li>
               <li><Link to="/community" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Community & Beta</Link></li>
-              <li><Link to="/privacy" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Terms & Conditions</Link></li>
               <li><Link to="/waterintakecalculator" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Water Intake Calculator</Link></li>
+              <li><Link to="https://app.frostactive.com" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Web App</Link></li>
+              <li><Link to="/blogs" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Blogs</Link></li>
+              <li><Link to="/invest" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Invest</Link></li>
+                <li><Link to="/privacy" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Terms & Conditions</Link></li>
             </ul>
           </div>
 
@@ -232,7 +235,7 @@ const handleSubscribe = async (e) => {
           </div>
         </div>
       </div>
-{/* Bottom Blue Bar */}
+  {/* Bottom Blue Bar */}
       <div className="w-screen h-[35px] bg-[#579CD3] mt-4 mx-[-1rem] sm:mx-[-1.5rem] lg:mx-[-2rem]"></div>
       </div>
 

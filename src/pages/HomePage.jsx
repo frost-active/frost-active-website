@@ -151,8 +151,8 @@ const styles = `
     animation: float 4.5s ease-in-out infinite; z-index: 2;
   }
   .fc1 { top: 36px; left: -36px; animation-delay: 0s; }
-  .fc2 { top: 45%; right: -32px; transform: translateY(-50%); animation-delay: 1.6s; }
-  .fc3 { bottom: 80px; left: -26px; animation-delay: .9s; }
+  .fc2 { top: 15%; right: -32px; transform: translateY(-50%); animation-delay: 1.6s; }
+  .fc3 { bottom: 30px; left: -26px; animation-delay: .9s; }
   @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
   .fc2 { transform: translateY(-50%); }
   .fc-ico {
@@ -163,14 +163,19 @@ const styles = `
   .hp-blue { background: linear-gradient(135deg,#DBEAFE,#BFDBFE); }
   .hp-cyan { background: linear-gradient(135deg,#CFFAFE,#A5F3FC); }
   .hp-pink { background: linear-gradient(135deg,#FCE7F3,#FBCFE8); }
-  .fc-lbl { font-size: 11px; color: var(--gray-400); font-weight: 500; line-height: 1.2; }
+  .fc-lbl { font-size: 16px; color: var(--gray-400); font-weight: 500; line-height: 1.2; }
   .fc-val { font-size: 18px; font-weight: 800; color: var(--gray-900); line-height: 1.2; font-family: 'DM Serif Display', serif; }
-  .fc-unit { font-size: 11px; color: var(--gray-400); }
+  .fc-unit { font-size: 11px; color: var(--gray-300); }
 
   /* Wave */
   .wave { display: block; width: 100%; line-height: 0; overflow: hidden; }
 
   @media (max-width: 767px) {
+
+   .fc1 { top: -10px; left: -36px; animation-delay: 0s; }
+  .fc2 { top: 1%; right: -32px; transform: translateY(-50%); animation-delay: 1.6s; }
+  .fc3 { bottom: -10px; left: -26px; animation-delay: .9s; }
+
   .hero-img-wrap,
   .hero-img-wrap img {
     border-radius: 20px;
@@ -437,40 +442,261 @@ const styles = `
   .trust-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--gray-400); font-weight: 500; }
 
   /* ── GALLERY ── */
-  .s-gallery { background: #F8FBFF; padding: 100px 0; }
-  .s-gallery-inner { max-width: 1200px; margin: 0 auto; padding: 0 80px; }
-  .gallery-scroll-wrap {
-    overflow-x: auto; margin-top: 52px; cursor: grab;
-    user-select: none; -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin; scrollbar-color: rgba(87,156,211,.3) transparent;
-  }
-  .gallery-scroll-wrap::-webkit-scrollbar { height: 5px; }
-  .gallery-scroll-wrap::-webkit-scrollbar-track { background: transparent; }
-  .gallery-scroll-wrap::-webkit-scrollbar-thumb { background: rgba(87,156,211,.3); border-radius: 10px; }
-  .gallery-scroll-wrap.grabbing { cursor: grabbing; }
-  .gallery-track { display: flex; gap: 20px; padding: 8px 80px 20px; width: max-content; }
+
+.s-gallery {
+  background: #F8FBFF;
+  padding: 100px 0;
+}
+
+.s-gallery-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+
+.gallery-scroll-wrap {
+  overflow-x: auto;
+  margin-top: 52px;
+  cursor: grab;
+  user-select: none;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(87,156,211,.3) transparent;
+}
+
+.gallery-scroll-wrap::-webkit-scrollbar {
+  height: 5px;
+}
+
+.gallery-scroll-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gallery-scroll-wrap::-webkit-scrollbar-thumb {
+  background: rgba(87,156,211,.3);
+  border-radius: 10px;
+}
+
+.gallery-scroll-wrap.grabbing {
+  cursor: grabbing;
+}
+
+.gallery-track {
+  display: flex;
+  gap: 20px;
+  padding: 8px 80px 20px;
+  width: max-content;
+}
+
+/* CARD */
+
+.gallery-card {
+  flex-shrink: 0;
+  width: 340px;
+  height: 240px;
+
+  border-radius: 22px;
+  overflow: hidden;
+
+  position: relative;
+
+  box-shadow: 0 8px 40px rgba(87,156,211,.14);
+
+  transition:
+    transform .45s ease,
+    box-shadow .45s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 70px rgba(87,156,211,.22);
+}
+
+/* IMAGE */
+
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+
+  transition:
+    transform .7s ease,
+    filter .7s ease;
+}
+
+/* OVERLAY */
+
+.gallery-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(8,20,40,.78),
+    rgba(8,20,40,.2),
+    transparent
+  );
+
+  opacity: 0;
+
+  transition: opacity .45s ease;
+
+  z-index: 1;
+}
+
+/* TEXT */
+
+.gallery-card-cap {
+  position: absolute;
+
+  left: 22px;
+  right: 22px;
+  bottom: 20px;
+
+  z-index: 2;
+
+  opacity: 0;
+  transform: translateY(30px);
+
+  transition:
+    opacity .45s ease,
+    transform .45s ease;
+}
+
+.gallery-card-cap h4 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.3;
+
+  color: #fff;
+
+  margin-bottom: 6px;
+}
+
+.gallery-card-cap p {
+  font-size: 13px;
+  color: rgba(255,255,255,.78);
+  line-height: 1.5;
+}
+
+/* HOVER EFFECTS */
+
+.gallery-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(.75);
+}
+
+.gallery-card:hover::before {
+  opacity: 1;
+}
+
+.gallery-card:hover .gallery-card-cap {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* NAVIGATION */
+
+.gallery-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  justify-content: center;
+}
+
+.gnav-btn {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+  background: #fff;
+
+  border: 1.5px solid #C8DFF0;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all .22s;
+
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.gnav-btn:hover {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
   .gallery-card {
-    flex-shrink: 0; width: 340px; border-radius: 22px; overflow: hidden;
-    position: relative; box-shadow: 0 8px 40px rgba(87,156,211,.14);
-    transition: transform .3s, box-shadow .3s;
+    width: 300px;
+    height: 220px;
   }
-  .gallery-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(87,156,211,.22); }
-  .gallery-card img { width: 100%; height: 240px; object-fit: cover; display: block; }
+
+  /* Overlay hidden by default */
+  .gallery-card::before {
+    opacity: 0;
+  }
+
+  /* Text hidden initially */
   .gallery-card-cap {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: linear-gradient(180deg,transparent,rgba(10,30,60,.65));
-    padding: 20px 20px 16px; color: #fff;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+
+    transition:
+      opacity .35s ease,
+      transform .35s ease;
   }
-  .gallery-card-cap h4 { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; line-height: 1.3; }
-  .gallery-card-cap p { font-size: 12px; color: rgba(255,255,255,.7); margin-top: 3px; }
-  .gallery-nav { display: flex; gap: 10px; margin-top: 28px; justify-content: center; }
-  .gnav-btn {
-    width: 46px; height: 46px; border-radius: 50%; background: #fff;
-    border: 1.5px solid #C8DFF0; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all .22s; color: var(--blue); font-size: 18px;
+
+  /* Disable desktop hover zoom on mobile */
+  .gallery-card:hover img {
+    transform: scale(1);
+    filter: brightness(1);
   }
-  .gnav-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  .gallery-card:hover::before {
+    opacity: 0;
+  }
+
+  .gallery-card:hover .gallery-card-cap {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* SHOW TEXT WHEN CLICK / TAP */
+  .gallery-card:active::before,
+  .gallery-card:focus-within::before {
+    opacity: 1;
+  }
+
+  .gallery-card:active .gallery-card-cap,
+  .gallery-card:focus-within .gallery-card-cap {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .gallery-track {
+    padding: 8px 24px 20px;
+  }
+
+  .s-gallery-inner {
+    padding: 0 24px;
+  }
+}
 
   /* ── APP SECTION ── */
   .s-app { background: #F8FBFF; padding: 100px 80px; }
@@ -806,6 +1032,27 @@ function HeroSection() {
         </div>
 
         <div className="hero-right">
+          <div className="fc fc1">
+            <div className="fc-ico hp-blue">💧</div>
+            <div>
+              <div className="fc-lbl">Hydration</div>
+              <div className="fc-val">82% <span className="fc-unit">daily goal</span></div>
+            </div>
+          </div>
+          <div className="fc fc2">
+            <div className="fc-ico hp-cyan">🧠</div>
+            <div>
+              <div className="fc-lbl">Focus Score</div>
+              <div className="fc-val">9.1 <span className="fc-unit">/ 10</span></div>
+            </div>
+          </div>
+          <div className="fc fc3">
+            <div className="fc-ico hp-pink">🏃</div>
+            <div>
+              <div className="fc-lbl">Break Due</div>
+              <div className="fc-val">12 <span className="fc-unit">min</span></div>
+            </div>
+          </div>
           <div className="hero-img-wrap">
             <img
               src="/images/heroimg.jpeg"
@@ -818,215 +1065,41 @@ function HeroSection() {
   );
 }
 
-
-function AboutSection() {
-  return (
-    <section className="s2" id="about">
-      <div className="lg:-mt-8 -mt-16">
-      <div className="s2-inner">
-        <div className="reveal">
-          <div className="eyebrow">What is Frost Aura</div>
-          <h2>Your Desk, Now a Habit System</h2>
-          <p className="section-desc">
-            Frost Aura is an AI desk wellness device that supports hydration, focus, and daily habits — quietly and intelligently, without interrupting your flow.
-          </p>
-          <div className="feature-list">
-            {[
-              { n: "01", title: "Non-invasive by design", desc: "Simply sits on your desk. No wearables, no straps, no friction. Fits naturally into any workspace setup." },
-              { n: "02", title: "Works with any bottle", desc: "Use the bottle you already love. No proprietary accessories or special hardware required — ever." },
-              { n: "03", title: "Tracks completely automatically", desc: "AI learns your unique patterns over time and adapts. You just work — Frost Aura does the rest." },
-            ].map(({ n, title, desc }) => (
-              <div className="fi" key={n}>
-                <div className="fi-num">{n}</div>
-                <div><h4>{title}</h4><p>{desc}</p></div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="s2-vis reveal">
-          <img className="s2-img-main" src="/images/what.svg" alt="Modern desk with productivity device" />
-          
-        </div>
-      </div>
-      </div>
-    </section>
-  );
-}
-
-function HowItWorksSection() {
-  const svgIcons = {
-    bottle: (
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="56" height="56" rx="16" fill="url(#paint0_linear_11580_4261)"/>
-        <path d="M18.4285 34.0287C18.7812 33.3938 19.4505 33 20.1768 33H36.2639C37.0215 33 37.714 33.428 38.0528 34.1056L40.5528 39.1056C41.2177 40.4354 40.2507 42 38.7639 42H17.399C15.8741 42 14.9101 40.3618 15.6507 39.0287L18.4285 34.0287Z" fill="black"/>
-        <rect x="24" y="17" width="8" height="16" rx="0.5" fill="#6E6C6C"/>
-        <rect x="24" y="14" width="8" height="2" rx="0.5" fill="#6E6C6C"/>
-        <defs>
-          <linearGradient id="paint0_linear_11580_4261" x1="6" y1="6" x2="48.5" y2="53.5" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#1B79F9"/>
-            <stop offset="1" stopColor="#0DACDB"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    ),
-    patterns: (
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="56" height="56" rx="16" fill="url(#paint0_linear_11580_4262)"/>
-        <path d="M18.6895 22.1846C20.6224 22.1846 22.1895 20.6176 22.1895 18.6846C22.1895 16.7516 20.6224 15.1846 18.6895 15.1846C16.7565 15.1846 15.1895 16.7516 15.1895 18.6846C15.1895 20.6176 16.7565 22.1846 18.6895 22.1846Z" fill="black"/>
-        <path d="M31.5343 28.0296C31.533 27.3079 31.3079 26.6044 30.89 26.016C30.4721 25.4276 29.882 24.9833 29.201 24.7443V21.9676C29.6871 21.793 30.1285 21.5125 30.493 21.1465C30.8576 20.7806 31.1364 20.3382 31.3091 19.8513H34.0706C34.2442 20.3397 34.5244 20.7832 34.8909 21.1497C35.2574 21.5162 35.7009 21.7964 36.1893 21.97V24.7466C35.4112 25.0238 34.7562 25.5671 34.34 26.2805C33.9238 26.994 33.7733 27.8315 33.9149 28.6453C34.0566 29.459 34.4813 30.1964 35.1141 30.7272C35.7469 31.258 36.547 31.548 37.373 31.5459C38.1989 31.5439 38.9975 31.2499 39.6277 30.7159C40.2578 30.1819 40.6789 29.4424 40.8165 28.628C40.954 27.8136 40.7993 26.9768 40.3795 26.2654C39.9598 25.5541 39.302 25.0141 38.5226 24.7408V21.9688C39.0797 21.7731 39.578 21.4393 39.9709 20.9986C40.3639 20.558 40.6388 20.0249 40.7698 19.4492C40.9008 18.8735 40.8837 18.274 40.72 17.7067C40.5564 17.1394 40.2516 16.6228 39.8341 16.2054C39.4166 15.7879 38.9 15.483 38.3328 15.3194C37.7655 15.1558 37.1659 15.1387 36.5902 15.2697C36.0145 15.4007 35.4814 15.6755 35.0408 16.0685C34.6002 16.4615 34.2664 16.9598 34.0706 17.5168H31.3091C31.1131 16.9595 30.7788 16.461 30.3376 16.068C29.8964 15.6751 29.3627 15.4005 28.7864 15.27C28.2102 15.1395 27.6103 15.1573 27.0428 15.3219C26.4754 15.4864 25.9589 15.7922 25.5419 16.2107C25.1248 16.6292 24.8207 17.1467 24.6582 17.7147C24.4956 18.2827 24.4798 18.8827 24.6122 19.4585C24.7447 20.0342 25.0211 20.567 25.4155 21.0069C25.81 21.4467 26.3096 21.7793 26.8676 21.9735V24.7431C26.1862 24.9813 25.5957 25.4254 25.1778 26.014C24.76 26.6026 24.5356 27.3066 24.5356 28.0285C24.5356 28.7503 24.76 29.4543 25.1778 30.0429C25.5957 30.6315 26.1862 31.0757 26.8676 31.3138V34.0846C26.376 34.2574 25.9294 34.5382 25.5606 34.9062C25.1917 35.2743 24.91 35.7203 24.7361 36.2115H21.977C21.8037 35.722 21.5234 35.2774 21.1565 34.91C20.7895 34.5427 20.3452 34.2619 19.856 34.0881V31.3173C20.6349 31.0444 21.2922 30.505 21.7119 29.7943C22.1316 29.0837 22.2865 28.2476 22.1494 27.4337C22.0122 26.6199 21.5917 25.8807 20.9623 25.3469C20.3329 24.813 19.535 24.5189 18.7097 24.5164C17.8844 24.5139 17.0847 24.8033 16.4521 25.3333C15.8195 25.8634 15.3946 26.6 15.2526 27.413C15.1105 28.226 15.2604 29.0631 15.6758 29.7762C16.0912 30.4894 16.7454 31.0328 17.5226 31.3103V34.087C16.966 34.2828 16.468 34.6165 16.0752 35.0569C15.6825 35.4973 15.4077 36.03 15.2767 36.6054C15.1456 37.1808 15.1625 37.78 15.3257 38.347C15.489 38.9141 15.7933 39.4305 16.2102 39.8481C16.6272 40.2657 17.1431 40.5708 17.71 40.735C18.2768 40.8991 18.8759 40.917 19.4515 40.7868C20.0271 40.6566 20.5603 40.3827 21.0013 39.9907C21.4423 39.5986 21.7768 39.1012 21.9735 38.5448H24.7385C24.9349 39.1007 25.2689 39.5979 25.7093 39.9899C26.1497 40.3819 26.6822 40.656 27.2572 40.7866C27.8322 40.9173 28.4308 40.9002 28.9974 40.737C29.564 40.5738 30.08 40.2697 30.4974 39.8533C30.9147 39.4368 31.2198 38.9214 31.3842 38.3552C31.5486 37.7889 31.5669 37.1903 31.4375 36.6151C31.3081 36.0398 31.0351 35.5067 30.644 35.0655C30.2529 34.6242 29.7565 34.2892 29.201 34.0916V31.315C29.8821 31.0759 30.4724 30.6315 30.8903 30.0428C31.3082 29.4542 31.5332 28.7515 31.5343 28.0296Z" fill="black"/>
-        <path d="M37.3574 40.874C39.2904 40.874 40.8574 39.307 40.8574 37.374C40.8574 35.441 39.2904 33.874 37.3574 33.874C35.4244 33.874 33.8574 35.441 33.8574 37.374C33.8574 39.307 35.4244 40.874 37.3574 40.874Z" fill="black"/>
-        <defs>
-          <linearGradient id="paint0_linear_11580_4262" x1="6" y1="6" x2="48.5" y2="53.5" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#1B79F9"/>
-            <stop offset="1" stopColor="#0DACDB"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    ),
-    cues: (
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="56" height="56" rx="16" fill="url(#paint0_linear_11580_4264)"/>
-        <path d="M38.375 35.9587V37.167H16.625V35.9587L19.0417 33.542V26.292C19.0417 22.5462 21.4946 19.2474 25.0833 18.1841V17.8337C25.0833 17.1927 25.3379 16.578 25.7912 16.1248C26.2444 15.6716 26.8591 15.417 27.5 15.417C28.1409 15.417 28.7556 15.6716 29.2088 16.1248C29.6621 16.578 29.9167 17.1927 29.9167 17.8337V18.1841C33.5054 19.2474 35.9583 22.5462 35.9583 26.292V33.542L38.375 35.9587ZM29.9167 38.3753C29.9167 39.0163 29.6621 39.631 29.2088 40.0842C28.7556 40.5374 28.1409 40.792 27.5 40.792C26.8591 40.792 26.2444 40.5374 25.7912 40.0842C25.3379 39.631 25.0833 39.0163 25.0833 38.3753" fill="black"/>
-        <defs>
-          <linearGradient id="paint0_linear_11580_4264" x1="6" y1="6" x2="48.5" y2="53.5" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#1B79F9"/>
-            <stop offset="1" stopColor="#0DACDB"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    ),
-    habits: (
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="56" height="56" rx="16" fill="url(#paint0_linear_11580_4266)"/>
-        <path d="M15.125 36.2175C15.125 36.2175 16.5 20.7488 20.625 15.125L27.5 16.5L26.125 20.7488H23.375V30.5938H24.75C27.5 26.3725 33.1925 24.8325 36.63 26.3725C41.1675 28.4763 40.755 34.815 36.63 37.62C33.33 39.875 23.375 41.8413 15.125 36.2175Z" fill="black"/>
-        <defs>
-          <linearGradient id="paint0_linear_11580_4266" x1="6" y1="6" x2="48.5" y2="53.5" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#1B79F9"/>
-            <stop offset="1" stopColor="#0DACDB"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    ),
-  };
-
-  const steps = [
-    { svgKey: "bottle",   title: "Place your bottle",      desc: "Set Frost Aura on your desk and place any water bottle nearby. Tracking begins automatically the moment it's powered on.", chip: "Zero setup" },
-    { svgKey: "patterns", title: "Device learns patterns",  desc: "Work as you normally would. The onboard AI quietly observes your hydration habits, focus blocks, and work sessions.", chip: "Passive AI learning" },
-    { svgKey: "cues",     title: "Get gentle cues",         desc: "Receive perfectly timed, non-intrusive hydration nudges and movement prompts — never disruptive, always helpful.", chip: "Smart nudges" },
-    { svgKey: "habits",   title: "Habits build themselves", desc: "Consistency compounds. Unlock newer wellness habits automatically as your patterns improve over time.", chip: "Effortless routine" },
-  ];
-
-  return (
-    <section className="s3" id="how">
-      <div className="lg:-mt-16 -mt-10">
-      <div className="s3-inner">
-        <div className="eyebrow" style={{ justifyContent: "center" }}>The Process</div>
-        <h2>How It Works</h2>
-        <p className="section-desc">
-          Your roadmap to a healthier, more focused lifestyle — without changing anything about how you work.
-        </p>
-
-        <div className="steps-grid">
-          {steps.map(({ svgKey, title, desc, chip }, i) => (
-            <div className="step-card reveal" data-n={i + 1} key={i}>
-              {/* SVG icon replaces .sc-ico-wrap — no wrapper div needed */}
-              <div style={{ marginBottom: 20 }}>
-                {svgIcons[svgKey]}
-              </div>
-              <div className="sc-title">{title}</div>
-              <div className="sc-desc">{desc}</div>
-              <div className="sc-chip">{chip}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="proc-wrap reveal">
-          <div className="proc-left">
-            <img
-              src="https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?w=900&auto=format&fit=crop&q=85"
-              alt="Productive desk setup"
-            />
-            <div className="proc-ov" />
-            <div className="proc-content">
-              <h3>Built for the way<br />you actually work.</h3>
-              <p>No lifestyle overhaul needed. Frost Aura integrates seamlessly into any existing workspace, quietly and intelligently.</p>
-              <div className="proc-pills">
-                {["💧 Hydration", "🧠 Focus", "🏃 Movement", "🌿 Habits"].map((p) => (
-                  <div className="proc-pill" key={p}>{p}</div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="proc-right">
-            <img
-              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&auto=format&fit=crop&q=85&crop=top"
-              alt="Happy energetic man working at desk"
-            />
-            <div className="proc-right-overlay" />
-          </div>
-        </div>
-      </div>
-      </div>
-    </section>
-  );
-}
-
 function PricingSection() {
-  const [countdown, setCountdown] = useState({
-    d: "30",
-    h: "00",
-    m: "00",
-    s: "00",
-  });
+  const [countdown, setCountdown] = useState({ d: "06", h: "00", m: "00", s: "00" });
 
   useEffect(() => {
-    const storageKey = "pricingCountdownEnd";
-
-    // Check if timer already exists in localStorage
+    const storageKey = "pricingCountdownEnd6Days";
     let savedEnd = localStorage.getItem(storageKey);
 
-    // If no timer exists, create 30-day timer
     if (!savedEnd) {
-      const newEnd = Date.now() + 30 * 24 * 60 * 60 * 1000;
+      const newEnd = Date.now() + 6 * 24 * 60 * 60 * 1000;
       localStorage.setItem(storageKey, newEnd);
       savedEnd = newEnd;
     }
 
     const end = Number(savedEnd);
-
     const pad = (n) => String(Math.floor(n)).padStart(2, "0");
 
     const tick = () => {
       const diff = end - Date.now();
 
       if (diff <= 0) {
-        setCountdown({
-          d: "00",
-          h: "00",
-          m: "00",
-          s: "00",
-        });
+        setCountdown({ d: "00", h: "00", m: "00", s: "00" });
         clearInterval(id);
         return;
       }
 
-      const days = diff / (1000 * 60 * 60 * 24);
-      const hours = (diff / (1000 * 60 * 60)) % 24;
-      const mins = (diff / (1000 * 60)) % 60;
-      const secs = (diff / 1000) % 60;
-
       setCountdown({
-        d: pad(days),
-        h: pad(hours),
-        m: pad(mins),
-        s: pad(secs),
+        d: pad(diff / (1000 * 60 * 60 * 24)),
+        h: pad((diff / (1000 * 60 * 60)) % 24),
+        m: pad((diff / (1000 * 60)) % 60),
+        s: pad((diff / 1000) % 60),
       });
     };
 
     tick();
     const id = setInterval(tick, 1000);
-
     return () => clearInterval(id);
   }, []);
 
@@ -1042,95 +1115,632 @@ function PricingSection() {
 
   return (
     <section className="s4 lg:-mt-2" id="pricing">
-    <div className="lg:-mt-16 -mt-16">
-      <div className="s4-inner">
-        <div className="eyebrow" style={{ justifyContent: "center" }}>
-          Limited Launch Offer
-        </div>
+      <div className="lg:-mt-16 -mt-16">
+        <div className="s4-inner">
+          <div className="eyebrow" style={{ justifyContent: "center" }}>
+            Limited Launch Offer
+          </div>
 
-        <h2>Launch Pricing Ends Soon</h2>
+          <h2>Launch Pricing Ends Soon</h2>
 
-        <p className="section-desc">
-          Back early. Save more. Only a limited number of units available at these prices.
-        </p>
+          <p className="section-desc">
+            Back early. Save more. Only a limited number of units available at these prices.
+          </p>
 
-        <div className="cdown">
-          {[["d", "Days"], ["h", "Hours"], ["m", "Min"], ["s", "Sec"]].map(([k, l], i) => (
-            <div key={k} style={{ display: "contents" }}>
-              <div className="cdb">
-                <span className="cdn">{countdown[k]}</span>
-                <span className="cdl">{l}</span>
+          <div className="cdown">
+            {[["d", "Days"], ["h", "Hours"], ["m", "Min"], ["s", "Sec"]].map(([k, l], i) => (
+              <div key={k} style={{ display: "contents" }}>
+                <div className="cdb">
+                  <span className="cdn">{countdown[k]}</span>
+                  <span className="cdl">{l}</span>
+                </div>
+                {i < 3 && <div className="cdsep">:</div>}
               </div>
+            ))}
+          </div>
 
-              {i < 3 && <div className="cdsep">:</div>}
-            </div>
-          ))}
-        </div>
-
-        <div className="prow">
-          {tiers.map(({ tier, price, save, was, cta, star }) => (
-            <div className={`pc reveal${star ? " star" : ""}`} key={tier}>
-              {star && <div className="best-badge">⚡ Best Deal</div>}
-
-              <div className="pc-tier">{tier}</div>
-
-              <div className="pc-amt">
-                <sup>$</sup>
-                {price}
+          <div className="prow">
+            {tiers.map(({ tier, price, save, was, cta, star }) => (
+              <div className={`pc reveal${star ? " star" : ""}`} key={tier}>
+                {star && <div className="best-badge">⚡ Best Deal</div>}
+                <div className="pc-tier">{tier}</div>
+                <div className="pc-amt"><sup>$</sup>{price}</div>
+                {save && <div className="pc-save">{save}</div>}
+                <div className="pc-was">{was}</div>
+                <a href={campaignLink} target="_blank" rel="noopener noreferrer" className="pc-cta">
+                  {cta}
+                </a>
               </div>
+            ))}
+          </div>
 
-              {save && <div className="pc-save">{save}</div>}
+          <div style={{ marginTop: 10 }}>
+            <a href={campaignLink} target="_blank" rel="noopener noreferrer" className="btn-pink-lg">
+              Back Frost Aura on Indiegogo
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
 
-              <div className="pc-was">{was}</div>
-
-              <a
-                href={campaignLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="pc-cta"
-              >
-                {cta}
-              </a>
-            </div>
-          ))}
+          <div className="trust-row">
+            {["🔒 Secure checkout", "📦 Ships worldwide", "💎 Premium Quality", "⚡ Limited stock"].map((t) => (
+              <div className="trust-item" key={t}>{t}</div>
+            ))}
+          </div>
         </div>
-
-        <div style={{ marginTop: 10 }}>
-          <a
-            href={campaignLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-pink-lg"
-          >
-            Back Frost Aura on Indiegogo
-
-            <svg
-              width="20"
-              height="20"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-
-        <div className="trust-row">
-          {["🔒 Secure checkout", "📦 Ships worldwide", "💎 Premium Quality", "⚡ Limited stock"].map(
-            (t) => (
-              <div className="trust-item" key={t}>
-                {t}
-              </div>
-            )
-          )}
-        </div>
-      </div>
       </div>
     </section>
+  );
+}
+
+
+function AboutSection() {
+  return (
+    <section className="s2" id="about">
+      <div className="lg:-mt-8 -mt-16">
+        <div className="s2-inner">
+          <div className="reveal">
+            <div className="eyebrow">What is Frost Aura</div>
+            <h2>Your Desk, Now a Habit System</h2>
+            <p className="section-desc">
+              Frost Aura is an AI desk wellness device that supports hydration, focus, and daily habits — quietly and intelligently, without interrupting your flow.
+            </p>
+            <div className="feature-list">
+              {[
+                { n: "01", title: "Non-invasive by design", desc: "Simply sits on your desk. No wearables, no straps, no friction. Fits naturally into any workspace setup." },
+                { n: "02", title: "Works with any bottle", desc: "Use the bottle you already love. No proprietary accessories or special hardware required — ever." },
+                { n: "03", title: "Tracks completely automatically", desc: "AI learns your unique patterns over time and adapts. You just work — Frost Aura does the rest." },
+              ].map(({ n, title, desc }) => (
+                <div className="fi" key={n}>
+                  <div className="fi-num">{n}</div>
+                  <div><h4>{title}</h4><p>{desc}</p></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="s2-vis reveal">
+            <img className="s2-img-main" src="/images/what.svg" alt="Modern desk with productivity device" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function HowItWorksSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const cards = [
+    {
+      title: "Place your bottle",
+      desc: "Set Frost Aura on your desk and place any water bottle nearby. Tracking begins automatically the moment it's powered on.",
+      tag: "Zero setup",
+      bg: "#79D8FF",
+      tagBg: "rgba(124,92,191,.15)",
+      tagColor: "#",
+      accent: "#1d9fd2",
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.42849 20.0287C4.78123 19.3938 5.45047 19 6.17681 19H22.2639C23.0215 19 23.714 19.428 24.0528 20.1056L26.5528 25.1056C27.2177 26.4354 26.2507 28 24.7639 28H3.39903C1.87406 28 0.910124 26.3618 1.65071 25.0287L4.42849 20.0287Z" fill="#171616"/>
+<rect x="10" y="3" width="8" height="16" rx="0.5" fill="#9C9C9C"/>
+<rect x="10" width="8" height="2" rx="0.5" fill="#9C9C9C"/>
+</svg>
+
+      ),
+    },
+    {
+      title: "Device learns patterns",
+      desc: "Work as you normally would. The onboard AI quietly observes your hydration habits, focus blocks, and work sessions.",
+      tag: "Passive AI learning",
+      bg: "#A7E6FF",
+      tagBg: "rgb(0, 0, 0)",
+      tagColor: "#3ba3cd",
+      accent: "#3ba3cd",
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.68945 8.18457C6.62245 8.18457 8.18945 6.61757 8.18945 4.68457C8.18945 2.75157 6.62245 1.18457 4.68945 1.18457C2.75646 1.18457 1.18945 2.75157 1.18945 4.68457C1.18945 6.61757 2.75646 8.18457 4.68945 8.18457Z" fill="#2e2e2e"/>
+<path d="M17.5343 14.0296C17.533 13.3079 17.3079 12.6044 16.89 12.016C16.4721 11.4276 15.882 10.9833 15.201 10.7443V7.96764C15.6871 7.79299 16.1285 7.51254 16.493 7.14655C16.8576 6.78055 17.1364 6.33815 17.3091 5.8513H20.0706C20.2442 6.33966 20.5244 6.78321 20.8909 7.14969C21.2574 7.51618 21.7009 7.7964 22.1893 7.96997V10.7466C21.4112 11.0238 20.7562 11.5671 20.34 12.2805C19.9238 12.994 19.7733 13.8315 19.9149 14.6453C20.0566 15.459 20.4813 16.1964 21.1141 16.7272C21.7469 17.258 22.547 17.548 23.373 17.5459C24.1989 17.5439 24.9975 17.2499 25.6277 16.7159C26.2578 16.1819 26.6789 15.4424 26.8165 14.628C26.954 13.8136 26.7993 12.9768 26.3795 12.2654C25.9598 11.5541 25.302 11.0141 24.5226 10.7408V7.9688C25.0797 7.77306 25.578 7.43927 25.9709 6.99863C26.3639 6.558 26.6388 6.02491 26.7698 5.4492C26.9008 4.87349 26.8837 4.27397 26.72 3.70668C26.5564 3.13938 26.2516 2.62284 25.8341 2.20535C25.4166 1.78786 24.9 1.48305 24.3328 1.31941C23.7655 1.15577 23.1659 1.13865 22.5902 1.26965C22.0145 1.40065 21.4814 1.67549 21.0408 2.06848C20.6002 2.46147 20.2664 2.95977 20.0706 3.5168H17.3091C17.1131 2.95946 16.7788 2.46098 16.3376 2.06802C15.8964 1.67507 15.3627 1.40049 14.7864 1.26999C14.2102 1.13949 13.6103 1.15734 13.0428 1.32187C12.4754 1.48639 11.9589 1.79221 11.5419 2.2107C11.1248 2.62919 10.8207 3.14666 10.6582 3.71467C10.4956 4.28268 10.4798 4.88267 10.6122 5.45845C10.7447 6.03424 11.0211 6.56699 11.4155 7.00686C11.81 7.44672 12.3096 7.7793 12.8676 7.97347V10.7431C12.1862 10.9813 11.5957 11.4254 11.1778 12.014C10.76 12.6026 10.5356 13.3066 10.5356 14.0285C10.5356 14.7503 10.76 15.4543 11.1778 16.0429C11.5957 16.6315 12.1862 17.0757 12.8676 17.3138V20.0846C12.376 20.2574 11.9294 20.5382 11.5606 20.9062C11.1917 21.2743 10.91 21.7203 10.7361 22.2115H7.97696C7.80373 21.722 7.52342 21.2774 7.15648 20.91C6.78954 20.5427 6.34523 20.2619 5.85596 20.0881V17.3173C6.63487 17.0444 7.29225 16.505 7.71192 15.7943C8.13159 15.0837 8.28653 14.2476 8.14935 13.4337C8.01218 12.6199 7.59173 11.8807 6.9623 11.3469C6.33288 10.813 5.535 10.5189 4.70968 10.5164C3.88436 10.5139 3.08473 10.8033 2.45212 11.3333C1.8195 11.8634 1.39462 12.6 1.25257 13.413C1.11051 14.226 1.26043 15.0631 1.67583 15.7762C2.09123 16.4894 2.74536 17.0328 3.52262 17.3103V20.087C2.96596 20.2828 2.46799 20.6165 2.07523 21.0569C1.68248 21.4973 1.40774 22.03 1.27667 22.6054C1.14561 23.1808 1.16249 23.78 1.32575 24.347C1.48901 24.9141 1.79331 25.4305 2.21025 25.8481C2.62718 26.2657 3.14315 26.5708 3.70996 26.735C4.27677 26.8991 4.87593 26.917 5.4515 26.7868C6.02706 26.6566 6.56025 26.3827 7.00128 25.9907C7.4423 25.5986 7.77677 25.1012 7.97346 24.5448H10.7385C10.9349 25.1007 11.2689 25.5979 11.7093 25.9899C12.1497 26.3819 12.6822 26.656 13.2572 26.7866C13.8322 26.9173 14.4308 26.9002 14.9974 26.737C15.564 26.5738 16.08 26.2697 16.4974 25.8533C16.9147 25.4368 17.2198 24.9214 17.3842 24.3552C17.5486 23.7889 17.5669 23.1903 17.4375 22.6151C17.3081 22.0398 17.0351 21.5067 16.644 21.0655C16.2529 20.6242 15.7565 20.2892 15.201 20.0916V17.315C15.8821 17.0759 16.4724 16.6315 16.8903 16.0428C17.3082 15.4542 17.5332 14.7515 17.5343 14.0296Z" fill="#3e3e3e"/>
+<path d="M23.3574 26.874C25.2904 26.874 26.8574 25.307 26.8574 23.374C26.8574 21.441 25.2904 19.874 23.3574 19.874C21.4244 19.874 19.8574 21.441 19.8574 23.374C19.8574 25.307 21.4244 26.874 23.3574 26.874Z" fill="#464646"/>
+</svg>
+
+      ),
+    },
+    {
+      title: "Get gentle cues",
+      desc: "Receive perfectly timed, non-intrusive hydration nudges and movement prompts — never disruptive, always helpful.",
+      tag: "Smart nudges",
+      bg: "#B9EAFF",
+      tagBg: "rgba(45,181,163,.15)",
+      tagColor: "#1f9484",
+      accent: "#60b3d6",
+      icon: (
+        <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M25.375 22.9587V24.167H3.625V22.9587L6.04167 20.542V13.292C6.04167 9.54616 8.49458 6.24741 12.0833 5.18408V4.83366C12.0833 4.19272 12.3379 3.57803 12.7912 3.12482C13.2444 2.6716 13.8591 2.41699 14.5 2.41699C15.1409 2.41699 15.7556 2.6716 16.2088 3.12482C16.6621 3.57803 16.9167 4.19272 16.9167 4.83366V5.18408C20.5054 6.24741 22.9583 9.54616 22.9583 13.292V20.542L25.375 22.9587ZM16.9167 25.3753C16.9167 26.0163 16.6621 26.631 16.2088 27.0842C15.7556 27.5374 15.1409 27.792 14.5 27.792C13.8591 27.792 13.2444 27.5374 12.7912 27.0842C12.3379 26.631 12.0833 26.0163 12.0833 25.3753" fill="#5f5f5f"/>
+</svg>
+
+      ),
+    },
+    {
+      title: "Habits build themselves",
+      desc: "Consistency compounds. Unlock newer wellness habits automatically as your patterns improve over time.",
+      tag: "Effortless routine",
+      bg: "#DCF4FF",
+      tagBg: "rgba(90,174,212,.2)",
+      tagColor: "#3a8db8",
+      accent: "#6aadcc",
+      icon: (
+        <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.125 25.2175C4.125 25.2175 5.5 9.74875 9.625 4.125L16.5 5.5L15.125 9.74875H12.375V19.5938H13.75C16.5 15.3725 22.1925 13.8325 25.63 15.3725C30.1675 17.4763 29.755 23.815 25.63 26.62C22.33 28.875 12.375 30.8413 4.125 25.2175Z" fill="#707070"/>
+</svg>
+
+      ),
+    },
+  ];
+
+  const prevSlide = () => {
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const nextSlide = () => {
+    setActiveIndex((prev) => Math.min(prev + 1, cards.length - 1));
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") prevSlide();
+      if (e.key === "ArrowRight") nextSlide();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        .how-it-works-section {
+          max-width: 1200px;
+          width: 100%;
+          padding: 60px 40px;
+          margin: 0 auto;
+          overflow: hidden;
+          font-family: 'DM Sans', sans-serif;
+        }
+
+        .how-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-bottom: 50px;
+          animation: fadeUp 0.7s ease forwards;
+        }
+
+        .how-label {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 15px;
+          font-weight: 500;
+          color: #5aaed4;
+          letter-spacing: 0.5px;
+          margin-bottom: 10px;
+        }
+
+        .how-label svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        .how-title {
+          font-family: 'Playfair Display', serif;
+          font-weight: 800;
+          font-size: clamp(28px, 4vw, 42px);
+          color: #1a2e3d;
+          line-height: 1.2;
+        }
+
+        .nav-arrows {
+          display: flex;
+          gap: 10px;
+        }
+
+        .nav-btn {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: none;
+          cursor: pointer;
+          background: #1a2e3d;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+        }
+
+        .nav-btn svg {
+          width: 20px;
+          height: 20px;
+          stroke: #fff;
+          fill: none;
+          stroke-width: 2.5;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .nav-btn:hover {
+          background: #5aaed4;
+          transform: scale(1.08);
+        }
+
+        .cards-viewport {
+          overflow: hidden;
+          border-radius: 24px;
+        }
+
+        .cards-track {
+          display: flex;
+        }
+
+        .how-card {
+          min-width: 280px;
+          flex: 0 0 280px;
+          border-radius: 22px;
+          padding: 36px 30px 40px;
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.45s cubic-bezier(0.4, 0, 0.15, 1);
+          margin-right: -40px;
+          display: flex;
+          flex-direction: column;
+          min-height: 380px;
+        }
+
+        .how-card.expanded {
+          min-width: 420px;
+          flex: 0 0 420px;
+          margin-right: 0;
+        }
+
+        .card-circle {
+          position: absolute;
+          bottom: -60px;
+          right: -60px;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          opacity: 0.08;
+          transition: all 0.45s ease;
+        }
+
+        .how-card:hover .card-circle {
+          transform: scale(1.5);
+          opacity: 0.12;
+        }
+
+        .step-num {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          border: 2px solid rgba(26, 46, 61, 0.25);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          font-weight: 700;
+          color: #1a2e3d;
+          margin-bottom: 28px;
+          position: relative;
+        }
+
+        .arrow {
+          position: absolute;
+          top: -1px;
+          right: -1px;
+          width: 16px;
+          height: 16px;
+          background: #1a2e3d;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transform: scale(0.5);
+          transition: all 0.3s ease;
+        }
+
+        .arrow svg {
+          width: 8px;
+          height: 8px;
+          stroke: #fff;
+          fill: none;
+          stroke-width: 3;
+        }
+
+        .how-card:hover .arrow,
+        .how-card.expanded .arrow {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        .card-title {
+          font-size: 20px;
+          font-weight: 700;
+          color: #1a2e3d;
+          margin-bottom: 14px;
+          line-height: 1.3;
+        }
+
+        .card-desc {
+          font-size: 14.5px;
+          line-height: 1.65;
+          color: #3d5a6e;
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          transition: all 0.5s ease;
+        }
+
+        .how-card.expanded .card-desc {
+          max-height: 200px;
+          opacity: 1;
+        }
+
+        .card-tag {
+          margin-top: auto;
+          padding-top: 20px;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: all 0.4s ease 0.15s;
+        }
+
+        .how-card.expanded .card-tag {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .tag {
+          display: inline-block;
+          padding: 6px 16px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        .card-icon {
+          position: absolute;
+          bottom: 30px;
+          right: 30px;
+          width: 60px;
+          height: 60px;
+          opacity: 0;
+          transform: scale(0.7) rotate(-10deg);
+          transition: all 0.45s ease 0.2s;
+        }
+
+        .how-card.expanded .card-icon {
+          opacity: 0.18;
+          transform: scale(1) rotate(0deg);
+        }
+
+        .card-icon svg {
+          width: 100%;
+          height: 100%;
+          stroke: #1a2e3d;
+          fill: none;
+          stroke-width: 1.5;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .card-bg-number {
+          position: absolute;
+          bottom: -20px;
+          right: 10px;
+          font-family: 'Playfair Display', serif;
+          font-size: 160px;
+          font-weight: 800;
+          opacity: 0;
+          color: rgba(26, 46, 61, 0.04);
+          line-height: 1;
+          transition: opacity 0.5s ease;
+          pointer-events: none;
+        }
+
+        .how-card.expanded .card-bg-number {
+          opacity: 1;
+        }
+
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(25px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 900px) {
+          .how-it-works-section {
+            padding: 40px 20px;
+          }
+
+          .how-card {
+            min-width: 220px;
+            flex: 0 0 220px;
+            min-height: 320px;
+            padding: 28px 22px 32px;
+            margin-right: -30px;
+          }
+
+          .how-card.expanded {
+            min-width: 300px;
+            flex: 0 0 300px;
+          }
+        }
+
+        /* ONLY MOBILE FIX */
+        /* ONLY MOBILE FIX */
+@media (max-width: 600px) {
+  .how-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .cards-viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .cards-track {
+    display: flex;
+    gap: 14px;
+    width: 100%;
+    transition: transform 0.45s ease;
+    transform: translateX(calc(-1 * var(--mobile-slide, 0) * 86vw));
+  }
+
+  .how-card {
+    min-width: 82vw;
+    flex: 0 0 82vw;
+    margin-right: 0;
+    min-height: 300px;
+    padding: 26px 20px 30px;
+  }
+
+  .how-card.expanded {
+    min-width: 82vw;
+    flex: 0 0 82vw;
+  }
+
+  .card-desc {
+    max-height: 200px;
+    opacity: 1;
+  }
+
+  .card-tag {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card-icon {
+    opacity: 0.14;
+    transform: scale(1) rotate(0deg);
+  }
+
+  .card-bg-number {
+    opacity: 1;
+  }
+}
+      `}</style>
+
+      <section className="how-it-works-section" id="how">
+        <div className="how-header">
+          <div>
+            <div className="eyebrow">
+               The Process
+            </div>
+
+            <h2 className="how-title">
+              Your Roadmap to a Healthier,
+              <br />
+              More Focused Lifestyle
+            </h2>
+          </div>
+
+          <div className="nav-arrows">
+            <button className="nav-btn" onClick={prevSlide}>
+              <svg viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+
+            <button className="nav-btn" onClick={nextSlide}>
+              <svg viewBox="0 0 24 24">
+                <polyline points="9 6 15 12 9 18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div className="cards-viewport">
+          <div
+  className="cards-track"
+  style={{
+    "--mobile-slide": activeIndex,
+  }}
+>
+            {cards.map((card, index) => (
+              <div
+                key={index}
+                className={`how-card ${
+                  activeIndex === index ? "expanded" : ""
+                }`}
+                onClick={() => setActiveIndex(index)}
+                style={{
+                  "--mobile-slide": activeIndex,
+                  background: card.bg,
+                  zIndex:
+                    activeIndex === index
+                      ? cards.length + 1
+                      : index < activeIndex
+                      ? index + 1
+                      : cards.length - index,
+                }}
+              >
+                <div
+                  className="card-circle"
+                  style={{ background: card.accent }}
+                />
+
+                <div className="card-bg-number">{index + 1}</div>
+
+                <div className="step-num">
+                  {index + 1}
+
+                  <span className="arrow">
+                    <svg viewBox="0 0 24 24">
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </span>
+                </div>
+
+                <h3 className="card-title">{card.title}</h3>
+
+                <div className="card-desc">
+                  <p>{card.desc}</p>
+                </div>
+
+                <div className="card-tag">
+                  <span
+                    className="tag"
+                    style={{
+                      background: card.tagBg,
+                      color: card.tagColor,
+                    }}
+                  >
+                    {card.tag}
+                  </span>
+                </div>
+
+                <div className="card-icon">{card.icon}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -1147,7 +1757,7 @@ function GallerySection() {
     { src: "/gallery/4.jpeg", title: "Home Office Bliss", sub: "Wellness, built in" },
     { src: "/gallery/5.jpeg", title: "Peak Productivity", sub: "Hydrated & focused" },
     { src: "/gallery/6.png", title: "Wellness at Work", sub: "Habits made effortless" },
-      { src: "/gallery/7.jpeg", title: "Work Station ", sub: "Wellness, seamlessly built in" },
+    { src: "/gallery/7.jpeg", title: "Work Station", sub: "Wellness, seamlessly built in" },
   ];
 
   const handleMouseDown = (e) => {
@@ -1168,45 +1778,46 @@ function GallerySection() {
   return (
     <section className="s-gallery lg:-mt-6" id="gallery">
       <div className="lg:-mt-0 -mt-16">
-      <div className="s-gallery-inner">
-        <div className="eyebrow">Visual Showcase</div>
-        <h2 style={{ fontFamily: "'DM Serif Display',serif", fontSize: "clamp(28px,4vw,48px)", color: "var(--gray-900)", marginBottom: 12 }}>
-          Frost Aura in Action
-        </h2>
-        <p style={{ fontSize: 16, color: "var(--gray-600)", maxWidth: 520 }}>
-          See how Frost Aura seamlessly fits into real workspaces — minimal, beautiful, and quietly effective.
-        </p>
-      </div>
-
-      <div
-        className="gallery-scroll-wrap"
-        ref={scrollRef}
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-      >
-        <div className="gallery-track">
-          {cards.map(({ src, title, sub }) => (
-            <div className="gallery-card" key={title}>
-              <img src={src} alt={title} />
-              <div className="gallery-card-cap">
-                <h4>{title}</h4>
-                <p>{sub}</p>
-              </div>
-            </div>
-          ))}
+        <div className="s-gallery-inner">
+          <div className="eyebrow">Experience Frost</div>
+          <h2 style={{ fontFamily: "'DM Serif Display',serif", fontSize: "clamp(28px,4vw,48px)", color: "var(--gray-900)", marginBottom: 12 }}>
+            Frost Aura in Action
+          </h2>
+          <p style={{ fontSize: 16, color: "var(--gray-600)", maxWidth: 520 }}>
+            See how Frost Aura seamlessly fits into real workspaces — minimal, beautiful, and quietly effective.
+          </p>
         </div>
-      </div>
 
-      <div className="gallery-nav">
-        <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: -380, behavior: "smooth" })}>←</button>
-        <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: 380, behavior: "smooth" })}>→</button>
-      </div>
+        <div
+          className="gallery-scroll-wrap"
+          ref={scrollRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
+          <div className="gallery-track">
+            {cards.map(({ src, title, sub }) => (
+              <div className="gallery-card" key={title}>
+                <img src={src} alt={title} />
+                <div className="gallery-card-cap">
+                  <h4>{title}</h4>
+                  <p>{sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="gallery-nav">
+          <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: -380, behavior: "smooth" })}>←</button>
+          <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: 380, behavior: "smooth" })}>→</button>
+        </div>
       </div>
     </section>
   );
 }
+
 
 function AppSection() {
   const navItems = [
@@ -1243,7 +1854,7 @@ function AppSection() {
   ];
 
   const BrowserChrome = ({ url, large = false, children }) => (
-    <div className="app-browser-wrap" style={large ? {} : {}}>
+    <div className="app-browser-wrap">
       <div className="app-browser-bar" style={large ? { padding: "12px 20px" } : {}}>
         <div className="abb-dots">
           <span style={{ background: "#FF5F57" }} />
@@ -1269,9 +1880,8 @@ function AppSection() {
           </p>
         </div>
 
-        {/* Dashboard */}
         <div className="app-featured reveal">
-          <BrowserChrome url="app.frostactive.com " large>
+          <BrowserChrome url="app.frostactive.com" large>
             <div className="app-screen app-screen-dashboard">
               <div className="app-sidebar">
                 <div className="app-sidebar-logo">
@@ -1338,9 +1948,7 @@ function AppSection() {
           <div className="app-featured-label">Dashboard · Overview</div>
         </div>
 
-        {/* 3 small screens */}
         <div className="app-screens-row">
-          {/* Hydration */}
           <div className="reveal">
             <BrowserChrome url="app.frostactive.com">
               <div className="app-screen app-screen-sm" style={{ background: "#F0FAFF", padding: 20 }}>
@@ -1383,7 +1991,6 @@ function AppSection() {
             <div className="app-screen-label">Hydration Tracker</div>
           </div>
 
-          {/* Focus */}
           <div className="reveal">
             <BrowserChrome url="app.frostactive.com">
               <div className="app-screen app-screen-sm" style={{ background: "#F5F0FF", padding: 20 }}>
@@ -1411,7 +2018,6 @@ function AppSection() {
             <div className="app-screen-label">Focus Sessions</div>
           </div>
 
-          {/* Habits */}
           <div className="reveal">
             <BrowserChrome url="app.frostactive.com">
               <div className="app-screen app-screen-sm" style={{ background: "#F0FFF8", padding: 20 }}>
@@ -1427,7 +2033,6 @@ function AppSection() {
                     <div key={i} style={{ aspectRatio: "1", borderRadius: 5, background: i < 11 ? "rgba(16,185,129,.3)" : i === 11 ? "#10B981" : "#E2E8F0" }} />
                   ))}
                 </div>
-                
               </div>
             </BrowserChrome>
             <div className="app-screen-label">Habit Streaks</div>
@@ -1444,360 +2049,132 @@ function AppSection() {
   );
 }
 
+
 function ContactSection() {
   const { toast } = useToast();
-
   const [submitting, setSubmitting] = useState(false);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    query: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", query: "", message: "" });
 
   const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbxv_rlA8zUYbhhN8PuMVbcoh0mhXzlWAetJA9EH8qAGAd3Ya4myK8tt1h3yPFZ3d2TN/exec";
-
   const MASTER_GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
-
   const CHEERIO_API_KEY =
     "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
 
-  const isMobile =
-    typeof window !== "undefined" ? window.innerWidth <= 768 : false;
+  const isMobile = typeof window !== "undefined" ? window.innerWidth <= 768 : false;
 
-  // ================= HANDLE INPUT =================
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ================= EMAIL VALIDATION =================
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[A-Za-z.]{2,}$/;
     if (!regex.test(email)) return false;
-
     const validTLDs = new Set([
       "com","org","net","info","biz","xyz","dev","app","pro","me","name",
       "online","site","tech","store","ai","io","cloud","digital","media",
       "in","us","uk","ca","au","nz","de","fr","jp","sg","ae","sa","pk","lk",
       "bd","cn","es","it","nl",
       "co.in","org.in","net.in","ac.in","gov.in","nic.in",
-      "co.uk","org.uk","ac.uk",
-      "co.za","co.jp","com.au","com.sg","com.pk"
+      "co.uk","org.uk","ac.uk","co.za","co.jp","com.au","com.sg","com.pk"
     ]);
-
     const parts = email.toLowerCase().split("@")[1].split(".");
     const tld1 = parts[parts.length - 1];
     const tld2 = parts.length >= 2 ? parts.slice(-2).join(".") : null;
-
     return validTLDs.has(tld1) || (tld2 && validTLDs.has(tld2));
   };
 
-  // ================= SUBMIT =================
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { name, email, phone, query, message } = formData;
 
     if (!name || !email || !phone || !query || !message) {
-      toast({
-        title: "All Fields Required",
-        description: "Please complete all fields before submitting the form.",
-        variant: "destructive",
-      });
+      toast({ title: "All Fields Required", description: "Please complete all fields before submitting the form.", variant: "destructive" });
       return;
     }
-
     if (!validateEmail(email)) {
-      toast({
-        title: "Invalid Email Address",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-      });
+      toast({ title: "Invalid Email Address", description: "Please enter a valid email address.", variant: "destructive" });
       return;
     }
 
     setSubmitting(true);
-
     try {
-      // 1️⃣ Google Sheet Full Form
-      fetch(GOOGLE_SCRIPT_URL, {
+      fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData) }).catch(() => {});
+      fetch(MASTER_GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: `email=${encodeURIComponent(email)}&source=Contact Us` }).catch(() => {});
+      await fetch("https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow", {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      }).catch(() => {});
-
-      // 2️⃣ Master Email Sheet
-      fetch(MASTER_GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `email=${encodeURIComponent(email)}&source=Contact Us`,
-      }).catch(() => {});
-
-      // 3️⃣ Cheerio Workflow
-      await fetch(
-        "https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": CHEERIO_API_KEY,
-          },
-          body: JSON.stringify({
-            email,
-            workflowId: "691d8c61dfc2664a0552732b",
-          }),
-        }
-      );
-
-      toast({
-        title: "Message Successfully Sent",
-        description:
-          "Thank you for contacting us. Our team has received your message and will get back to you soon.",
+        headers: { "Content-Type": "application/json", "x-api-key": CHEERIO_API_KEY },
+        body: JSON.stringify({ email, workflowId: "691d8c61dfc2664a0552732b" }),
       });
-
-      // Reset
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        query: "",
-        message: "",
-      });
-
+      toast({ title: "Message Successfully Sent", description: "Thank you for contacting us. Our team has received your message and will get back to you soon." });
+      setFormData({ name: "", email: "", phone: "", query: "", message: "" });
     } catch (error) {
-      toast({
-        title: "Submission Failed",
-        description:
-          "We encountered an issue while submitting your request. Please try again shortly.",
-        variant: "destructive",
-      });
+      toast({ title: "Submission Failed", description: "We encountered an issue while submitting your request. Please try again shortly.", variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <section className="s5 lg:-mt-0 " id="contact">
+    <section className="s5 lg:-mt-0" id="contact">
       <div className="lg:-mt-0 -mt-14">
-      <div
-        className="s5-inner"
-        style={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-          gap: isMobile ? "24px" : "32px",
-          alignItems: "stretch",
-        }}
-      >
-        {/* LEFT */}
-        <div
-          className="reveal s5-left"
-          style={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <div className="eyebrow">Get In Touch</div>
+        <div className="s5-inner" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? "24px" : "32px", alignItems: "stretch" }}>
+          <div className="reveal s5-left" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+            <div className="eyebrow">Get In Touch</div>
+            <h2 style={{ fontSize: isMobile ? "28px" : "", lineHeight: isMobile ? "1.25" : "" }}>
+              We'd Love to Hear From You
+            </h2>
+            <p style={{ fontSize: isMobile ? "15px" : "", lineHeight: isMobile ? "1.7" : "" }}>
+              Have questions about Frost Aura? Need product support, business inquiries, or want to share your experience? Send us a message and our team will get back to you as soon as possible.
+            </p>
+            <div style={{ flex: 1, marginTop: "20px", borderRadius: "22px", overflow: "hidden", minHeight: isMobile ? "260px" : "auto" }}>
+              <img src="/images/contactimg1.jpeg" alt="Contact Us" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          </div>
 
-          <h2
-            style={{
-              fontSize: isMobile ? "28px" : "",
-              lineHeight: isMobile ? "1.25" : "",
-            }}
-          >
-            We'd Love to Hear From You
-          </h2>
+          <div className="reveal" style={{ height: "100%" }}>
+            <form className="contact-form" onSubmit={handleSubmit} style={{ height: "100%", display: "flex", flexDirection: "column", padding: isMobile ? "22px" : "" }}>
+              <div className="eyebrow" style={{ marginBottom: 22, textAlign: isMobile ? "center" : "left" }}>Send a Message</div>
 
-          <p
-            style={{
-              fontSize: isMobile ? "15px" : "",
-              lineHeight: isMobile ? "1.7" : "",
-            }}
-          >
-            Have questions about Frost Aura? Need product support, business
-            inquiries, or want to share your experience? Send us a message and
-            our team will get back to you as soon as possible.
-          </p>
+              <div className="form-row" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "16px" }}>
+                <div className="form-group">
+                  <label>Name</label>
+                  <input className="form-control" type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Enter your full name" />
+                </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input className="form-control" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Enter your email address" />
+                </div>
+              </div>
 
-          <div
-            style={{
-              flex: 1,
-              marginTop: "20px",
-              borderRadius: "22px",
-              overflow: "hidden",
-              minHeight: isMobile ? "260px" : "auto",
-            }}
-          >
-            <img
-              src="/images/contactimg1.jpeg"
-              alt="Contact Us"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
+              <div className="form-row" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "16px", marginTop: "16px" }}>
+                <div className="form-group">
+                  <label>Phone Number</label>
+                  <input className="form-control" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="Enter your phone number" />
+                </div>
+                <div className="form-group">
+                  <label>Query</label>
+                  <input className="form-control" type="text" name="query" value={formData.query} onChange={handleChange} placeholder="What would you like to ask?" />
+                </div>
+              </div>
+
+              <div className="form-group full-width" style={{ flex: 1, marginTop: "16px" }}>
+                <label>Feedback</label>
+                <textarea className="form-control" name="message" value={formData.message} onChange={handleChange} placeholder="Share your thoughts or feedback..." style={{ height: isMobile ? "140px" : "100%", resize: "none" }} />
+              </div>
+
+              <button type="submit" className="form-submit" disabled={submitting} style={{ marginTop: "18px", width: "100%", padding: isMobile ? "14px" : "", fontSize: isMobile ? "15px" : "", background: submitting ? "linear-gradient(135deg,#10B981,#059669)" : "" }}>
+                {submitting ? "Sending..." : "Send Message →"}
+              </button>
+
+              <p className="form-note" style={{ textAlign: "center", fontSize: isMobile ? "13px" : "", marginTop: "14px" }}>
+                🔒 Your information is safe with us. No spam, ever.
+              </p>
+            </form>
           </div>
         </div>
-
-        {/* RIGHT FORM */}
-        <div className="reveal" style={{ height: "100%" }}>
-          <form
-            className="contact-form"
-            onSubmit={handleSubmit}
-            style={{
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              padding: isMobile ? "22px" : "",
-            }}
-          >
-            <div
-              className="eyebrow"
-              style={{
-                marginBottom: 22,
-                textAlign: isMobile ? "center" : "left",
-              }}
-            >
-              Send a Message
-            </div>
-
-            {/* Row 1 */}
-            <div
-              className="form-row"
-              style={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-                gap: "16px",
-              }}
-            >
-              <div className="form-group">
-                <label>Name</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Email</label>
-                <input
-                  className="form-control"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email address"
-                />
-              </div>
-            </div>
-
-            {/* Row 2 */}
-            <div
-              className="form-row"
-              style={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-                gap: "16px",
-                marginTop: "16px",
-              }}
-            >
-              <div className="form-group">
-                <label>Phone Number</label>
-                <input
-                  className="form-control"
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="Enter your phone number"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Query</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="query"
-                  value={formData.query}
-                  onChange={handleChange}
-                  placeholder="What would you like to ask?"
-                />
-              </div>
-            </div>
-
-            {/* Message */}
-            <div
-              className="form-group full-width"
-              style={{
-                flex: 1,
-                marginTop: "16px",
-              }}
-            >
-              <label>Feedback</label>
-              <textarea
-                className="form-control"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Share your thoughts or feedback..."
-                style={{
-                  height: isMobile ? "140px" : "100%",
-                  resize: "none",
-                }}
-              />
-            </div>
-
-            {/* Button */}
-            <button
-              type="submit"
-              className="form-submit"
-              disabled={submitting}
-              style={{
-                marginTop: "18px",
-                width: "100%",
-                padding: isMobile ? "14px" : "",
-                fontSize: isMobile ? "15px" : "",
-                background: submitting
-                  ? "linear-gradient(135deg,#10B981,#059669)"
-                  : "",
-              }}
-            >
-              {submitting ? "Sending..." : "Send Message →"}
-            </button>
-
-            <p
-              className="form-note"
-              style={{
-                textAlign: "center",
-                fontSize: isMobile ? "13px" : "",
-                marginTop: "14px",
-              }}
-            >
-              🔒 Your information is safe with us. No spam, ever.
-            </p>
-          </form>
-        </div>
-      </div>
       </div>
     </section>
   );
@@ -1805,45 +2182,66 @@ function ContactSection() {
 
 
 /* ─────────────────────────────────────────────────
-   WAVE HELPERS
+   WAVE COMPONENTS — perfectly matched to new section order:
+   Hero(#fff) → Pricing(gradient) → About(#F0F7FC) → HowItWorks(#fff) → Gallery(#F8FBFF) → App(#F8FBFF) → Contact(#fff)
 ───────────────────────────────────────────────── */
-const Wave1 = () => (
-  <svg className="wave lg:-mt-4 " viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ background: "#fff" }} preserveAspectRatio="none">
-    <path d="M0 60 C360 0 1080 0 1440 60 V60 H0Z" fill="#F0F7FF" />
-  </svg>
-);
-const Wave2 = () => (
-  <svg className="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ background: "#F0F7FF" }} preserveAspectRatio="none">
-    <path d="M0 0 C360 60 1080 60 1440 0 V60 H0Z" fill="#fff" />
-  </svg>
-);
-const Wave3 = () => (
-  <svg className="wave lg:-mt-0 -mt-14" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ background: "#fff" }} preserveAspectRatio="none">
-    <path d="M0 60 C480 0 960 0 1440 60 V60 H0Z" fill="url(#pg)" />
-    <defs><linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#EFF6FF" /><stop offset="50%" stopColor="#F0FCFF" /><stop offset="100%" stopColor="#FFF0F6" /></linearGradient></defs>
-  </svg>
-);
-const Wave4 = () => (
-  <svg className="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ background: "linear-gradient(135deg,#EFF6FF,#F0FCFF,#FFF0F6)" }}>
-    <path d="M0 0 C480 60 960 60 1440 0 V60 H0Z" fill="#F8FBFF" />
-  </svg>
-);
-const Wave5 = () => (
-  <svg className="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ background: "#F8FBFF" }}>
-    <path d="M0 0 C480 60 960 60 1440 0 V60 H0Z" fill="#fff" />
-  </svg>
-);
-const Wave6 = () => (
-  <svg className="wave lg:-mt-16" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ background: "#F8FBFF" }}>
-    <path d="M0 60 C480 0 960 0 1440 60 V60 H0Z" fill="#F0F7FC" />
+
+/* Wave between Hero (#fff) and Pricing (gradient: #EFF6FF→#F0FCFF→#FFF0F6) */
+const WaveHeroToPricing = () => (
+  <svg className="wave lg:-mt-4" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ background: "#fff" }} preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#EFF6FF" />
+        <stop offset="50%" stopColor="#F0FCFF" />
+        <stop offset="100%" stopColor="#FFF0F6" />
+      </linearGradient>
+    </defs>
+    <path d="M0 60 C360 0 1080 0 1440 60 V60 H0Z" fill="url(#wg1)" />
   </svg>
 );
 
+/* Wave between Pricing (gradient) and About (#F0F7FC / blue-pale) */
+const WavePricingToAbout = () => (
+  <svg className="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ background: "linear-gradient(135deg,#EFF6FF,#F0FCFF,#FFF0F6)" }}>
+    <path d="M0 0 C480 60 960 60 1440 0 V60 H0Z" fill="#F0F7FC" />
+  </svg>
+);
+
+/* Wave between About (#F0F7FC) and HowItWorks (#fff) */
+const WaveAboutToHow = () => (
+  <svg className="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ background: "#F0F7FC" }} preserveAspectRatio="none">
+    <path d="M0 0 C360 60 1080 60 1440 0 V60 H0Z" fill="#fff" />
+  </svg>
+);
+
+/* Wave between HowItWorks (#fff) and Gallery (#F8FBFF) */
+const WaveHowToGallery = () => (
+  <svg className="wave lg:-mt-0 -mt-14" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ background: "#fff" }} preserveAspectRatio="none">
+    <path d="M0 60 C480 0 960 0 1440 60 V60 H0Z" fill="#F8FBFF" />
+  </svg>
+);
+
+/* Wave between Gallery (#F8FBFF) and App (#F8FBFF) — same color, gentle visual separator */
+const WaveGalleryToApp = () => (
+  <svg className="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ background: "#F8FBFF" }}>
+    <path d="M0 0 C480 30 960 30 1440 0 V60 H0Z" fill="#F0F7FC" opacity="0.5" />
+    <path d="M0 60 C480 30 960 30 1440 60 V60 H0Z" fill="#F8FBFF" />
+  </svg>
+);
+
+/* Wave between App (#F8FBFF) and Contact (#fff) */
+const WaveAppToContact = () => (
+  <svg className="wave lg:-mt-16" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ background: "#F8FBFF" }}>
+    <path d="M0 0 C480 60 960 60 1440 0 V60 H0Z" fill="#fff" />
+  </svg>
+);
+
+
 /* ─────────────────────────────────────────────────
-   MAIN HOME
+   MAIN HOME — New section order:
+   Hero → Pricing → About → HowItWorks → Gallery → App → Contact
 ───────────────────────────────────────────────── */
 export default function Home() {
-  // Scroll reveal
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("in"); }),
@@ -1859,18 +2257,44 @@ export default function Home() {
   return (
     <>
       <style>{styles}</style>
+
+      {/* 1. Hero — bg: #fff */}
       <HeroSection />
-      <Wave1 />
-      <AboutSection />
-      <Wave2 />
-      <HowItWorksSection />
-      <Wave3 />
+
+      {/* Wave: #fff → gradient */}
+      <WaveHeroToPricing />
+
+      {/* 2. Pricing — bg: gradient (#EFF6FF → #F0FCFF → #FFF0F6) */}
       <PricingSection />
-      <Wave4 />
+
+      {/* Wave: gradient → #F0F7FC */}
+      <WavePricingToAbout />
+
+      {/* 3. About — bg: #F0F7FC (blue-pale) */}
+      <AboutSection />
+
+      {/* Wave: #F0F7FC → #fff */}
+      <WaveAboutToHow />
+
+      {/* 4. How It Works — bg: #fff */}
+      <HowItWorksSection />
+
+      {/* Wave: #fff → #F8FBFF */}
+      <WaveHowToGallery />
+
+      {/* 5. Gallery — bg: #F8FBFF */}
       <GallerySection />
-      <Wave5 />
+
+      {/* Wave: #F8FBFF → #F8FBFF (same, gentle separator) */}
+      <WaveGalleryToApp />
+
+      {/* 6. App — bg: #F8FBFF */}
       <AppSection />
-      <Wave6 />
+
+      {/* Wave: #F8FBFF → #fff */}
+      <WaveAppToContact />
+
+      {/* 7. Contact — bg: #fff */}
       <ContactSection />
     </>
   );

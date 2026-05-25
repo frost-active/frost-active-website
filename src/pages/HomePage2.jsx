@@ -4776,7 +4776,7 @@ const Home = () => (
     {/* <ComparisonFrost /> */}
     {/*<MeetOurTeamSection /> */}
   {/* <TestimonialsSection /> */}
-  {/*<BlogSection /> */}
+  <BlogSection /> 
     {/*<TryItNowSection /> */}
     <ContactSection />
     {/* <InstagramReels /> */}

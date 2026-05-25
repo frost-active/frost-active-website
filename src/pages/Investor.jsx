@@ -1524,7 +1524,7 @@ const InvestorPage = () => {
   const [newTab] = useState(''); // Change 'Investors' to any of the tabList names as needed
 
   const images = [
-  '/images/preorder1.jpg',
+  '/images/heroimg.jpeg',
   '/images/gallery1-5.jpg',
   '/images/invest1.1.jpg',
   '/images/invest3.jpg',

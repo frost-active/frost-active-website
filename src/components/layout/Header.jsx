@@ -168,7 +168,65 @@ const styles = `
     height: 2px;
     background: var(--gray-700);
   }
+/* HAMBURGER ANIMATION */
 
+.hamburger {
+  width: 42px;
+  height: 42px;
+
+  position: relative;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+}
+
+.hamburger span {
+  position: absolute;
+
+  width: 22px;
+  height: 2px;
+
+  background: var(--gray-700);
+
+  border-radius: 10px;
+
+  transition:
+    transform .3s ease,
+    opacity .25s ease,
+    top .3s ease;
+}
+
+/* Default 3 Lines */
+
+.hamburger span:nth-child(1) {
+  top: 14px;
+}
+
+.hamburger span:nth-child(2) {
+  top: 20px;
+}
+
+.hamburger span:nth-child(3) {
+  top: 26px;
+}
+
+/* OPEN STATE → X */
+
+.hamburger.open span:nth-child(1) {
+  top: 20px;
+  transform: rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  top: 20px;
+  transform: rotate(-45deg);
+}
   .mobile-menu {
     display: none;
     flex-direction: column;
@@ -261,8 +319,8 @@ export default function Header() {
 
   const navLinks = [
     { href: "/#about", label: "About" },
-    { href: "/#how", label: "How It Works" },
     { href: "/#pricing", label: "Pricing" },
+    { href: "/#how", label: "How It Works" },
     { href: "/#gallery", label: "Gallery" },
     { href: "/#contact", label: "Contact" },
   ];
@@ -307,15 +365,15 @@ export default function Header() {
             </a>
           </div>
 
-          <button
-            className="hamburger"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-
+        <button
+  className={`hamburger ${menuOpen ? "open" : ""}`}
+  onClick={() => setMenuOpen(!menuOpen)}
+  aria-label="Toggle Menu"
+>
+  <span />
+  <span />
+  <span />
+</button>
           <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
             {navLinks.map(({ href, label }) => (
               <a key={href} href={href} onClick={() => setMenuOpen(false)}>
