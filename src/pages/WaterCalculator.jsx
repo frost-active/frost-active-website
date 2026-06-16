@@ -1,1371 +1,982 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
 
-// Height mapping for averages (in inches)
-const avgHeights = {
-  "Asia Avg — 5'5”": 65,
-  "Europe Avg — 5'8”": 68,
-  "US Avg — 5'9”": 69,
-};
+const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@600;700&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:ital,wght@0,700;1,400&family=Bebas+Neue&display=swap');
 
-// Google Sheets Web App URL 
-const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbw2pjoG5UvFmWYuQUwXZwmuN4f-S0odsKNU6Do9yIukTJGRvkTB51-W0Xr3KkhR4Pk0uA/exec';
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #29aae1; --blue2: #1a96cc; --blue3: #e6f5fc; --blue4: #cce8f7;
+    --pink: #f0457a; --navy: #0d2a3a; --white: #ffffff; --bg: #f4f9fd;
+    --text: #0d2a3a; --sub: #4a7d97; --muted: #5a9cb8; --border: #d5ecf7;
+    --red: #e53935; --red-bg: #fff5f5; --red-border: #ffcdd2;
+    --green: #2e7d32; --green-bg: #f1f8f1; --green-border: #c8e6c9;
+    --amber: #b26a00; --amber-bg: #fff8ec; --amber-border: #ffe0a3; --r: 14px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
+  .wic-nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2.5rem; height: 62px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .wic-logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: .06em; color: var(--navy); line-height: 1; }
+  .wic-logo b { color: var(--blue); }
+  .wic-logo small { font-size: .42rem; font-weight: 400; color: var(--muted); letter-spacing: .15em; display: block; margin-top: 2px; }
+  .wic-nav-links { display: flex; gap: 2rem; list-style: none; }
+  .wic-nav-links a { font-size: .83rem; color: var(--sub); text-decoration: none; transition: color .18s; }
+  .wic-nav-links a:hover { color: var(--blue); }
+  .wic-nav-pill { background: var(--pink); color: #fff; border: none; padding: .52rem 1.4rem; border-radius: 100px; font-size: .78rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; box-shadow: 0 3px 14px rgba(240,69,122,.3); transition: all .2s; }
+  .wic-nav-pill:hover { background: #d93a6a; transform: translateY(-1px); }
 
-const MASTER_SHEET_WEBHOOK_URL =
-  "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
+  .wic-hero { background: linear-gradient(135deg,#1a96cc 0%,#29aae1 55%,#3dbfe8 100%); padding: 3.5rem 2.5rem 5rem; position: relative; overflow: hidden; }
+  .wic-hero-circle1 { position: absolute; width: 420px; height: 420px; border-radius: 50%; background: rgba(255,255,255,.06); top: -140px; right: -80px; pointer-events: none; }
+  .wic-hero-circle2 { position: absolute; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,.05); bottom: -60px; left: 38%; pointer-events: none; }
+  .wic-hero-circle3 { position: absolute; width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,.07); bottom: 40px; right: 120px; pointer-events: none; }
+  .wic-hero-inner {
+    max-width: 760px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.2rem;
+    margin: 0 auto;
+  }
 
-// Helper function to send data to Google Sheets
-async function sendDataToGoogleSheet(data) {
+  .wic-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.28);
+    color: #fff;
+    font-size: .83rem;
+    font-weight: 500;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    padding: .3rem .9rem;
+    border-radius: 100px;
+  }
+
+  .wic-hero-pretitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .78rem;
+    font-weight: 400;
+    color: rgba(255,255,255,.9);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: .6rem;
+    text-align: center;
+  }
+
+  .wic-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem,5vw,3.8rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .wic-hero-divider {
+    width: 60px;
+    height: 2.5px;
+    background: rgba(255,255,255,.65);
+    border-radius: 2px;
+    margin: 0 auto;
+  }
+
+  .wic-hero-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,.93);
+    line-height: 1.8;
+    font-weight: 400;
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .wic-hero-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: .6rem;
+  }
+
+  .wic-hst {
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    min-width: 150px;
+    backdrop-filter: blur(6px);
+    transition: all .25s ease;
+  }
+
+  .wic-hst:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,.22);
+  }
+
+  .wic-hst-n {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .wic-hst-l {
+    font-size: .7rem;
+    color: rgba(255,255,255,.9);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-top: 6px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 640px) {
+    .wic-hero { padding: 2.5rem 1.2rem 4rem; }
+    .wic-hero-inner { gap: 1rem; }
+    .wic-hero-sub { font-size: .9rem; max-width: 100%; }
+    .wic-hero-stats { flex-direction: row; justify-content: center; gap: .8rem; }
+    .wic-hst { min-width: 95px; flex: 1; padding: .9rem 1rem; }
+    .wic-hst-n { font-size: 1.5rem; }
+    .wic-hst-l { font-size: .58rem; }
+  }
+  .wic-wrap { max-width: 760px; margin: -2rem auto 0; padding: 0 1.5rem 4rem; position: relative; z-index: 2; }
+  .wic-card { background: var(--white); border-radius: 20px; box-shadow: 0 12px 50px rgba(41,170,225,.1), 0 2px 8px rgba(0,0,0,.04); padding: 2.5rem 2.75rem; }
+
+  .wic-sh { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
+  .wic-sh-lbl { font-size: .6rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--blue); white-space: nowrap; }
+  .wic-sh-line { flex: 1; height: 1px; background: linear-gradient(90deg,var(--border),transparent); }
+
+  .wic-g-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+  .wic-gc { display: flex; align-items: center; gap: .85rem; padding: .9rem 1.2rem; border-radius: var(--r); background: var(--bg); border: 2px solid var(--border); cursor: pointer; transition: all .22s; font-family: 'DM Sans', sans-serif; width: 100%; text-align: left; }
+  .wic-gc-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; flex-shrink: 0; transition: all .22s; }
+  .wic-gc-info { text-align: left; }
+  .wic-gc-title { font-size: .9rem; font-weight: 500; color: var(--text); display: block; line-height: 1; }
+  .wic-gc-sub { font-size: .63rem; color: var(--muted); display: block; margin-top: 2px; }
+  .wic-gc-male .wic-gc-circle { background: #dff2fb; color: var(--blue); }
+  .wic-gc-female .wic-gc-circle { background: #fde8ef; color: var(--pink); }
+  .wic-gc-male:hover { border-color: var(--blue); background: #edf8ff; }
+  .wic-gc-female:hover { border-color: var(--pink); background: #fff5f8; }
+  .wic-gc-male.wic-on { border-color: var(--blue); background: #edf8ff; }
+  .wic-gc-male.wic-on .wic-gc-circle { background: var(--blue); color: #fff; }
+  .wic-gc-male.wic-on .wic-gc-title { color: var(--blue2); }
+  .wic-gc-female.wic-on { border-color: var(--pink); background: #fff5f8; }
+  .wic-gc-female.wic-on .wic-gc-circle { background: var(--pink); color: #fff; }
+  .wic-gc-female.wic-on .wic-gc-title { color: var(--pink); }
+
+  .wic-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; align-items: end; }
+  .wic-f { display: flex; flex-direction: column; gap: 5px; }
+  .wic-f label { font-size: .7rem; font-weight: 500; color: var(--sub); letter-spacing: .04em; }
+  .wic-f input, .wic-f select { background: transparent; border: none; border-bottom: 2px solid var(--border); color: var(--text); padding: .55rem 0; font-family: 'DM Sans', sans-serif; font-size: .95rem; outline: none; transition: border-color .2s; width: 100%; appearance: none; -webkit-appearance: none; }
+  .wic-f input::placeholder { color: #6fa8c0; }
+  .wic-f input:focus { border-bottom-color: var(--blue); }
+  .wic-f select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%2329aae1' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .2rem center; padding-right: 1.4rem; cursor: pointer; }
+  .wic-f select:focus { border-bottom-color: var(--blue); }
+  .wic-f select option { background: #fff; color: var(--text); }
+  .wic-height-field { display: flex; flex-direction: column; gap: 0; }
+  .wic-height-label-row { display: flex; align-items: center; justify-content: space-between; height: 1.05rem; margin-bottom: 5px; }
+  .wic-height-label-row label { font-size: .7rem; font-weight: 500; color: var(--sub); letter-spacing: .04em; margin: 0; line-height: 1; }
+  .wic-height-unit-sw { display: flex; background: #e0f1fa; border-radius: 100px; padding: 2px; gap: 1px; }
+  .wic-husw { padding: .18rem .6rem; border-radius: 100px; border: none; background: transparent; color: var(--sub); font-family: 'DM Sans', sans-serif; font-size: .65rem; cursor: pointer; transition: all .18s; font-weight: 500; letter-spacing: .02em; line-height: 1; }
+  .wic-husw.wic-on { background: var(--blue); color: #fff; font-weight: 600; }
+  .wic-husw:not(.wic-on):hover { background: #c2e0f5; color: var(--blue2); }
+  .wic-height-input { background: transparent; border: none; border-bottom: 2px solid var(--border); color: var(--text); padding: .55rem 0; font-family: 'DM Sans', sans-serif; font-size: .95rem; outline: none; transition: border-color .2s; width: 100%; }
+  .wic-height-input::placeholder { color: #6fa8c0; }
+  .wic-height-input:focus { border-bottom-color: var(--blue); }
+  .wic-ftin { display: flex; gap: .6rem; }
+  .wic-ftin-cell { flex: 1; display: flex; align-items: baseline; gap: 4px; border-bottom: 2px solid var(--border); transition: border-color .2s; }
+  .wic-ftin-cell:focus-within { border-bottom-color: var(--blue); }
+  .wic-ftin-cell input { background: transparent; border: none; color: var(--text); padding: .55rem 0; font-family: 'DM Sans', sans-serif; font-size: .95rem; outline: none; width: 100%; -webkit-appearance: none; appearance: none; }
+  .wic-ftin-cell input::placeholder { color: #6fa8c0; }
+  .wic-ftin-unit { font-size: .68rem; color: var(--muted); font-weight: 500; }
+
+  .wic-act-row { display: flex; gap: .6rem; margin-bottom: 2rem; }
+  .wic-ab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; background: var(--bg); border: 2px solid var(--border); border-radius: 14px; padding: .85rem .4rem .7rem; cursor: pointer; transition: all .22s; font-family: 'DM Sans', sans-serif; }
+  .wic-ab-ic { font-size: 1.4rem; line-height: 1; }
+  .wic-ab-lb { font-size: .62rem; color: var(--sub); font-weight: 400; text-align: center; line-height: 1.25; transition: color .2s; }
+  .wic-ab:hover { border-color: var(--blue); background: #edf8ff; }
+  .wic-ab:hover .wic-ab-lb { color: var(--blue2); }
+  .wic-ab.wic-on { border-color: var(--blue); background: var(--blue); }
+  .wic-ab.wic-on .wic-ab-lb { color: #fff; font-weight: 500; }
+
+  .wic-chips { display: flex; flex-wrap: nowrap; gap: .55rem; margin-bottom: 2rem; overflow-x: auto; padding-bottom: 4px; }
+  .wic-chips::-webkit-scrollbar { height: 3px; }
+  .wic-chips::-webkit-scrollbar-track { background: #f0f8fd; border-radius: 100px; }
+  .wic-chips::-webkit-scrollbar-thumb { background: var(--border); border-radius: 100px; }
+  .wic-chip { display: inline-flex; align-items: center; gap: 5px; padding: .42rem .9rem; border-radius: 100px; background: var(--bg); color: var(--sub); font-size: .78rem; cursor: pointer; user-select: none; border: 1.5px solid var(--border); transition: all .2s; font-family: 'DM Sans', sans-serif; white-space: nowrap; flex-shrink: 0; }
+  .wic-chip:hover { background: #dff2fb; border-color: var(--blue); color: var(--blue2); }
+  .wic-chip.wic-on { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .wic-chip-tick { font-size: .65rem; }
+
+  .wic-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  .wic-email-hint { font-size: .65rem; color: #6fa8c0; margin-top: 5px; font-style: normal; font-weight: 400; }
+  .wic-req { color: var(--pink); }
+
+  .wic-calc-btn-wrap { margin-bottom: 2rem; }
+  .wic-btn-calc { width: 100%; background: var(--blue); color: #fff; border: none; padding: 1.1rem 2rem; border-radius: var(--r); font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .22s; box-shadow: 0 5px 22px rgba(41,170,225,.35); display: flex; align-items: center; justify-content: center; gap: .6rem; }
+  .wic-btn-calc:hover { background: var(--blue2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(41,170,225,.42); }
+  .wic-btn-calc:active { transform: scale(.98); }
+  .wic-btn-calc-sub { background: transparent; color: var(--sub); border: 1.5px solid var(--border); padding: .85rem 2rem; border-radius: var(--r); font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 500; cursor: pointer; transition: all .22s; margin-top: .75rem; width: 100%; display: block; text-align: center; text-decoration: none; }
+  .wic-btn-calc-sub:hover { border-color: var(--pink); color: var(--pink); }
+
+  .wic-result { border-radius: 18px; overflow: hidden; border: 1.5px solid var(--border); transition: all .3s; }
+  .wic-res-empty { padding: 2.5rem; text-align: center; color: var(--muted); font-size: .88rem; display: flex; flex-direction: column; align-items: center; gap: .6rem; background: var(--bg); border-radius: 18px; }
+  .wic-res-drop { opacity: .25; }
+  .wic-res-hero { background: linear-gradient(135deg,#1a96cc,#29aae1); padding: 2rem 2.25rem; text-align: center; }
+  .wic-res-heading { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .22em; margin-bottom: .35rem; }
+  .wic-res-subheading { font-size: .78rem; color: rgba(255,255,255,.8); font-weight: 400; letter-spacing: .06em; margin-bottom: .5rem; text-transform: uppercase; }
+  .wic-res-num { font-family: 'Bebas Neue', sans-serif; font-size: 6rem; font-weight: 400; color: #fff; line-height: 1; letter-spacing: .02em; }
+  .wic-res-unit { font-size: .7rem; color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: .18em; margin-top: 5px; margin-bottom: 1.5rem; font-weight: 500; }
+  .wic-res-glass-row { display: flex; align-items: center; justify-content: center; gap: 1rem; border-top: 1px solid rgba(255,255,255,.18); padding-top: 1.25rem; }
+  .wic-res-glass-ic { display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .wic-res-glass-n { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: #fff; line-height: 1; }
+  .wic-res-glass-l { font-size: .65rem; color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: .1em; margin-top: 3px; font-weight: 500; }
+  .wic-res-bars { padding: 1.5rem 2.25rem; background: #fff; display: flex; flex-direction: column; gap: .85rem; }
+  .wic-rbar { display: flex; align-items: center; gap: 12px; }
+  .wic-rbar-l { font-size: .72rem; color: var(--sub); min-width: 120px; font-weight: 400; }
+  .wic-rbar-t { flex: 1; height: 6px; background: var(--blue3); border-radius: 100px; overflow: hidden; }
+  .wic-rbar-f { height: 100%; border-radius: 100px; background: var(--blue); transition: width 1s cubic-bezier(.4,0,.2,1); }
+  .wic-rbar-v { font-size: .72rem; color: var(--text); font-weight: 600; min-width: 36px; text-align: right; }
+  .wic-res-note { padding: 0 2.25rem 1.25rem; background: #fff; font-size: .72rem; color: var(--muted); line-height: 1.55; }
+  .wic-res-note strong { color: var(--sub); }
+  .wic-res-status { margin: 0 2.25rem 1.5rem; border-radius: 12px; padding: 1.25rem 1.5rem; }
+  .wic-res-status.warn { background: var(--red-bg); border: 1.5px solid var(--red-border); }
+  .wic-res-status.good { background: var(--green-bg); border: 1.5px solid var(--green-border); }
+  .wic-res-status.optimal { background: #f0fdf4; border: 1.5px solid #86efac; }
+  .wic-res-status.over { background: var(--amber-bg); border: 1.5px solid var(--amber-border); }
+  .wic-res-status-top { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; }
+  .wic-res-status-icon { font-size: 1.5rem; }
+  .wic-res-status-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; }
+  .wic-res-status.warn .wic-res-status-title { color: var(--red); }
+  .wic-res-status.good .wic-res-status-title { color: var(--green); }
+  .wic-res-status.optimal .wic-res-status-title { color: #22c55e; }
+  .wic-res-status.over .wic-res-status-title { color: var(--amber); }
+  .wic-res-status-body { font-size: .8rem; line-height: 1.65; color: var(--sub); }
+  .wic-res-status.warn .wic-res-status-body { color: #c62828; }
+  .wic-res-status.good .wic-res-status-body { color: #2e7d32; }
+  .wic-res-status.optimal .wic-res-status-body { color: #166534; }
+  .wic-res-status.over .wic-res-status-body { color: #8a5200; }
+  .wic-res-status-list { margin-top: .6rem; padding-left: 1rem; display: flex; flex-direction: column; gap: .35rem; }
+  .wic-res-status-list li { font-size: .78rem; line-height: 1.5; }
+  .wic-res-status.warn .wic-res-status-list li { color: #c62828; }
+  .wic-res-status.good .wic-res-status-list li { color: #2e7d32; }
+  .wic-res-status.optimal .wic-res-status-list li { color: #166534; }
+  .wic-res-status.over .wic-res-status-list li { color: #8a5200; }
+  .wic-res-disclaimer { padding: 0 2.25rem 1.5rem; background: #fff; font-size: .77rem; color: var(--muted); line-height: 1.5; font-style: italic; }
+  .wic-sec-gap { margin-bottom: 2rem; }
+  .wic-err { font-size: .7rem; color: var(--pink); margin-top: 4px; }
+  .wic-field-err input, .wic-field-err select, .wic-field-err .wic-height-input, .wic-field-err .wic-ftin-cell { border-bottom-color: var(--pink) !important; }
+
+  @keyframes wicFadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .wic-res-live { animation: wicFadeUp .4s ease; }
+
+  @media (max-width: 640px) {
+    .wic-nav { padding: 0 1rem; }
+    .wic-nav-links { display: none; }
+    .wic-hero { padding: 2rem 1.25rem 3.5rem; }
+    .wic-hero-inner { grid-template-columns: 1fr; }
+    .wic-hero-stats { flex-direction: row; flex-wrap: wrap; }
+    .wic-hst { flex: 1; min-width: 80px; }
+    .wic-wrap { padding: 0 .75rem 3rem; }
+    .wic-card { padding: 1.5rem 1.25rem; }
+    .wic-g-row, .wic-row3, .wic-row2 { grid-template-columns: 1fr; }
+    .wic-act-row { flex-wrap: wrap; }
+    .wic-ab { flex: calc(33% - .5rem); min-width: calc(33% - .5rem); }
+  }
+`;
+
+// ==================== BACKEND LOGIC & CALCULATIONS ====================
+//
+// HYDRATION MODEL (evidence-based)
+// --------------------------------
+// Baseline: ml of water per kg of body weight per day. Major bodies (IOM /
+// National Academy of Medicine, EFSA, ACSM, Mayo) put the healthy band at
+// ~30-35 ml/kg at rest, rising to ~40-45 ml/kg for active people. We fold the
+// activity level directly into that coefficient so it never leaves the band.
+//
+//   sedentary 30 | light 33 | moderate 36 | high 40 | extreme 45  (ml/kg/day)
+//
+// Adjustments are MULTIPLICATIVE so they scale correctly with body size
+// (a flat "+0.6 L" over-corrects a 50 kg person and under-corrects a 110 kg one):
+//   - sex:     female x0.95 (slightly lower lean mass at equal weight)
+//   - climate: cold x0.95, temperate x1.00, hot x1.15, humid x1.20
+//   - age:     under 16 x1.05 (higher turnover), 65+ x0.97
+//
+// Other fluid sources (tea/coffee/juice/milk/soda/food) genuinely count toward
+// intake, so each selected source applies a small fluid CREDIT that reduces the
+// plain-water target — capped at 30% of the requirement (and max 1 L), with a
+// hard floor so we never recommend an unsafe-low amount.
+//
+// Final value is clamped to a sane [1.3 L, 6.0 L] daily window.
+
+// ml of water per kg of body weight per day, by activity level
+const ACTIVITY_MULTIPLIERS = { sedentary: 30, light: 33, moderate: 36, high: 40, extreme: 45 };
+
+// multiplicative climate factors
+const CLIMATE_MULTIPLIER = { cold: 0.95, temperate: 1.0, hot: 1.15, humid: 1.2 };
+
+// approximate daily fluid (L) contributed by each "additional source"
+const CHIP_FLUID_CREDIT = { tea: 0.2, coffee: 0.2, juice: 0.2, milk: 0.2, soda: 0.15, food: 0.4 };
+
+const MIN_WATER_L = 1.3;
+const MAX_WATER_L = 6.0;
+
+// reference for the health notes shown to the user
+const HYDRATION_REF = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2908954/";
+
+// Google Sheets Web App URLs
+const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby3a3Mx3DjTXlj3M4Eim0QzQC5r5PQEecvEvp266pGsEesxVahO1kGuKijVDB8HMO7NRg/exec';
+const MASTER_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
+const CHEERIO_API_KEY = "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
+
+// ---------- Validation ----------
+function validateEmail(e) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+}
+
+// formData.height here is already converted to centimetres
+function validateForm(formData) {
+  const newErrors = {};
+  const { age, weight, email, height } = formData;
+  const a = parseFloat(age), w = parseFloat(weight), h = parseFloat(height);
+
+  if (!w || w < 20 || w > 300) newErrors.weight = true;
+  if (!a || a < 2 || a > 120) newErrors.age = true;
+  if (!h || h < 50 || h > 250) newErrors.height = true;       // sane human range in cm
+  if (!validateEmail((email || "").trim())) newErrors.email = true;
+
+  return newErrors;
+}
+
+// ---------- Height conversion ----------
+function toCentimetres(unit, cmValue, ftValue, inValue) {
+  if (unit === "cm") return parseFloat(cmValue) || 0;
+  const ft = parseFloat(ftValue) || 0;
+  const inch = parseFloat(inValue) || 0;
+  return ft * 30.48 + inch * 2.54;
+}
+
+// ---------- Core water calculation ----------
+function calculateWaterNeeded(formData) {
+  const { gender, age, weight, activity, climate, chips } = formData;
+  const w = parseFloat(weight);
+  const a = parseFloat(age);
+
+  if (!w || !a) return null;
+
+  // 1. Base intake from body weight + activity
+  let d = (w * (ACTIVITY_MULTIPLIERS[activity] || 30)) / 1000;
+
+  // 2. Sex
+  if (gender === "female") d *= 0.95;
+
+  // 3. Climate (multiplicative — scales with body size)
+  if (climate && CLIMATE_MULTIPLIER[climate] !== undefined) {
+    d *= CLIMATE_MULTIPLIER[climate];
+  }
+
+  // 4. Age
+  if (a < 16) d *= 1.05;
+  else if (a >= 65) d *= 0.97;
+
+  const baseTotal = d; // recommended fluid before crediting other sources
+
+  // 5. Credit for other fluid sources (capped + floored so it stays safe)
+  let credit = 0;
+  if (Array.isArray(chips)) {
+    credit = chips.reduce((sum, c) => sum + (CHIP_FLUID_CREDIT[c] || 0), 0);
+  }
+  credit = Math.min(credit, baseTotal * 0.3, 1.0);
+  d = Math.max(baseTotal - credit, baseTotal * 0.7);
+
+  // 6. Clamp to a sane daily window
+  d = Math.max(MIN_WATER_L, Math.min(MAX_WATER_L, d));
+
+  const rounded = Math.round(d * 10) / 10;
+  const glasses = Math.round(rounded / 0.25); // 250 ml glasses
+
+  return {
+    totalNeeded: rounded,
+    glasses,
+    rawValue: d,
+    baseTotal: Math.round(baseTotal * 10) / 10,
+    creditApplied: Math.round(credit * 10) / 10,
+  };
+}
+
+// ---------- Backend submission ----------
+async function sendDataToGoogleSheet(payload) {
   try {
     await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
       method: "POST",
-      mode: "no-cors", 
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
   } catch (err) {
-    // Fail silently
+    console.error("Error sending to Google Sheet:", err);
   }
 }
 
-
-
-// Send ONLY email to Cheerio Workflow
-async function sendEmailToCheerio(email) {
-  const CHEERIO_API_KEY =
-    "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
-
-  try {
-    await fetch(
-      "https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CHEERIO_API_KEY,
-        },
-        body: JSON.stringify({
-          email: email, // ✅ ONLY EMAIL
-          workflowId: "691d8bd1024212623f2b31b8", // ✅ Your specific workflow ID
-        }),
-      }
-    );
-  } catch (err) {
-    // silent fail
-  }
-}
-
-// Send ONLY email + source to Master Sheet
 async function sendEmailToMasterSheet(email, source) {
   try {
     const formData = new URLSearchParams();
     formData.append("email", email);
     formData.append("source", source);
+    await fetch(MASTER_SHEET_WEBHOOK_URL, { method: "POST", body: formData });
+  } catch (err) {
+    console.error("Error sending to Master Sheet:", err);
+  }
+}
 
-    await fetch(MASTER_SHEET_WEBHOOK_URL, {
+async function sendEmailToCheerio(email) {
+  try {
+    await fetch("https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow", {
       method: "POST",
-      body: formData,
+      headers: { "Content-Type": "application/json", "x-api-key": CHEERIO_API_KEY },
+      body: JSON.stringify({ email, workflowId: "691d8bd1024212623f2b31b8" }),
     });
   } catch (err) {
-    // silent fail
+    console.error("Error sending email via Cheerio:", err);
   }
 }
 
+// ---------- Hydration status ----------
+// current = plain water (L/day) the person drinks; target = recommended (L/day)
+function getHydrationStatus(current, target) {
+  const ratio = target > 0 ? current / target : 0;
 
-
-// Improved, robust calculation logic
-function calculateWaterNeeded({
-  gender,
-  age,
-  weight,
-  feet,
-  inches,
-  cmHeight,
-  avgHeight,
-  activity,
-  climate,
-  sources,
-  intakeGuess,
-  customIntake,
-}) {
-  const weightKg = parseFloat(weight);
-  const ageNum = Number(age);
-  if (Number.isNaN(weightKg) || weightKg <= 0) {
-    return { error: "Invalid weight" };
+  // OVER-HYDRATION: clearly above need AND high in absolute terms.
+  // Keyed to the person's actual need, not a flat 4 L — so a hot-climate
+  // athlete who needs 4 L is fine, but a small sedentary person in a cold
+  // climate (need ~1.5 L) drinking 4.5 L is correctly flagged.
+  if (current >= 4 && (current >= target * 1.8 || current >= target + 2.5)) {
+    return {
+      level: "More Than You Need",
+      statusClass: "over",
+      icon: "🌊",
+      message:
+        "You're drinking noticeably more than your body needs for your size, activity and climate. For most healthy people the body simply passes the excess, but consistently very high intake gives no extra benefit — and your kidneys clear only about 0.8–1 L per hour, so it's best to spread water through the day rather than in large bursts. If you've deliberately increased intake on medical advice, keep following that.",
+      diseases: [],
+      ref: HYDRATION_REF,
+    };
   }
-  const L_TO_ML = 1000;
 
-  const perKg = (() => {
-    if (ageNum < 18) return 45;
-    if (ageNum > 65) return 30;
-    if (gender === "Male") return 40;
-    if (gender === "Female") return 35;
-    return 37.5;
-  })();
-  const baseMl = weightKg * perKg;
-
-  const activityMap = { Sedentary: 0.0, Light: 0.08, Moderate: 0.18, High: 0.3, Extreme: 0.5 };
-  const climateMap = { Temperate: 0.0, Tropical: 0.12, Cold: 0.05 };
-
-  const activityAddMl = baseMl * (activityMap[activity] ?? 0);
-  const climateAddMl = baseMl * (climateMap[climate] ?? 0);
-
-  let heightInInches = 0;
-  if (avgHeight && avgHeight.includes("Avg")) {
-    const match = avgHeight.match(/(\d+)'(\d+)/);
-    if (match) heightInInches = parseInt(match[1]) * 12 + parseInt(match[2]);
-  } else if (cmHeight) {
-    const cm = parseFloat(cmHeight);
-    if (!Number.isNaN(cm) && cm > 0) {
-      heightInInches = cm / 2.54;
-    }
-  } else if (feet && inches) {
-    const f = parseInt(feet, 10);
-    const i = parseInt(inches, 10);
-    if (!Number.isNaN(f) && !Number.isNaN(i)) {
-      heightInInches = f * 12 + i;
-    }
-  }
-  let heightAdjMl = 0;
-  if (heightInInches > 74) heightAdjMl = baseMl * 0.06;
-  else if (heightInInches > 0 && heightInInches < 60) heightAdjMl = baseMl * -0.05;
-
-  const sourceMlMap = {
-    Tea: 150, Coffee: 150, Juice: 180, Milk: 180, Soda: 150,
-    "Other(Food, Fruits, Vegetables)": 400,
-  };
-  const rawSourceMl = (sources || []).reduce((sum, s) => sum + (sourceMlMap[s] || 0), 0);
-
-  const totalNeededMl = baseMl + activityAddMl + climateAddMl + heightAdjMl;
-  const sourceMax = totalNeededMl * 0.2;
-  const actualSourceMl = Math.min(rawSourceMl, sourceMax);
-
-  let intakeL = 0;
-  if (intakeGuess === "I Know My intake") intakeL = Number(customIntake) || 0;
-  else if (intakeGuess.includes("~1.5")) intakeL = 1.5;
-  else if (intakeGuess.includes("1.25")) intakeL = 1.25;
-  else if (intakeGuess.includes("750")) intakeL = 0.75;
-
-  const intakeMl = Math.max(0, intakeL * L_TO_ML);
-  const finalIntakeMl = intakeMl + actualSourceMl;
-  const lackingMl = Math.max(0, totalNeededMl - finalIntakeMl);
-  const percent = Math.min(100, Math.round((finalIntakeMl / totalNeededMl) * 100));
-
-  const roundL = (ml) => Math.round((ml / L_TO_ML) * 100) / 100;
-  return {
-    totalNeeded: roundL(totalNeededMl),
-    currentIntake: roundL(finalIntakeMl),
-    lacking: roundL(lackingMl),
-    percent,
-    _debug: {
-      baseMl: Math.round(baseMl),
-      activityAddMl: Math.round(activityAddMl),
-      climateAddMl: Math.round(climateAddMl),
-      heightAdjMl: Math.round(heightAdjMl),
-      sourceMlTotal: Math.round(rawSourceMl),
-      actualSourceMl: Math.round(actualSourceMl),
-      totalNeededMl: Math.round(totalNeededMl),
-      perKg,
-      heightInInches: Math.round(heightInInches),
-    },
-  };
-}
-// Disease risk mapping
-function getHydrationRisks(percent) {
-  if (percent >= 90) {
+  if (ratio >= 0.9) {
     return {
       level: "Optimal Hydration",
+      statusClass: "optimal",
+      icon: "✅",
+      message:
+        "You're well hydrated for your profile. The simplest day-to-day check is urine colour — pale straw means you're on track. Keep it up.",
       diseases: [],
-      message:
-        "You are well hydrated and at minimal risk for dehydration-related conditions.",
-      ref: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2908954/",
-    };
-  } else if (percent >= 70) {
-    return {
-      level: "Mild Dehydration",
-      diseases: [
-        "Headaches",
-        "Fatigue, decreased alertness",
-        "Constipation",
-        "Urinary tract infections (UTIs)",
-        "Kidney stone risk",
-      ],
-      message:
-        "You are mildly dehydrated. Research shows increased risk of headaches, constipation, UTIs, and the formation of kidney stones.",
-      ref: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2908954/",
-    };
-  } else if (percent >= 50) {
-    return {
-      level: "Moderate Dehydration",
-      diseases: [
-        "All of the above, plus:",
-        "Cognitive impairment",
-        "Reduced physical performance",
-        "Dry skin and mucous membranes",
-      ],
-      message:
-        "You are moderately dehydrated. Risks include cognitive impairment, higher risk of kidney stones and UTIs, and reduced physical and mental performance.",
-      ref: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2908954/",
-    };
-  } else {
-    return {
-      level: "Severe Dehydration",
-      diseases: [
-        "All of the above, plus:",
-        "Heat-related illnesses (heat exhaustion, heatstroke)",
-        "Acute kidney injury",
-        "Hypotension, rapid heart rate",
-        "Electrolyte imbalance",
-      ],
-      message:
-        "You are severely dehydrated! This can lead to heat-related illness, acute kidney injury, and dangerous electrolyte imbalances.",
-      ref: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2908954/",
+      ref: HYDRATION_REF,
     };
   }
+
+  if (ratio >= 0.7) {
+    return {
+      level: "On Track",
+      statusClass: "good",
+      icon: "👍",
+      message:
+        "You're close to your target. Remember that roughly 20% of your daily water also comes from food, so you're in a healthy range — adding a glass or two will tip you into optimal.",
+      diseases: [],
+      ref: HYDRATION_REF,
+    };
+  }
+
+  if (ratio >= 0.5) {
+    return {
+      level: "Mildly Below Target",
+      statusClass: "warn",
+      icon: "⚠️",
+      message: "You're drinking a bit less than your body needs. Even mild shortfalls are commonly linked to:",
+      diseases: [
+        "Headaches and afternoon fatigue",
+        "Reduced focus and alertness",
+        "Sluggish digestion and constipation",
+      ],
+      ref: HYDRATION_REF,
+    };
+  }
+
+  return {
+    level: "Well Below Target",
+    statusClass: "warn",
+    icon: "⚠️",
+    message: "Your intake is well under what your body needs. Sustained low intake is associated with:",
+    diseases: [
+      "Persistent fatigue and brain fog",
+      "Higher risk of kidney stones",
+      "Urinary tract infections (UTIs)",
+      "Reduced physical and cognitive performance",
+    ],
+    ref: HYDRATION_REF,
+  };
 }
 
-// Micro-messages mapping
-const microMessages = {
-  Male: {
-    Sedentary: [
-      "Strong minds start with small moves.",
-      "Time to build your base.",
-      "Frost’s got your back, boss.",
-    ],
-    Light: [
-      "You’re warming up the engine.",
-      "Big wins start with small walks.",
-      "Momentum is building — stay on it!",
-    ],
-    Moderate: [
-      "You’re owning your pace.",
-      "That’s how legends train.",
-      "Frost keeps your edge sharp.",
-    ],
-    High: [
-      "Built different. Stay sharp.",
-      "Hydrated men go further.",
-      "You’re in the zone — power up!",
-    ],
-    Extreme: [
-      "Alpha grind. Frost fuels it.",
-      "Beast mode = full hydration.",
-      "Unstoppable. Stay lethal, stay hydrated.",
-    ],
-  },
-  Female: {
-    Sedentary: [
-      "Queen, it starts with a sip.",
-      "Your glow-up starts here.",
-      "Frost’s here to energize you.",
-    ],
-    Light: [
-      "Walking tall, walking strong.",
-      "Hydration = confidence in motion.",
-      "You’re on your way, shine on!",
-    ],
-    Moderate: [
-      "Grace. Grit. Greatness.",
-      "She moves, she conquers.",
-      "You’re building strength daily.",
-    ],
-    High: [
-      "Powerful. Poised. Unstoppable.",
-      "You train hard. Frost fuels harder.",
-      "Strong is your new standard.",
-    ],
-    Extreme: [
-      "Alpha queen. No limits.",
-      "Slaying. Sweating. Hydrated.",
-      "Power is feminine — drink up.",
-    ],
-  },
-};
+// ==================== FRONTEND COMPONENT ====================
 
-const getMicroMessage = (gender, activity) => {
-  if (!gender || !activity) return "";
-  const messages = microMessages[gender][activity];
-  return messages ? messages[Math.floor(Math.random() * messages.length)] : "";
-};
+const ACTIVITY_OPTIONS = [
+  { v: "sedentary", ic: "🧘", lb: "Sedentary" },
+  { v: "light", ic: "🚶", lb: "Light" },
+  { v: "moderate", ic: "🏃", lb: "Moderate" },
+  { v: "high", ic: "🏋️", lb: "High" },
+  { v: "extreme", ic: "🔥", lb: "Extreme" },
+];
 
-export default function WaterCalculator() {
-  const [form, setForm] = useState({
-    gender: "",
-    age: "",
-    weight: "",
-    feet: "",
-    inches: "",
-    cmHeight: "",
-    heightUnit: "", // no default selected
-    avgHeight: "",
-    activity: "",
-    climate: "",
-    intakeGuess: "",
-    customIntake: "",
-    email: "",
-    sources: [],
-  });
-  const [showCustomIntake, setShowCustomIntake] = useState(false);
-  const [result, setResult] = useState(null);
-  const [showResult, setShowResult] = useState(false);
+const CHIP_OPTIONS = [
+  { value: "tea", label: "🍵 Tea" },
+  { value: "coffee", label: "☕ Coffee" },
+  { value: "juice", label: "🧃 Juice" },
+  { value: "milk", label: "🥛 Milk" },
+  { value: "soda", label: "🥤 Soda" },
+  { value: "food", label: "🥗 Food, Fruits & Vegetables" },
+];
+
+export default function WaterIntakeCalculator() {
+  const [gender, setGender] = useState("male");
+  const [heightUnit, setHeightUnit] = useState("feet");
+  const [activity, setActivity] = useState("sedentary");
+  const [chips, setChips] = useState([]);
+  const [age, setAge] = useState("");
+  const [weight, setWeight] = useState("");
+  const [heightCm, setHeightCm] = useState("");   // cm-mode value
+  const [heightFt, setHeightFt] = useState("");    // feet-mode: feet
+  const [heightIn, setHeightIn] = useState("");    // feet-mode: inches
+  const [climate, setClimate] = useState("");
+  const [curr, setCurr] = useState("");
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
-  const leftRef = useRef(null);
-  const bottomRef = useRef(null);
-  const [stickBottom, setStickBottom] = useState(false);
-  const resultBoxRef = useRef(null);
+  const [result, setResult] = useState(null);
+  const [barWidth, setBarWidth] = useState(0);
+  const resultRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) setStickBottom(true);
-        else setStickBottom(false);
-      },
-      { threshold: 0.1 }
+  const toggleChip = (val) => {
+    setChips((prev) =>
+      prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]
     );
-    if (bottomRef.current) observer.observe(bottomRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const feetFilled = form.feet !== "" && form.feet != null;
-  const inchesFilled = form.inches !== "" && form.inches != null;
-  const cmFilled = form.cmHeight !== "" && form.cmHeight != null;
-  const isAnyHeightFieldFilled = feetFilled || inchesFilled || cmFilled;
-  const isAvgHeightSelected = !!form.avgHeight;
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    // Height unit change
-    if (name === "heightUnit") {
-      // clear the unit-specific inputs when switching units but DO NOT clear avgHeight
-      // (avgHeight should remain visible & usable regardless of unit)
-      setForm((prev) => ({
-        ...prev,
-        heightUnit: value,
-        feet: "",
-        inches: "",
-        cmHeight: "",
-        // avgHeight intentionally preserved so avg selection doesn't disappear when switching units
-      }));
-      // Clear height-related errors
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy.feet;
-        delete copy.inches;
-        delete copy.cmHeight;
-        delete copy.avgHeight;
-        delete copy.heightUnit;
-        return copy;
-      });
-      return;
-    }
-
-    // Height fields (feet/inches)
-    if (["feet", "inches"].includes(name)) {
-      setForm((prev) => ({
-        ...prev,
-        [name]: value,
-        cmHeight: "", // clear cm when editing feet/inches
-        avgHeight: "",
-      }));
-      // Clear all height-related errors immediately
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy.feet;
-        delete copy.inches;
-        delete copy.cmHeight;
-        delete copy.avgHeight;
-        return copy;
-      });
-      return;
-    }
-
-    // CM height
-    if (name === "cmHeight") {
-      setForm((prev) => ({ ...prev, cmHeight: value, feet: "", inches: "", avgHeight: "" }));
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy.cmHeight;
-        delete copy.feet;
-        delete copy.inches;
-        delete copy.avgHeight;
-        return copy;
-      });
-      return;
-    }
-
-    // Average height
-    if (name === "avgHeight") {
-      setForm((prev) => ({
-        ...prev,
-        avgHeight: value,
-        feet: "",
-        inches: "",
-        cmHeight: "",
-      }));
-      // Clear all height-related errors immediately
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy.feet;
-        delete copy.inches;
-        delete copy.cmHeight;
-        delete copy.avgHeight;
-        return copy;
-      });
-      return;
-    }
-
-    // Custom intake field
-    if (name === "customIntake") {
-      setForm((prev) => ({ ...prev, customIntake: value }));
-      // Clear related error immediately
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy.customIntake;
-        return copy;
-      });
-      return;
-    }
-
-    // General fields
-    setForm((prev) => ({ ...prev, [name]: value }));
-    // Clear the specific field error immediately
-    setErrors((prev) => {
-      const copy = { ...prev };
-      delete copy[name];
-      return copy;
-    });
   };
 
+  const calculate = () => {
+    const cm = toCentimetres(heightUnit, heightCm, heightFt, heightIn);
 
-  const handleSourceToggle = (source) => {
-    setForm((prev) => {
-      const isSelected = prev.sources.includes(source);
-      const updated = isSelected
-        ? prev.sources.filter((s) => s !== source)
-        : [...prev.sources, source];
-      return { ...prev, sources: updated };
-    });
-  };
-
-  function validateEmail(email) {
-    if (!email || typeof email !== "string") return false;
-    // Basic structure check
-    // - local part: no spaces, some allowed characters
-    // - single @
-    // - domain: labels separated by dots, TLD at least 2 letters and only letters (no digits like c0m)
-    // This is intentionally strict about TLD being alphabetic to catch obfuscations like "c0m".
-    const emailTrim = email.trim();
-    if (emailTrim.includes(" ")) return false;
-    const parts = emailTrim.split("@");
-    if (parts.length !== 2) return false;
-    const [local, domain] = parts;
-    if (!local || !domain) return false;
-    // local part basic validation
-    const localValid = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$/.test(local);
-    if (!localValid) return false;
-    // domain validation: at least one dot, labels valid, TLD letters only (2+)
-    if (!domain.includes(".")) return false;
-    const domainLabels = domain.split(".");
-    if (domainLabels.some((lab) => !/^[A-Za-z0-9-]+$/.test(lab) || lab.startsWith("-") || lab.endsWith("-"))) return false;
-    const tld = domainLabels[domainLabels.length - 1];
-    if (!/^[A-Za-z]{2,}$/.test(tld)) return false; // ensures no digits like c0m
-    return true;
-  }
-
-  function validateForm() {
-    const newErrors = {};
-    const {
+    const formData = {
       gender,
       age,
       weight,
+      height: cm,
       activity,
       climate,
-      intakeGuess,
-      customIntake,
       email,
-      feet,
-      inches,
-      cmHeight,
-      avgHeight,
-      heightUnit,
-    } = form;
-
-    // Gender
-    if (!gender) {
-      newErrors.gender = "Please select your gender.";
-    }
-
-    // Age
-    if (!age && age !== 0) {
-      newErrors.age = "Please enter your age.";
-    } else {
-      const ageNum = parseInt(age, 10);
-      if (Number.isNaN(ageNum) || ageNum < 2 || ageNum > 120) {
-        newErrors.age = "Enter an age between 2 and 120.";
-      }
-    }
-
-    // Weight
-    if (!weight && weight !== 0) {
-      newErrors.weight = "Please enter your weight.";
-    } else {
-      const wt = parseFloat(weight);
-      if (Number.isNaN(wt) || wt < 20 || wt > 500) {
-        newErrors.weight = "Enter a realistic weight (20 - 500 kg).";
-      }
-    }
-
-    // Height validation depends on selected unit but avgHeight should be accepted in either unit.
-    const feetProvided = feet !== "" && feet != null;
-    const inchesProvided = inches !== "" && inches != null;
-    const cmProvided = cmHeight !== "" && cmHeight != null;
-    const avgProvided = avgHeight !== "" && avgHeight != null;
-
-    // If no unit selected and no avg provided -> require unit selection
-    if (!heightUnit && !avgProvided) {
-      newErrors.heightUnit = "Please select a height unit (ft or cm) or choose an average height.";
-    } else {
-      // If avg provided we accept it regardless of heightUnit
-      if (avgProvided) {
-        // nothing to validate here for avg option
-      } else if (heightUnit === "ft") {
-        // Require either avgHeight OR both feet & inches
-        if (!avgProvided && !(feetProvided && inchesProvided)) {
-          newErrors.feet = "Please provide height either as feet & inches or choose an average.";
-          newErrors.inches = "Please provide height either as feet & inches or choose an average.";
-          newErrors.avgHeight = "Or select an average height.";
-        } else if (avgProvided && (feetProvided || inchesProvided)) {
-          // both specified -> error
-          newErrors.feet = "Choose either exact height or an average — not both.";
-          newErrors.inches = "Choose either exact height or an average — not both.";
-          newErrors.avgHeight = "Choose either exact height or an average — not both.";
-        } else if (feetProvided && inchesProvided) {
-          // validate numeric ranges
-          const f = parseInt(feet, 10);
-          const i = parseInt(inches, 10);
-          if (Number.isNaN(f) || f < 2 || f > 8) {
-            newErrors.feet = "Feet must be between 2 and 8.";
-          }
-          if (Number.isNaN(i) || i < 0 || i > 11) {
-            newErrors.inches = "Inches must be between 0 and 11.";
-          }
-        }
-      } else if (heightUnit === "cm") {
-        // In cm mode accept either cm input OR avgHeight
-        if (!cmProvided && !avgProvided) {
-          newErrors.cmHeight = "Please enter your height in centimeters or choose an average.";
-          newErrors.avgHeight = "Or select an average height.";
-        } else if (cmProvided && avgProvided) {
-          newErrors.cmHeight = "Choose either exact height or an average — not both.";
-          newErrors.avgHeight = "Choose either exact height or an average — not both.";
-        } else if (cmProvided) {
-          const cm = parseFloat(cmHeight);
-          if (Number.isNaN(cm) || cm < 50 || cm > 250) {
-            newErrors.cmHeight = "Enter a realistic height (50 - 250 cm).";
-          }
-        }
-      }
-    }
-
-    // Activity
-    if (!activity) {
-      newErrors.activity = "Please select your activity level.";
-    }
-
-    // Climate
-    if (!climate) {
-      newErrors.climate = "Please choose your climate.";
-    }
-
-    // Intake guess & custom intake
-    if (!intakeGuess) {
-      newErrors.intakeGuess = "Please choose an intake estimate.";
-    } else if (intakeGuess === "I Know My intake") {
-      if (customIntake === "" || customIntake === null || customIntake === undefined) {
-        newErrors.customIntake = "Please enter your daily intake in liters.";
-      } else {
-        const ci = Number(customIntake);
-        if (Number.isNaN(ci) || ci < 0 || ci > 20) {
-          newErrors.customIntake = "Enter a realistic intake (0 - 20 L).";
-        }
-      }
-    }
-
-    // Email
-    if (!email) {
-      newErrors.email = "Please enter your email.";
-    } else if (!validateEmail(email)) {
-      newErrors.email = "Please enter a valid email address (e.g. user@example.com).";
-    }
-
-    setErrors(newErrors);
-    // If there are errors, hide previous result
-    if (Object.keys(newErrors).length > 0) {
-      setShowResult(false);
-      return false;
-    }
-    return true;
-  }
-
-  function handleCalculate() {
-    // Reset previous errors
-    setErrors({});
-    const ok = validateForm();
-    if (!ok) {
-      // Validation has already set inline errors
-      return;
-    }
-
-    const resultObj = calculateWaterNeeded(form);
-    setResult(resultObj);
-    setShowResult(true);
-
-    // Build explicit height info to ensure Google Sheet receives the centimeter value (and both representations).
-    // This ensures cmHeight is always sent when user enters it, and also includes the computed heights used.
-    const computeUsedHeights = (fForm, debugFromResult) => {
-      let usedHeightInches = null;
-      let usedHeightCm = null;
-      let usedHeightDisplay = "";
-      // prefer avgHeight if selected
-      if (fForm.avgHeight) {
-        const match = fForm.avgHeight.match(/(\d+)'(\d+)/);
-        if (match) {
-          usedHeightInches = parseInt(match[1], 10) * 12 + parseInt(match[2], 10);
-          usedHeightCm = Number((usedHeightInches * 2.54).toFixed(2));
-          usedHeightDisplay = fForm.avgHeight;
-        }
-      } else if (fForm.cmHeight) {
-        const cm = parseFloat(fForm.cmHeight);
-        if (!Number.isNaN(cm)) {
-          usedHeightCm = cm;
-          usedHeightInches = cm / 2.54;
-          usedHeightDisplay = `${cm} cm`;
-        }
-      } else if (fForm.feet && fForm.inches) {
-        const f = parseInt(fForm.feet, 10);
-        const i = parseInt(fForm.inches, 10);
-        if (!Number.isNaN(f) && !Number.isNaN(i)) {
-          usedHeightInches = f * 12 + i;
-          usedHeightCm = Number((usedHeightInches * 2.54).toFixed(2));
-          usedHeightDisplay = `${f}'${i}"`;
-        }
-      } else if (debugFromResult && debugFromResult.heightInInches) {
-        // fallback to debug height if calculation returned something (rare)
-        usedHeightInches = debugFromResult.heightInInches;
-        usedHeightCm = Number((usedHeightInches * 2.54).toFixed(2));
-        usedHeightDisplay = `${usedHeightCm} cm`;
-      }
-      return {
-        usedHeightInches: usedHeightInches !== null ? Number(usedHeightInches.toFixed(2)) : "",
-        usedHeightCm: usedHeightCm !== null ? Number(usedHeightCm.toFixed(2)) : "",
-        usedHeightDisplay,
-      };
-    };
-
-    const heights = computeUsedHeights(form, resultObj && resultObj._debug ? resultObj._debug : null);
-
-    // Explicit payload: include form fields and explicit height data so Google Sheet columns receive cm value reliably.
-    const payload = {
-      // original form fields
-      gender: form.gender,
-      age: form.age,
-      weight: form.weight,
-      feet: form.feet,
-      inches: form.inches,
-      cmHeight: form.cmHeight, // explicitly include user's entered cmHeight (if any)
-      heightUnit: form.heightUnit,
-      avgHeight: form.avgHeight,
-      activity: form.activity,
-      climate: form.climate,
-      intakeGuess: form.intakeGuess,
-      customIntake: form.customIntake,
-      email: form.email,
-      sources: form.sources,
-      // computed/used heights to make sure sheet gets a consistent value
-      usedHeightInches: heights.usedHeightInches,
-      usedHeightCm: heights.usedHeightCm,
-      usedHeightDisplay: heights.usedHeightDisplay,
-      // result and debug
-      result: resultObj,
+      chips,
+      currIntake: curr,
       timestamp: new Date().toISOString(),
     };
 
-    sendDataToGoogleSheet(payload);
-   // 👇 NEW: Master Sheet email-only entry
-    sendEmailToMasterSheet(form.email, "Water Intake Calculator");
+    // Validate
+    const newErrors = validateForm(formData);
+    setErrors(newErrors);
 
+    if (Object.keys(newErrors).length > 0) {
+      setResult({ error: true });
+      return;
+    }
 
-    sendEmailToCheerio(form.email);
+    // Calculate
+    const calcResult = calculateWaterNeeded(formData);
+    if (!calcResult) {
+      setResult({ error: true });
+      return;
+    }
 
+    const { totalNeeded, glasses, baseTotal, creditApplied } = calcResult;
+    const cu = parseFloat(curr) || 0;
+    const pct = cu > 0 ? Math.round((cu / totalNeeded) * 100) : 0; // uncapped (for display we cap the bar fill only)
+    const status = cu > 0 ? getHydrationStatus(cu, totalNeeded) : null;
+
+    const finalResult = {
+      r: totalNeeded,
+      gl: glasses,
+      cu,
+      pct,
+      baseTotal,
+      creditApplied,
+      status,
+      error: false,
+    };
+
+    setResult(finalResult);
+    setBarWidth(0);
+
+    setTimeout(() => setBarWidth(Math.min(100, pct)), 80);
     setTimeout(() => {
-      if (resultBoxRef.current) {
-        const element = resultBoxRef.current;
-        const offset = 100;
-        const topPosition =
-          element.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({
-          top: topPosition,
-          behavior: "smooth",
-        });
+      if (resultRef.current) {
+        resultRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }, 100);
-  }
 
-  function IntakeGraph({ percent }) {
-    let color =
-      percent >= 80 ? "#51C77D" : percent >= 50 ? "#F7B731" : "#EA5455";
-    return (
-      <div className="w-full mt-2">
-        <div className="flex justify-between text-xs mb-1">
-          <span>Low</span>
-          <span>Medium</span>
-          <span>Optimal</span>
-        </div>
-        <div className="relative h-6 bg-[#E0E7EF] rounded overflow-hidden">
-          <div
-            className="absolute top-0 left-0 h-full rounded"
-            style={{
-              width: `${percent}%`,
-              background: color,
-              transition: "width 0.6s cubic-bezier(.4,2,.2,1)",
-            }}
-          />
-          <div className="absolute top-0 left-0 h-full w-full text-center flex items-center justify-center font-bold text-[#021637] text-sm">
-            {percent}% of goal
+    // Send data to backend (no-op / silently fails inside sandboxed previews)
+    sendDataToGoogleSheet({ ...formData, result: finalResult });
+    sendEmailToMasterSheet(email, "Water Intake Calculator");
+    sendEmailToCheerio(email);
+  };
+
+  const GlassIcon = () => (
+    <svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 4 L7 36 Q7.5 38 10 38 L22 38 Q24.5 38 25 36 L27 4 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinejoin="round" />
+      <clipPath id="wic-gc">
+        <path d="M5.5 4.5 L7.5 36 Q8 37.5 10 37.5 L22 37.5 Q24 37.5 24.5 36 L26.5 4.5 Z" />
+      </clipPath>
+      <g clipPath="url(#wic-gc)">
+        <rect x="4" y="20" width="26" height="18" fill="rgba(255,255,255,0.55)" />
+        <path d="M4 20 Q10 17.5 16 20 Q22 22.5 28 20" stroke="rgba(255,255,255,0.9)" strokeWidth="1.2" fill="none" />
+      </g>
+      <line x1="5" y1="4" x2="27" y2="4" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+
+  const renderStatus = () => {
+    if (!result || result.error) return null;
+    const { r, status } = result;
+
+    // Current intake not selected yet
+    if (!status) {
+      return (
+        <div className="wic-res-status over">
+          <div className="wic-res-status-top">
+            <span className="wic-res-status-icon">💧</span>
+            <span className="wic-res-status-title">Track Your Intake</span>
+          </div>
+          <div className="wic-res-status-body">
+            Your body needs approximately <strong>{r.toFixed(1)} L/day</strong>. Pick your current daily
+            water intake above to see how you compare and get personalised guidance.
           </div>
         </div>
-      </div>
-    );
-  }
-
-  function ComparisonBar({ yourIntake, goal }) {
-    const maxValue = Math.max(yourIntake, goal, 0.1);
-    const yourIntakeHeight = Math.round((yourIntake / maxValue) * 180);
-    const goalHeight = Math.round((goal / maxValue) * 180);
-
-    const intakeColor =
-      yourIntake >= goal
-        ? "#51C77D"
-        : yourIntake / goal > 0.8
-        ? "#F7B731"
-        : "#EA5455";
-    const goalColor = "#389ED7";
+      );
+    }
 
     return (
-      <div className="mt-6 mb-2">
-        <div className="text-base font-bold mb-10 text-center">Daily Water Gap: You vs Your Body’s Needs</div>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end", gap: "32px", height: "200px" }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div
-              style={{
-                height: yourIntakeHeight,
-                width: "50px",
-                background: intakeColor,
-                borderRadius: "12px 12px 0 0",
-                boxShadow: `0 2px 8px ${intakeColor}44`,
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "center",
-                position: "relative",
-                transition: "height 0.5s",
-              }}
-              title={`Your Intake: ${yourIntake} L`}
-            >
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-22px",
-                  left: 0,
-                  right: 0,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: "1.1em",
-                  color: intakeColor,
-                }}
-              >
-                {yourIntake} L
-              </span>
-            </div>
-            <span className="mt-2 text-[#389ED7] font-semibold text-sm">Your Intake</span>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div
-              style={{
-                height: goalHeight,
-                width: "50px",
-                background: goalColor,
-                borderRadius: "12px 12px 0 0",
-                boxShadow: "0 2px 8px #389ED744",
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "center",
-                position: "relative",
-                transition: "height 0.5s",
-              }}
-              title={`Goal: ${goal} L`}
-            >
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-22px",
-                  left: 0,
-                  right: 0,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: "1.1em",
-                  color: goalColor,
-                }}
-              >
-                {goal} L
-              </span>
-            </div>
-            <span className="mt-2 text-[#389ED7] font-semibold text-sm">Body Need's</span>
-          </div>
+      <div className={`wic-res-status ${status.statusClass}`}>
+        <div className="wic-res-status-top">
+          <span className="wic-res-status-icon">{status.icon}</span>
+          <span className="wic-res-status-title">{status.level}</span>
         </div>
-       <div className="text-lg text-center mt-2 font-bold">
-  {yourIntake < goal ? (
-    <>
-      <span style={{ color: "#EA5455" }}>
-        You're Lagging by {Math.round((goal - yourIntake) * 100) / 100} L/day
-      </span>
-      <br />
-      <span className="italic"style={{ color: "#000000" }}>Means: </span>
-      <span  className="italic" style ={{ color: "#000000" }}>
-       That’s how kidney stones form, cells weaken, and brain fog begins.
-      </span>
-    </>
-  ) : (
-    <span style={{ color: "#51C77D" }}>You're meeting or exceeding your goal!</span>
-  )}
-</div>
-
-      </div>
-    );
-  }
-
-  function CalculationBreakdown({ debug, sources }) {
-    if (!debug) return null;
-    return (
-      <details className="mt-2 mb-2 bg-blue-50 border-l-4 border-blue-400 p-2 rounded text-xs text-[#021637]">
-        <summary className="cursor-pointer font-bold">How did we calculate this?</summary>
-        <div>
-          <div>Base: {debug.baseMl} ml</div>
-          <div>Activity: +{debug.activityAddMl} ml</div>
-          <div>Climate: +{debug.climateAddMl} ml</div>
-          <div>Height: {debug.heightAdjMl} ml</div>
-          <div>Sources: -{debug.sourceMlTotal} ml ({sources && sources.length ? sources.join(", ") : "none"})</div>
-          <div>Total: {debug.totalNeededMl} ml</div>
-          <div className="mt-1">Based on {debug.perKg} ml/kg for your age/gender</div>
-          <div className="mt-1">Height (in): {debug.heightInInches}</div>
-        </div>
-      </details>
-    );
-  }
-
-  function HydrationRiskBox({ percent }) {
-    const risk = getHydrationRisks(percent);
-    return (
-      <div className="my-4 p-3 rounded bg-red-50 border-l-4 border-red-400">
-        <div className="font-bold text-red-700 mb-1">{risk.level}</div>
-        <div className="text-sm text-red-900 mb-1">{risk.message}</div>
-        {risk.diseases.length > 0 && (
-          <ul className="list-disc ml-5 text-left">
-            {risk.diseases.map((d) => (
-              <li key={d}>{d}</li>
+        <div className="wic-res-status-body">{status.message}</div>
+        {status.diseases.length > 0 && (
+          <ul className="wic-res-status-list">
+            {status.diseases.map((d, idx) => (
+              <li key={idx}>{d}</li>
             ))}
           </ul>
         )}
       </div>
     );
-  }
+  };
+
+  const barColor = () => {
+    if (!result || result.error || !result.status) return "var(--blue)";
+    switch (result.status.statusClass) {
+      case "optimal":
+      case "good":
+        return "#2e7d32";
+      case "over":
+        return "#e0a008";
+      default:
+        return "#e53935";
+    }
+  };
 
   return (
-    <div className="mt-16 min-h-screen flex flex-col md:flex-row font-['Roboto'] relative">
-      {/* ---------- LEFT SIDE ---------- */}
-      <div
-        ref={leftRef}
-        className={`md:mt-8 md:w-1/2 w-full bg-white flex flex-col items-center justify-center text-center p-8 
-        ${
-          stickBottom
-            ? "md:absolute md:bottom-0 md:top-auto"
-            : "md:fixed md:top-0 md:left-0 md:h-full"
-        }`}
-        style={{ transition: "all 0.4s ease" }}
-      >
-        <div className="flex flex-col items-center">
-          <img
-            src="/images/waterdrop.png"
-            alt="Water Drop"
-            className="w-32 md:w-40 mb-6"
-          />
-          <h1 className="text-3xl md:text-4xl font-bold text-[#021637]">
-            WATER INTAKE <br /> CALCULATOR
-          </h1>
-          <p className="text-[#021637] mt-3 text-base md:text-base">
-            Discover how much water you're missing — and how to fix it
+    <>
+      <style>{CSS}</style>
+
+      {/* HERO */}
+      <div className="wic-hero mt-[66px]">
+        <div className="wic-hero-circle1" />
+        <div className="wic-hero-circle2" />
+        <div className="wic-hero-circle3" />
+
+        <div className="wic-hero-inner">
+          <div className="wic-hero-badge">Hydration Science</div>
+
+          <div>
+            <div className="wic-hero-pretitle">Personalised for you</div>
+            <h1>
+              Water Intake<br />
+              <span>Calculator</span>
+            </h1>
+          </div>
+
+          <div className="wic-hero-divider" />
+
+          <p className="wic-hero-sub">
+            Discover exactly how much water your body needs — based on your biology, activity &amp; environment.
           </p>
+
+          <div className="wic-hero-stats">
+            <div className="wic-hst">
+              <div className="wic-hst-n">2.7L</div>
+              <div className="wic-hst-l">Average Daily Requirement for Women</div>
+            </div>
+            <div className="wic-hst">
+              <div className="wic-hst-n">3.7L</div>
+              <div className="wic-hst-l">Average Daily Requirement for Men</div>
+            </div>
+            <div className="wic-hst">
+              <div className="wic-hst-n">75%</div>
+              <div className="wic-hst-l">Population Chronically Dehydrated</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ---------- RIGHT SIDE ---------- */}
-      <div className="md:ml-[50%] w-full md:w-1/2 bg-[#389ED7] text-white flex justify-center items-start p-6 md:p-10 overflow-y-auto">
-        <form
-          className="w-full max-w-md space-y-5 pb-0"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          {/* Gender */}
-          <div>
-            <label className="block text-sm mb-2">Body Parameters</label>
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={() =>
-                  setForm((prev) => ({ ...prev, gender: "Male" }))
-                }
-                className={`flex-1 py-2 rounded font-medium ${
-                  form.gender === "Male"
-                    ? "bg-[#021637] text-white"
-                    : "bg-white text-[#021637] border border-white"
-                }`}
-              >
-                MALE
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  setForm((prev) => ({ ...prev, gender: "Female" }))
-                }
-                className={`flex-1 py-2 rounded font-medium ${
-                  form.gender === "Female"
-                    ? "bg-[#021637] text-white"
-                    : "bg-white text-[#021637] border border-white"
-                }`}
-              >
-                FEMALE
-              </button>
-            </div>
-            {errors.gender && (
-              <div className="text-red-600 text-sm mt-1 text-left">{errors.gender}</div>
-            )}
-          </div>
+      {/* FORM */}
+      <div className="wic-wrap">
+        <div className="wic-card">
 
-          {/* Age & Weight */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm mb-1">Age (years)</label>
-              <input
-                type="number"
-                name="age"
-                placeholder="e.g. 25"
-                value={form.age}
-                onChange={handleChange}
-                className="w-full p-2 rounded text-black"
-                min={2}
-                max={120}
-              />
-              {errors.age && (
-                <div className="text-red-600 text-sm mt-1 text-left">{errors.age}</div>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Weight (kg)</label>
-              <input
-                type="number"
-                name="weight"
-                placeholder="Your last weight (kg)"
-                value={form.weight}
-                onChange={handleChange}
-                className="w-full p-2 rounded text-black"
-                min={20}
-                max={500}
-              />
-              {errors.weight && (
-                <div className="text-red-600 text-sm mt-1 text-left">{errors.weight}</div>
-              )}
-            </div>
-          </div>
-
-          {/* Height Unit Selector */}
-          <div>
-            <label className="block text-sm mb-1">Height Unit</label>
-            <div className="flex gap-3">
-              <label className={`p-2 rounded cursor-pointer ${form.heightUnit === "ft" ? "bg-white text-[#021637]" : "bg-[#389ED7] text-white border border-white"}`}>
-                <input
-                  type="radio"
-                  name="heightUnit"
-                  value="ft"
-                  checked={form.heightUnit === "ft"}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Feet / Inches
-              </label>
-              <label className={`p-2 rounded cursor-pointer ${form.heightUnit === "cm" ? "bg-white text-[#021637]" : "bg-[#389ED7] text-white border border-white"}`}>
-                <input
-                  type="radio"
-                  name="heightUnit"
-                  value="cm"
-                  checked={form.heightUnit === "cm"}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Centimeters
-              </label>
-            </div>
-            {errors.heightUnit && (
-              <div className="text-red-600 text-sm mt-1 text-left">{errors.heightUnit}</div>
-            )}
-          </div>
-
-          {/* Height */}
-          <div>
-            {/* <label className="block text-sm mb-1">Height</label>*/}
-
-            {form.heightUnit === "ft" ? (
-              <>
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    type="number"
-                    name="feet"
-                    placeholder="Feet (2-8)"
-                    value={form.feet}
-                    onChange={handleChange}
-                    className="p-2 rounded text-black w-full"
-                    disabled={isAvgHeightSelected}
-                    min={2}
-                    max={8}
-                  />
-                  <input
-                    type="number"
-                    name="inches"
-                    placeholder="Inches (0-11)"
-                    value={form.inches}
-                    onChange={handleChange}
-                    className="p-2 rounded text-black w-full"
-                    disabled={isAvgHeightSelected}
-                    min={0}
-                    max={11}
-                  />
-                </div>
-                {(errors.feet || errors.inches) && (
-                  <div className="text-red-600 text-sm mt-1 text-left">
-                    {errors.feet && <div>{errors.feet}</div>}
-                    {errors.inches && <div>{errors.inches}</div>}
-                  </div>
-                )}
-              </>
-            ) : form.heightUnit === "cm" ? (
-              <>
-                <div>
-                  <input
-                    type="number"
-                    name="cmHeight"
-                    placeholder="Height in cm (e.g. 170)"
-                    value={form.cmHeight}
-                    onChange={handleChange}
-                    className="p-2 rounded text-black w-full"
-                    min={50}
-                    max={250}
-                    disabled={isAvgHeightSelected}
-                  />
-                </div>
-                {errors.cmHeight && (
-                  <div className="text-red-600 text-sm mt-1 text-left">{errors.cmHeight}</div>
-                )}
-              </>
-            ) : (
-              <>
-                {/* No unit selected yet - show helper text 
-                <div className="text-white/80 text-sm italic">Select a height unit above to enter your height, or choose an average below.</div> */}
-              </>
-            )}
-          </div>
-
-          {/* Don’t know height (avg) - show for both units (and even if unit not selected).
-              It will be disabled when user types any exact height (ft/in or cm). */}
-          <div>
-            <label className="block text-sm mb-1">
-              Don’t know your exact height?
-            </label>
-            <select
-              className="p-2 rounded w-full text-black"
-              name="avgHeight"
-              value={form.avgHeight}
-              onChange={handleChange}
-              disabled={isAnyHeightFieldFilled}
-            >
-              <option value="">Select average (Optional)</option>
-              <option value="Asia Avg — 5'5”">Asia Avg — 5.5</option>
-              <option value="Europe Avg — 5'8”">Europe Avg — 5.8</option>
-              <option value="US Avg — 5'9”">US Avg — 5.9</option>
-            </select>
-            {errors.avgHeight && (
-              <div className="text-red-600 text-sm mt-1 text-left">{errors.avgHeight}</div>
-            )}
-          </div>
-
-          {/* Activity Level */}
-          <div>
-            <label className="block text-sm mb-1">Activity Level</label>
-            <div className="relative flex justify-between items-center mt-2">
-              <div className="absolute left-2 right-1 h-0.5 bg-white z-0 top-5 transform -translate-y-1/2" />
-              {[
-                { emoji: "🪑", label: "Sedentary" },
-                { emoji: "🚶", label: "Light" },
-                { emoji: "🏃", label: "Moderate" },
-                { emoji: "🏋️", label: "High" },
-                { emoji: "🔥", label: "Extreme" },
-              ].map((level) => {
-                const isActive = form.activity === level.label;
-                return (
-                  <div
-                    key={level.label}
-                    className="relative flex flex-col items-center group"
-                  >
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setForm((prev) => ({
-                          ...prev,
-                          activity: level.label,
-                        }))
-                      }
-                      className={`relative z-10 flex items-center justify-center rounded-full border-2 transition-all duration-300
-                        ${
-                          isActive
-                            ? "bg-white border-white text-[#389ED7] scale-125 shadow-lg"
-                            : "border-white bg-[#389ED7] text-white hover:scale-110 hover:shadow-md"
-                        }`}
-                      style={{
-                        width: isActive ? "3rem" : "2.5rem",
-                        height: isActive ? "3rem" : "2.5rem",
-                      }}
-                    >
-                      <span
-                        className={`text-2xl transition-transform duration-300 ${
-                          isActive ? "scale-125" : "group-hover:scale-110"
-                        }`}
-                      >
-                        {level.emoji}
-                      </span>
-                    </button>
-                    <span className="mt-2 text-xs text-center">
-                      {level.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            {/* Micro-message display */}
-            {form.gender && form.activity && (
-              <div className="mt-3 p-1 bg-white text-[#021637] rounded text-sm text-center font-medium shadow italic">
-                {getMicroMessage(form.gender, form.activity)}
-              </div>
-            )}
-            {errors.activity && (
-              <div className="text-red-600 text-sm mt-1 text-left">{errors.activity}</div>
-            )}
-          </div>
-
-          {/* Climate */}
-          <div>
-            <label className="block text-sm mb-1">Climate</label>
-            <select
-              name="climate"
-              value={form.climate}
-              onChange={handleChange}
-              className="p-2 rounded w-full text-black"
-            >
-              <option value="">Choose Climate</option>
-              <option value="Temperate">🌤️ Temperate</option>
-              <option value="Tropical">☀️ Tropical</option>
-              <option value="Cold">❄️ Cold</option>
-            </select>
-            {errors.climate && (
-              <div className="text-red-600 text-sm mt-1 text-left">{errors.climate}</div>
-            )}
-          </div>
-
-          {/* Water intake */}
-          <div>
-            <label className="block text-sm mb-1">
-              Your current water intake (liters/day)
-            </label>
-            <select
-              name="intakeGuess"
-              value={form.intakeGuess}
-              onChange={(e) => {
-                const value = e.target.value;
-                setForm((prev) => ({
-                  ...prev,
-                  intakeGuess: value,
-                  customIntake:
-                    value === "I Know My intake" ? prev.customIntake : "",
-                }));
-                setShowCustomIntake(value === "I Know My intake");
-                // clear intake related errors
-                setErrors((prev) => {
-                  const copy = { ...prev };
-                  delete copy.intakeGuess;
-                  delete copy.customIntake;
-                  return copy;
-                });
-              }}
-              className="p-2 rounded w-full text-black"
-            >
-              <option value="">Choose an estimate:</option>
-              <option value="I Know My intake">I Know My Intake</option>
-              <option value="I carry a 750 ml bottle (usually drink once)">
-                I carry a 750 ml bottle (usually drink once)
-              </option>
-              <option value="I refill my 750 ml bottle once (~1.5 L)">
-                I refill my 750 ml bottle once (~1.5 L)
-              </option>
-              <option value="I drink 5 glasses/day (250ml each = ~1.25 L)">
-                I drink 5 glasses/day (250ml each = ~1.25 L)
-              </option>
-            </select>
-            {errors.intakeGuess && (
-              <div className="text-red-600 text-sm mt-1 text-left">{errors.intakeGuess}</div>
-            )}
-            {showCustomIntake && (
-              <div className="mt-3">
-                <label className="block text-sm mb-1">
-                  Enter your Daily Water Intake (liters)
-                </label>
-                <input
-                  type="number"
-                  name="customIntake"
-                  placeholder="e.g. 1.5 (liters)"
-                  value={form.customIntake || ""}
-                  onChange={handleChange}
-                  className="w-full p-2 rounded text-black"
-                  min={0}
-                  step={0.01}
-                />
-                {errors.customIntake && (
-                  <div className="text-red-600 text-sm mt-1 text-left">{errors.customIntake}</div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Water Sources */}
-          <div>
-            <label className="block text-sm mb-2">
-              Select additional water sources
-            </label>
-            <div className="grid grid-cols-3 gap-2 text-sm">
-              {[
-                "Tea",
-                "Coffee",
-                "Juice",
-                "Milk",
-                "Soda",
-                "Other(Food, Fruits, Vegetables)",
-              ].map((src) => (
-                <label key={src} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={form.sources.includes(src)}
-                    onChange={() => handleSourceToggle(src)}
-                    className="accent-[#021637]"
-                  />
-                  {src}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-sm mb-1">Email</label>
-            <input
-              name="email"
-              placeholder="Enter your email"
-              value={form.email}
-              onChange={handleChange}
-              className="w-full p-2 rounded text-black"
-              type="email"
-            />
-            {errors.email && (
-              <div className="text-red-600 text-sm mt-1 text-left">{errors.email}</div>
-            )}
-            <p className="italic text-xs">*Please enter your e-mail to get free 7-day hydration tips directly to your inbox!</p>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex gap-3 pt-3">
+          {/* GENDER */}
+          <div className="wic-sh"><span className="wic-sh-lbl">Gender</span><div className="wic-sh-line" /></div>
+          <div className="wic-g-row">
             <button
               type="button"
-              className="flex-1 bg-[#0E254E] py-2 rounded text-white font-medium"
-              onClick={handleCalculate}
+              className={`wic-gc wic-gc-male${gender === "male" ? " wic-on" : ""}`}
+              onClick={() => setGender("male")}
             >
-              Calculate
+              <div className="wic-gc-circle">♂</div>
+              <div className="wic-gc-info">
+                <span className="wic-gc-title">Male</span>
+                <span className="wic-gc-sub">Biological gender</span>
+              </div>
             </button>
-            
             <button
-              className="flex-1 bg-white text-[#389ED7] py-2 rounded font-medium"
+              type="button"
+              className={`wic-gc wic-gc-female${gender === "female" ? " wic-on" : ""}`}
+              onClick={() => setGender("female")}
             >
-              <a href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura?ref=search">Join Early Access</a>
+              <div className="wic-gc-circle">♀</div>
+              <div className="wic-gc-info">
+                <span className="wic-gc-title">Female</span>
+                <span className="wic-gc-sub">Biological gender</span>
+              </div>
             </button>
           </div>
 
-            {/* Result Box */}
+          {/* BODY PARAMETERS */}
+          <div className="wic-sh"><span className="wic-sh-lbl">Body Parameters</span><div className="wic-sh-line" /></div>
+          <div className="wic-row3 wic-sec-gap">
+            <div className={`wic-f${errors.age ? " wic-field-err" : ""}`}>
+              <label>Age (years) <span className="wic-req">*</span></label>
+              <input type="number" placeholder="e.g. 25" min="2" max="120" value={age} onChange={e => setAge(e.target.value)} />
+              {errors.age && <span className="wic-err">Enter an age between 2 and 120</span>}
+            </div>
+            <div className={`wic-f${errors.weight ? " wic-field-err" : ""}`}>
+              <label>Weight (kg) <span className="wic-req">*</span></label>
+              <input type="number" placeholder="e.g. 70" min="20" max="300" value={weight} onChange={e => setWeight(e.target.value)} />
+              {errors.weight && <span className="wic-err">Enter a weight between 20 and 300 kg</span>}
+            </div>
+            <div className={`wic-height-field${errors.height ? " wic-field-err" : ""}`}>
+              <div className="wic-height-label-row">
+                <label>Height <span className="wic-req">*</span></label>
+                <div className="wic-height-unit-sw">
+                  <button type="button" className={`wic-husw${heightUnit === "feet" ? " wic-on" : ""}`} onClick={() => setHeightUnit("feet")}>ft/in</button>
+                  <button type="button" className={`wic-husw${heightUnit === "cm" ? " wic-on" : ""}`} onClick={() => setHeightUnit("cm")}>cm</button>
+                </div>
+              </div>
+
+              {heightUnit === "cm" ? (
+                <input
+                  className="wic-height-input"
+                  type="number"
+                  placeholder="e.g. 170"
+                  min="50"
+                  max="250"
+                  value={heightCm}
+                  onChange={e => setHeightCm(e.target.value)}
+                />
+              ) : (
+                <div className="wic-ftin">
+                  <div className="wic-ftin-cell">
+                    <input type="number" placeholder="5" min="1" max="8" value={heightFt} onChange={e => setHeightFt(e.target.value)} />
+                    <span className="wic-ftin-unit">ft</span>
+                  </div>
+                  <div className="wic-ftin-cell">
+                    <input type="number" placeholder="7" min="0" max="11" value={heightIn} onChange={e => setHeightIn(e.target.value)} />
+                    <span className="wic-ftin-unit">in</span>
+                  </div>
+                </div>
+              )}
+              {errors.height && <span className="wic-err">Please enter a valid height</span>}
+            </div>
+          </div>
+
+          {/* ACTIVITY */}
+          <div className="wic-sh"><span className="wic-sh-lbl">Activity Level</span><div className="wic-sh-line" /></div>
+          <div className="wic-act-row wic-sec-gap">
+            {ACTIVITY_OPTIONS.map(opt => (
+              <button
+                type="button"
+                key={opt.v}
+                className={`wic-ab${activity === opt.v ? " wic-on" : ""}`}
+                onClick={() => setActivity(opt.v)}
+              >
+                <div className="wic-ab-ic">{opt.ic}</div>
+                <span className="wic-ab-lb">{opt.lb}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* CHIPS */}
+          <div className="wic-sh"><span className="wic-sh-lbl">Additional Water Sources</span><div className="wic-sh-line" /></div>
+          <p style={{ fontSize: ".72rem", color: "var(--sub)", marginBottom: ".75rem", marginTop: "-.25rem" }}>
+            Select all that apply — these count toward your daily fluids
+          </p>
+          <div className="wic-chips wic-sec-gap">
+            {CHIP_OPTIONS.map(opt => (
               <div
-              ref={resultBoxRef}
-              className="bg-white text-[#021637] text-center p-4 rounded mt-4 shadow-md">
-
-            <p className="font-semibold text-lg">Your Result</p>
-            {!showResult && Object.keys(errors).length === 0 && (
-              <p className="text-sm mt-1">
-                Enter all the fields and Calculate
-              </p>
-            )}
-            {showResult && result && (
-              <div>
-                <div className="mt-2 mb-2">
-                  <IntakeGraph percent={result.percent} />
-                </div>
-                <div className="mt-3 text-left">
-                  
-                  <p className="italic text-[#389ED7] text-center mt-2">
-                    {getMicroMessage(form.gender, form.activity)}
-                  </p>
-                </div>
-                {/* Comparison bar graph */}
-                <ComparisonBar yourIntake={result.currentIntake} goal={result.totalNeeded} />
-                { /*<CalculationBreakdown debug={result._debug} sources={form.sources} /> */}
-                {/* Disease risk box */}
-                <HydrationRiskBox percent={result.percent} />
-                <div className="mt-3 text-xs text-[#0E254E]">
-                 <span className="text-red-600">*</span>Your 7-day hydration plan is on the way!
-                     Check your inbox to start achieving your water intake goals — one day at a time.<br />
-                   <br />
-                 <p className="italic text-sm"> Stay hydrated for peak performance!</p>
-                </div>
+                key={opt.value}
+                className={`wic-chip${chips.includes(opt.value) ? " wic-on" : ""}`}
+                onClick={() => toggleChip(opt.value)}
+              >
+                {chips.includes(opt.value) && <span className="wic-chip-tick">✓ </span>}
+                {opt.label}
               </div>
-            )}
-            {Object.keys(errors).length > 0 && (
-              <div className="text-red-600 text-sm mt-2 text-left">
-                Please correct the highlighted fields above.
+            ))}
+          </div>
+
+          {/* CLIMATE & CURRENT */}
+          <div className="wic-sh"><span className="wic-sh-lbl">Environment &amp; Current Habits</span><div className="wic-sh-line" /></div>
+          <div className="wic-row2 wic-sec-gap">
+            <div className="wic-f">
+              <label>Climate</label>
+              <select value={climate} onChange={e => setClimate(e.target.value)}>
+                <option value="">Choose your climate</option>
+                <option value="cold">❄️ Cold</option>
+                <option value="temperate">🌤️ Temperate</option>
+                <option value="hot">☀️ Hot</option>
+                <option value="humid">💨 Hot &amp; Humid</option>
+              </select>
+            </div>
+            <div className="wic-f">
+              <label>Current Water Intake (liters / day)</label>
+              <select value={curr} onChange={e => setCurr(e.target.value)}>
+                <option value="">Your daily estimate</option>
+                <option value="0.5">Less than 1 L</option>
+                <option value="1.5">1 – 2 L</option>
+                <option value="2.5">2 – 3 L</option>
+                <option value="3.5">3 – 4 L</option>
+                <option value="4.5">More than 4 L</option>
+              </select>
+            </div>
+          </div>
+
+          {/* EMAIL */}
+          <div className="wic-sh"><span className="wic-sh-lbl">Get Your Free Hydration Plan</span><div className="wic-sh-line" /></div>
+          <div className="wic-sec-gap">
+            <div className={`wic-f${errors.email ? " wic-field-err" : ""}`}>
+              <label>Email Address <span className="wic-req">*</span></label>
+              <input type="email" placeholder="yourname@email.com" value={email} onChange={e => setEmail(e.target.value)} />
+              <p className="wic-email-hint">* Enter your email to get free 7-day hydration tips directly to your inbox!</p>
+              {errors.email && <span className="wic-err">Please enter a valid email address</span>}
+            </div>
+          </div>
+
+          {/* BUTTONS */}
+          <div className="wic-calc-btn-wrap">
+            <button type="button" className="wic-btn-calc" onClick={calculate}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M12 2C6 8 4 12 4 15a8 8 0 0016 0c0-3-2-7-8-13z" />
+              </svg>
+              Calculate My Water Intake
+            </button>
+            <a href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura" className="wic-btn-calc-sub">
+              Join Early Access
+            </a>
+          </div>
+
+          {/* RESULT */}
+          <div className="wic-result" id="wic-rc" ref={resultRef}>
+            {(!result || result.error) ? (
+              <div className="wic-res-empty">
+                <svg className="wic-res-drop" width="32" height="38" viewBox="0 0 32 38" fill="none">
+                  <path d="M16 2C16 2,2 14,2 22C2 31,8 36,16 36C24 36,30 31,30 22C30 14,16 2,16 2Z" fill="#29aae1" />
+                </svg>
+                {result?.error
+                  ? "Please fill in the required fields (marked *) correctly."
+                  : "Fill in the fields above and hit Calculate"}
+              </div>
+            ) : (
+              <div className="wic-res-live">
+                <div className="wic-res-hero">
+                  <div className="wic-res-heading">Your Results</div>
+                  <div className="wic-res-subheading">Daily Water Requirement</div>
+                  <div className="wic-res-num">{result.r.toFixed(1)}L</div>
+                  <div className="wic-res-unit">litres per day</div>
+                  <div className="wic-res-glass-row">
+                    <span className="wic-res-glass-ic"><GlassIcon /></span>
+                    <div>
+                      <div className="wic-res-glass-n">{result.gl}</div>
+                      <div className="wic-res-glass-l">Standard Glasses (250 ml)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="wic-res-bars">
+                  <div className="wic-rbar">
+                    <span className="wic-rbar-l">Your Daily Goal</span>
+                    <div className="wic-rbar-t"><div className="wic-rbar-f" style={{ width: "100%" }} /></div>
+                    <span className="wic-rbar-v">{result.r.toFixed(1)} L</span>
+                  </div>
+                  <div className="wic-rbar">
+                    <span className="wic-rbar-l">Current Intake</span>
+                    <div className="wic-rbar-t">
+                      <div className="wic-rbar-f" style={{ width: `${barWidth}%`, background: barColor() }} />
+                    </div>
+                    <span className="wic-rbar-v" style={{ color: result.cu > 0 ? barColor() : "var(--text)" }}>
+                      {result.cu > 0 ? `${result.cu.toFixed(1)} L` : "Not set"}
+                    </span>
+                  </div>
+                  <div className="wic-rbar">
+                    <span className="wic-rbar-l">Completion Rate</span>
+                    <div className="wic-rbar-t"><div className="wic-rbar-f" style={{ width: `${Math.min(100, result.pct)}%` }} /></div>
+                    <span className="wic-rbar-v">{result.pct}%</span>
+                  </div>
+                </div>
+
+                {result.creditApplied > 0 && (
+                  <div className="wic-res-note">
+                    Your goal includes a small allowance — about <strong>{result.creditApplied.toFixed(1)} L</strong> of
+                    your fluids come from the other sources you selected (before that, your raw requirement was
+                    ~{result.baseTotal.toFixed(1)} L).
+                  </div>
+                )}
+
+                {renderStatus()}
+
+                <div className="wic-res-disclaimer">
+                 <b>Note : </b>
+                  This estimate is for general guidance for healthy individuals and is not medical advice. Needs rise
+                  with intense exercise, heat, illness, pregnancy or breastfeeding. If you have a kidney, heart or
+                  hormonal condition, follow your doctor's fluid plan.
+                </div>
               </div>
             )}
           </div>
 
-          {/* Footer Trigger */}
-          <div
-            ref={bottomRef}
-            className="text-center text-sm text-white/80 mt-8 tracking-wide"
-          >
-            Powered by{" "}
-            <span className="font-semibold text-white">Frostactive</span> •
-            Mindful Hydration for Busy Lives
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

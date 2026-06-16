@@ -152,7 +152,7 @@ const handleSubscribe = async (e) => {
             <ul className="space-y-0">
               <li><Link to="/about" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">About Us</Link></li>
               <li><Link to="/community" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Community & Beta</Link></li>
-              <li><Link to="/waterintakecalculator" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Water Intake Calculator</Link></li>
+              <li><Link to="/sessions" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Wellness Sessions</Link></li>
               <li><Link to="https://app.frostactive.com" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Web App</Link></li>
               <li><Link to="/blogs" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Blogs</Link></li>
               <li><Link to="/invest" className="text-sm text-[#021637] hover:text-blue-700 font-[Roboto]">Invest</Link></li>

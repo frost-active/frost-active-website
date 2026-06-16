@@ -318,11 +318,12 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: "/#about", label: "About" },
-    { href: "/#pricing", label: "Pricing" },
+   // { href: "/#about", label: "About" },
     { href: "/#how", label: "How It Works" },
-    { href: "/#gallery", label: "Gallery" },
-    { href: "/#contact", label: "Contact" },
+    { href: "/#pricing", label: "Pricing" },
+    { href : "/waterintakecalculator", label: "Water Intake Calculator" },
+   // { href: "/#gallery", label: "Gallery" },
+    //{ href: "/#contact", label: "Contact" },
   ];
 
   return (

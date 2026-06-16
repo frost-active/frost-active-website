@@ -1066,42 +1066,37 @@ function HeroSection() {
 }
 
 function PricingSection() {
-  const [countdown, setCountdown] = useState({ d: "06", h: "00", m: "00", s: "00" });
+   const [countdown, setCountdown] = useState({ d: "14", h: "00", m: "00", s: "00" });
 
   useEffect(() => {
-    const storageKey = "pricingCountdownEnd6Days";
-    let savedEnd = localStorage.getItem(storageKey);
+  // Fixed launch target: June 17, 2026, 00:00 local time
+  
+  const end = new Date("2026-06-21T00:00:00+05:30").getTime();
+  const pad = (n) => String(Math.max(0, Math.floor(n))).padStart(2, "0");
 
-    if (!savedEnd) {
-      const newEnd = Date.now() + 6 * 24 * 60 * 60 * 1000;
-      localStorage.setItem(storageKey, newEnd);
-      savedEnd = newEnd;
+  let id;
+
+  const tick = () => {
+    const diff = end - Date.now();
+
+    if (diff <= 0) {
+      setCountdown({ d: "00", h: "00", m: "00", s: "00" });
+      clearInterval(id);
+      return;
     }
 
-    const end = Number(savedEnd);
-    const pad = (n) => String(Math.floor(n)).padStart(2, "0");
+    setCountdown({
+      d: pad(diff / (1000 * 60 * 60 * 24)),
+      h: pad((diff / (1000 * 60 * 60)) % 24),
+      m: pad((diff / (1000 * 60)) % 60),
+      s: pad((diff / 1000) % 60),
+    });
+  };
 
-    const tick = () => {
-      const diff = end - Date.now();
-
-      if (diff <= 0) {
-        setCountdown({ d: "00", h: "00", m: "00", s: "00" });
-        clearInterval(id);
-        return;
-      }
-
-      setCountdown({
-        d: pad(diff / (1000 * 60 * 60 * 24)),
-        h: pad((diff / (1000 * 60 * 60)) % 24),
-        m: pad((diff / (1000 * 60)) % 60),
-        s: pad((diff / 1000) % 60),
-      });
-    };
-
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
+  tick();
+  id = setInterval(tick, 1000);
+  return () => clearInterval(id);
+}, []);
 
   const campaignLink =
     "https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura";
@@ -1211,113 +1206,46 @@ function AboutSection() {
 
 
 function HowItWorksSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   const cards = [
     {
-      title: "Place your bottle",
+      number: "1",
+      title: "Place Your Bottle",
       desc: "Set Frost Aura on your desk and place any water bottle nearby. Tracking begins automatically the moment it's powered on.",
-      tag: "Zero setup",
-      bg: "#79D8FF",
-      tagBg: "rgba(124,92,191,.15)",
-      tagColor: "#",
-      accent: "#1d9fd2",
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.42849 20.0287C4.78123 19.3938 5.45047 19 6.17681 19H22.2639C23.0215 19 23.714 19.428 24.0528 20.1056L26.5528 25.1056C27.2177 26.4354 26.2507 28 24.7639 28H3.39903C1.87406 28 0.910124 26.3618 1.65071 25.0287L4.42849 20.0287Z" fill="#171616"/>
-<rect x="10" y="3" width="8" height="16" rx="0.5" fill="#9C9C9C"/>
-<rect x="10" width="8" height="2" rx="0.5" fill="#9C9C9C"/>
-</svg>
-
-      ),
+      image: "/images/how1.svg",
     },
     {
-      title: "Device learns patterns",
+      number: "2",
+      title: "Device Learns Patterns",
       desc: "Work as you normally would. The onboard AI quietly observes your hydration habits, focus blocks, and work sessions.",
-      tag: "Passive AI learning",
-      bg: "#A7E6FF",
-      tagBg: "rgb(0, 0, 0)",
-      tagColor: "#3ba3cd",
-      accent: "#3ba3cd",
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.68945 8.18457C6.62245 8.18457 8.18945 6.61757 8.18945 4.68457C8.18945 2.75157 6.62245 1.18457 4.68945 1.18457C2.75646 1.18457 1.18945 2.75157 1.18945 4.68457C1.18945 6.61757 2.75646 8.18457 4.68945 8.18457Z" fill="#2e2e2e"/>
-<path d="M17.5343 14.0296C17.533 13.3079 17.3079 12.6044 16.89 12.016C16.4721 11.4276 15.882 10.9833 15.201 10.7443V7.96764C15.6871 7.79299 16.1285 7.51254 16.493 7.14655C16.8576 6.78055 17.1364 6.33815 17.3091 5.8513H20.0706C20.2442 6.33966 20.5244 6.78321 20.8909 7.14969C21.2574 7.51618 21.7009 7.7964 22.1893 7.96997V10.7466C21.4112 11.0238 20.7562 11.5671 20.34 12.2805C19.9238 12.994 19.7733 13.8315 19.9149 14.6453C20.0566 15.459 20.4813 16.1964 21.1141 16.7272C21.7469 17.258 22.547 17.548 23.373 17.5459C24.1989 17.5439 24.9975 17.2499 25.6277 16.7159C26.2578 16.1819 26.6789 15.4424 26.8165 14.628C26.954 13.8136 26.7993 12.9768 26.3795 12.2654C25.9598 11.5541 25.302 11.0141 24.5226 10.7408V7.9688C25.0797 7.77306 25.578 7.43927 25.9709 6.99863C26.3639 6.558 26.6388 6.02491 26.7698 5.4492C26.9008 4.87349 26.8837 4.27397 26.72 3.70668C26.5564 3.13938 26.2516 2.62284 25.8341 2.20535C25.4166 1.78786 24.9 1.48305 24.3328 1.31941C23.7655 1.15577 23.1659 1.13865 22.5902 1.26965C22.0145 1.40065 21.4814 1.67549 21.0408 2.06848C20.6002 2.46147 20.2664 2.95977 20.0706 3.5168H17.3091C17.1131 2.95946 16.7788 2.46098 16.3376 2.06802C15.8964 1.67507 15.3627 1.40049 14.7864 1.26999C14.2102 1.13949 13.6103 1.15734 13.0428 1.32187C12.4754 1.48639 11.9589 1.79221 11.5419 2.2107C11.1248 2.62919 10.8207 3.14666 10.6582 3.71467C10.4956 4.28268 10.4798 4.88267 10.6122 5.45845C10.7447 6.03424 11.0211 6.56699 11.4155 7.00686C11.81 7.44672 12.3096 7.7793 12.8676 7.97347V10.7431C12.1862 10.9813 11.5957 11.4254 11.1778 12.014C10.76 12.6026 10.5356 13.3066 10.5356 14.0285C10.5356 14.7503 10.76 15.4543 11.1778 16.0429C11.5957 16.6315 12.1862 17.0757 12.8676 17.3138V20.0846C12.376 20.2574 11.9294 20.5382 11.5606 20.9062C11.1917 21.2743 10.91 21.7203 10.7361 22.2115H7.97696C7.80373 21.722 7.52342 21.2774 7.15648 20.91C6.78954 20.5427 6.34523 20.2619 5.85596 20.0881V17.3173C6.63487 17.0444 7.29225 16.505 7.71192 15.7943C8.13159 15.0837 8.28653 14.2476 8.14935 13.4337C8.01218 12.6199 7.59173 11.8807 6.9623 11.3469C6.33288 10.813 5.535 10.5189 4.70968 10.5164C3.88436 10.5139 3.08473 10.8033 2.45212 11.3333C1.8195 11.8634 1.39462 12.6 1.25257 13.413C1.11051 14.226 1.26043 15.0631 1.67583 15.7762C2.09123 16.4894 2.74536 17.0328 3.52262 17.3103V20.087C2.96596 20.2828 2.46799 20.6165 2.07523 21.0569C1.68248 21.4973 1.40774 22.03 1.27667 22.6054C1.14561 23.1808 1.16249 23.78 1.32575 24.347C1.48901 24.9141 1.79331 25.4305 2.21025 25.8481C2.62718 26.2657 3.14315 26.5708 3.70996 26.735C4.27677 26.8991 4.87593 26.917 5.4515 26.7868C6.02706 26.6566 6.56025 26.3827 7.00128 25.9907C7.4423 25.5986 7.77677 25.1012 7.97346 24.5448H10.7385C10.9349 25.1007 11.2689 25.5979 11.7093 25.9899C12.1497 26.3819 12.6822 26.656 13.2572 26.7866C13.8322 26.9173 14.4308 26.9002 14.9974 26.737C15.564 26.5738 16.08 26.2697 16.4974 25.8533C16.9147 25.4368 17.2198 24.9214 17.3842 24.3552C17.5486 23.7889 17.5669 23.1903 17.4375 22.6151C17.3081 22.0398 17.0351 21.5067 16.644 21.0655C16.2529 20.6242 15.7565 20.2892 15.201 20.0916V17.315C15.8821 17.0759 16.4724 16.6315 16.8903 16.0428C17.3082 15.4542 17.5332 14.7515 17.5343 14.0296Z" fill="#3e3e3e"/>
-<path d="M23.3574 26.874C25.2904 26.874 26.8574 25.307 26.8574 23.374C26.8574 21.441 25.2904 19.874 23.3574 19.874C21.4244 19.874 19.8574 21.441 19.8574 23.374C19.8574 25.307 21.4244 26.874 23.3574 26.874Z" fill="#464646"/>
-</svg>
-
-      ),
+      image: "/images/how2.svg",
     },
     {
-      title: "Get gentle cues",
+      number: "3",
+      title: "Get Gentle Cues",
       desc: "Receive perfectly timed, non-intrusive hydration nudges and movement prompts — never disruptive, always helpful.",
-      tag: "Smart nudges",
-      bg: "#B9EAFF",
-      tagBg: "rgba(45,181,163,.15)",
-      tagColor: "#1f9484",
-      accent: "#60b3d6",
-      icon: (
-        <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M25.375 22.9587V24.167H3.625V22.9587L6.04167 20.542V13.292C6.04167 9.54616 8.49458 6.24741 12.0833 5.18408V4.83366C12.0833 4.19272 12.3379 3.57803 12.7912 3.12482C13.2444 2.6716 13.8591 2.41699 14.5 2.41699C15.1409 2.41699 15.7556 2.6716 16.2088 3.12482C16.6621 3.57803 16.9167 4.19272 16.9167 4.83366V5.18408C20.5054 6.24741 22.9583 9.54616 22.9583 13.292V20.542L25.375 22.9587ZM16.9167 25.3753C16.9167 26.0163 16.6621 26.631 16.2088 27.0842C15.7556 27.5374 15.1409 27.792 14.5 27.792C13.8591 27.792 13.2444 27.5374 12.7912 27.0842C12.3379 26.631 12.0833 26.0163 12.0833 25.3753" fill="#5f5f5f"/>
-</svg>
-
-      ),
+      image: "/images/how3.svg",
     },
     {
-      title: "Habits build themselves",
+      number: "4",
+      title: "Habits Build Themselves",
       desc: "Consistency compounds. Unlock newer wellness habits automatically as your patterns improve over time.",
-      tag: "Effortless routine",
-      bg: "#DCF4FF",
-      tagBg: "rgba(90,174,212,.2)",
-      tagColor: "#3a8db8",
-      accent: "#6aadcc",
-      icon: (
-        <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.125 25.2175C4.125 25.2175 5.5 9.74875 9.625 4.125L16.5 5.5L15.125 9.74875H12.375V19.5938H13.75C16.5 15.3725 22.1925 13.8325 25.63 15.3725C30.1675 17.4763 29.755 23.815 25.63 26.62C22.33 28.875 12.375 30.8413 4.125 25.2175Z" fill="#707070"/>
-</svg>
-
-      ),
+      image: "/images/how4.svg",
     },
   ];
-
-  const prevSlide = () => {
-    setActiveIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const nextSlide = () => {
-    setActiveIndex((prev) => Math.min(prev + 1, cards.length - 1));
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowLeft") prevSlide();
-      if (e.key === "ArrowRight") nextSlide();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   return (
     <>
       <style>{`
         .how-it-works-section {
-          max-width: 1200px;
           width: 100%;
-          padding: 60px 40px;
+          max-width: 1400px;
           margin: 0 auto;
-          overflow: hidden;
+          padding: 60px 40px;
           font-family: 'DM Sans', sans-serif;
         }
 
         .how-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          margin-bottom: 50px;
+          margin-bottom: 60px;
           animation: fadeUp 0.7s ease forwards;
         }
 
@@ -1325,424 +1253,203 @@ function HowItWorksSection() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          font-size: 15px;
-          font-weight: 500;
+          font-size: 14px;
+          font-weight: 600;
           color: #5aaed4;
           letter-spacing: 0.5px;
-          margin-bottom: 10px;
-        }
-
-        .how-label svg {
-          width: 18px;
-          height: 18px;
+          margin-bottom: 12px;
+          text-transform: uppercase;
         }
 
         .how-title {
           font-family: 'Playfair Display', serif;
           font-weight: 800;
-          font-size: clamp(28px, 4vw, 42px);
+          font-size: clamp(28px, 5vw, 40px);
           color: #1a2e3d;
-          line-height: 1.2;
+          line-height: 1.25;
+          max-width: 700px;
         }
 
-        .nav-arrows {
-          display: flex;
-          gap: 10px;
-        }
-
-        .nav-btn {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          border: none;
-          cursor: pointer;
-          background: #1a2e3d;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.3s ease;
-        }
-
-        .nav-btn svg {
-          width: 20px;
-          height: 20px;
-          stroke: #fff;
-          fill: none;
-          stroke-width: 2.5;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-        }
-
-        .nav-btn:hover {
-          background: #5aaed4;
-          transform: scale(1.08);
-        }
-
-        .cards-viewport {
-          overflow: hidden;
-          border-radius: 24px;
-        }
-
-        .cards-track {
-          display: flex;
+        .how-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 28px;
         }
 
         .how-card {
-          min-width: 280px;
-          flex: 0 0 280px;
-          border-radius: 22px;
-          padding: 36px 30px 40px;
-          position: relative;
-          overflow: hidden;
-          cursor: pointer;
-          transition: all 0.45s cubic-bezier(0.4, 0, 0.15, 1);
-          margin-right: -40px;
-          display: flex;
-          flex-direction: column;
-          min-height: 380px;
-        }
-
-        .how-card.expanded {
-          min-width: 420px;
-          flex: 0 0 420px;
-          margin-right: 0;
-        }
-
-        .card-circle {
-          position: absolute;
-          bottom: -60px;
-          right: -60px;
-          width: 200px;
-          height: 200px;
-          border-radius: 50%;
-          opacity: 0.08;
-          transition: all 0.45s ease;
-        }
-
-        .how-card:hover .card-circle {
-          transform: scale(1.5);
-          opacity: 0.12;
-        }
-
-        .step-num {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          border: 2px solid rgba(26, 46, 61, 0.25);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 16px;
-          font-weight: 700;
-          color: #1a2e3d;
-          margin-bottom: 28px;
-          position: relative;
-        }
-
-        .arrow {
-          position: absolute;
-          top: -1px;
-          right: -1px;
-          width: 16px;
-          height: 16px;
-          background: #1a2e3d;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          animation: fadeUp 0.7s ease forwards;
+          animation-delay: calc(var(--card-index) * 0.1s);
           opacity: 0;
-          transform: scale(0.5);
-          transition: all 0.3s ease;
-        }
-
-        .arrow svg {
-          width: 8px;
-          height: 8px;
-          stroke: #fff;
-          fill: none;
-          stroke-width: 3;
-        }
-
-        .how-card:hover .arrow,
-        .how-card.expanded .arrow {
-          opacity: 1;
-          transform: scale(1);
-        }
-
-        .card-title {
-          font-size: 20px;
-          font-weight: 700;
-          color: #1a2e3d;
-          margin-bottom: 14px;
-          line-height: 1.3;
-        }
-
-        .card-desc {
-          font-size: 14.5px;
-          line-height: 1.65;
-          color: #3d5a6e;
-          max-height: 0;
-          overflow: hidden;
-          opacity: 0;
-          transition: all 0.5s ease;
-        }
-
-        .how-card.expanded .card-desc {
-          max-height: 200px;
-          opacity: 1;
-        }
-
-        .card-tag {
-          margin-top: auto;
-          padding-top: 20px;
-          opacity: 0;
-          transform: translateY(10px);
-          transition: all 0.4s ease 0.15s;
-        }
-
-        .how-card.expanded .card-tag {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .tag {
-          display: inline-block;
-          padding: 6px 16px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
-        }
-
-        .card-icon {
-          position: absolute;
-          bottom: 30px;
-          right: 30px;
-          width: 60px;
-          height: 60px;
-          opacity: 0;
-          transform: scale(0.7) rotate(-10deg);
-          transition: all 0.45s ease 0.2s;
-        }
-
-        .how-card.expanded .card-icon {
-          opacity: 0.18;
-          transform: scale(1) rotate(0deg);
-        }
-
-        .card-icon svg {
-          width: 100%;
-          height: 100%;
-          stroke: #1a2e3d;
-          fill: none;
-          stroke-width: 1.5;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-        }
-
-        .card-bg-number {
-          position: absolute;
-          bottom: -20px;
-          right: 10px;
-          font-family: 'Playfair Display', serif;
-          font-size: 160px;
-          font-weight: 800;
-          opacity: 0;
-          color: rgba(26, 46, 61, 0.04);
-          line-height: 1;
-          transition: opacity 0.5s ease;
-          pointer-events: none;
-        }
-
-        .how-card.expanded .card-bg-number {
-          opacity: 1;
         }
 
         @keyframes fadeUp {
           from {
             opacity: 0;
-            transform: translateY(25px);
+            transform: translateY(20px);
           }
-
           to {
             opacity: 1;
             transform: translateY(0);
           }
         }
 
-        @media (max-width: 900px) {
+        /* NUMBER ABOVE IMAGE */
+        .card-number {
+          font-size: 32px;
+          font-weight: 400;
+          color: #000000;
+          line-height: 1;
+          margin-bottom: 10px;
+          font-family: 'DM Sans', sans-serif;
+        }
+
+        .card-image-wrapper {
+          width: 100%;
+          aspect-ratio: 1 / 1;
+          overflow: hidden;
+          border-radius: 18px;
+          background: #f4f4f4;
+        }
+
+        .card-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.4s ease;
+        }
+
+        .how-card:hover .card-image {
+          transform: scale(1.05);
+        }
+
+        .card-content {
+          text-align: center;
+          padding-top: 24px;
+        }
+
+        .card-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 20px;
+          font-weight: 500;
+          color: #5aaed4;
+          line-height: 1.3;
+          margin-bottom: 12px;
+        }
+
+        .card-desc {
+          font-size: 14px;
+          line-height: 1.45;
+          color: #000000;
+          max-width: 240px;
+          margin: 0 auto;
+        }
+
+        /* TABLET */
+        @media (max-width: 1024px) {
+          .how-it-works-section {
+            padding: 50px 30px;
+          }
+
+          .how-cards-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+          }
+
+          .card-number {
+            font-size: 46px;
+          }
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
           .how-it-works-section {
             padding: 40px 20px;
           }
 
-          .how-card {
-            min-width: 220px;
-            flex: 0 0 220px;
-            min-height: 320px;
-            padding: 28px 22px 32px;
-            margin-right: -30px;
+          .how-cards-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
           }
 
-          .how-card.expanded {
-            min-width: 300px;
-            flex: 0 0 300px;
+          .card-number {
+            font-size: 40px;
+          }
+
+          .card-title {
+            font-size: 18px;
+          }
+
+          .card-desc {
+            max-width: 100%;
           }
         }
 
-        /* ONLY MOBILE FIX */
-        /* ONLY MOBILE FIX */
-@media (max-width: 600px) {
-  .how-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
+        @media (max-width: 480px) {
+          .how-it-works-section {
+            padding: 30px 16px;
+          }
 
-  .cards-viewport {
-    overflow: hidden;
-    width: 100%;
-  }
+          .card-number {
+            font-size: 34px;
+          }
 
-  .cards-track {
-    display: flex;
-    gap: 14px;
-    width: 100%;
-    transition: transform 0.45s ease;
-    transform: translateX(calc(-1 * var(--mobile-slide, 0) * 86vw));
-  }
+          .card-title {
+            font-size: 17px;
+          }
 
-  .how-card {
-    min-width: 82vw;
-    flex: 0 0 82vw;
-    margin-right: 0;
-    min-height: 300px;
-    padding: 26px 20px 30px;
-  }
-
-  .how-card.expanded {
-    min-width: 82vw;
-    flex: 0 0 82vw;
-  }
-
-  .card-desc {
-    max-height: 200px;
-    opacity: 1;
-  }
-
-  .card-tag {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .card-icon {
-    opacity: 0.14;
-    transform: scale(1) rotate(0deg);
-  }
-
-  .card-bg-number {
-    opacity: 1;
-  }
-}
+          .card-desc {
+            font-size: 13px;
+          }
+        }
       `}</style>
 
       <section className="how-it-works-section" id="how">
         <div className="how-header">
-          <div>
-            <div className="eyebrow">
-               The Process
-            </div>
+          <div className="eyebrow">The Process</div>
 
-            <h2 className="how-title">
-              Your Roadmap to a Healthier,
-              <br />
-              More Focused Lifestyle
-            </h2>
-          </div>
-
-          <div className="nav-arrows">
-            <button className="nav-btn" onClick={prevSlide}>
-              <svg viewBox="0 0 24 24">
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </button>
-
-            <button className="nav-btn" onClick={nextSlide}>
-              <svg viewBox="0 0 24 24">
-                <polyline points="9 6 15 12 9 18" />
-              </svg>
-            </button>
-          </div>
+          <h2 className="how-title">
+            Your Roadmap to a Healthier,
+            <br />
+            More Focused Lifestyle
+          </h2>
         </div>
 
-        <div className="cards-viewport">
-          <div
-  className="cards-track"
-  style={{
-    "--mobile-slide": activeIndex,
-  }}
->
-            {cards.map((card, index) => (
-              <div
-                key={index}
-                className={`how-card ${
-                  activeIndex === index ? "expanded" : ""
-                }`}
-                onClick={() => setActiveIndex(index)}
-                style={{
-                  "--mobile-slide": activeIndex,
-                  background: card.bg,
-                  zIndex:
-                    activeIndex === index
-                      ? cards.length + 1
-                      : index < activeIndex
-                      ? index + 1
-                      : cards.length - index,
-                }}
-              >
-                <div
-                  className="card-circle"
-                  style={{ background: card.accent }}
-                />
-
-                <div className="card-bg-number">{index + 1}</div>
-
-                <div className="step-num">
-                  {index + 1}
-
-                  <span className="arrow">
-                    <svg viewBox="0 0 24 24">
-                      <line x1="7" y1="17" x2="17" y2="7" />
-                      <polyline points="7 7 17 7 17 17" />
-                    </svg>
-                  </span>
-                </div>
-
-                <h3 className="card-title">{card.title}</h3>
-
-                <div className="card-desc">
-                  <p>{card.desc}</p>
-                </div>
-
-                <div className="card-tag">
-                  <span
-                    className="tag"
-                    style={{
-                      background: card.tagBg,
-                      color: card.tagColor,
-                    }}
-                  >
-                    {card.tag}
-                  </span>
-                </div>
-
-                <div className="card-icon">{card.icon}</div>
+        <div className="how-cards-grid">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className="how-card"
+              style={{ "--card-index": index }}
+            >
+              <div className="card-number">
+                {card.number}
               </div>
-            ))}
-          </div>
+
+              <div className="card-image-wrapper">
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="card-image"
+                />
+              </div>
+
+              <div className="card-content">
+                <h3 className="card-title">
+                  {card.title}
+                </h3>
+
+                <p className="card-desc">
+                  {card.desc}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </>
   );
 }
+
 
 function GallerySection() {
   const scrollRef = useRef(null);
@@ -1777,7 +1484,7 @@ function GallerySection() {
 
   return (
     <section className="s-gallery lg:-mt-6" id="gallery">
-      <div className="lg:-mt-0 -mt-16">
+      <div className="lg:-mt-0 -mt-6">
         <div className="s-gallery-inner">
           <div className="eyebrow">Experience Frost</div>
           <h2 style={{ fontFamily: "'DM Serif Display',serif", fontSize: "clamp(28px,4vw,48px)", color: "var(--gray-900)", marginBottom: 12 }}>

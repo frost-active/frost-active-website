@@ -43,6 +43,8 @@ import WhatsAppButton from './components/WhatsAppButton';
 
 import WaterIntakeCalculator from './pages/WaterCalculator';
 import QuizPage from './pages/QuizPage';
+import SessionsPage from './pages/SessionsPage';
+import PausetoPerformSessionPage from './pages/PausetoPerformSessionPage';
 
 function App() {
    
@@ -86,8 +88,9 @@ function App() {
             <Route path="/reserve" element={<ReservePage />} />
             <Route path="/questions" element={<NoThanksPage />} />
             <Route path="/waterintakecalculator" element={<WaterIntakeCalculator />} />
-
-            <Route path="/quiz" element={<QuizPage />}  />
+            <Route path="/sessions" element={<SessionsPage />} />
+            <Route path="/sessions/pause-to-perform" element={<PausetoPerformSessionPage />} />
+            {/* <Route path="/quiz" element={<QuizPage />}  /> */}
            
           
 
