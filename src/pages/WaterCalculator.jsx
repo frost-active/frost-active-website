@@ -338,7 +338,6 @@ const HYDRATION_REF = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2908954/";
 // Google Sheets Web App URLs
 const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby3a3Mx3DjTXlj3M4Eim0QzQC5r5PQEecvEvp266pGsEesxVahO1kGuKijVDB8HMO7NRg/exec';
 const MASTER_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxqXNa5d1oYF9yiHJpsxtv6sdtV0KsdGUSg_2oSe--dHl4YIe7tPCYHZzeBsIojmqXt/exec";
-const CHEERIO_API_KEY = "dfd7bcf44867df2f37bccce492a2368dcb0d9cdcd5963dd47acd270de09208ba";
 
 // ---------- Validation ----------
 function validateEmail(e) {
@@ -440,17 +439,7 @@ async function sendEmailToMasterSheet(email, source) {
   }
 }
 
-async function sendEmailToCheerio(email) {
-  try {
-    await fetch("https://newprod.api.cheerio.in/direct-apis/v1/manualTriggerWorkflow", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": CHEERIO_API_KEY },
-      body: JSON.stringify({ email, workflowId: "691d8bd1024212623f2b31b8" }),
-    });
-  } catch (err) {
-    console.error("Error sending email via Cheerio:", err);
-  }
-}
+
 
 // ---------- Hydration status ----------
 // current = plain water (L/day) the person drinks; target = recommended (L/day)
