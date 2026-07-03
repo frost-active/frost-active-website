@@ -26,7 +26,7 @@ const SESSIONS = [
     id: "pause-to-perform",
     title: "Pause to Perform",
     date: "2026-06-14",
-    status: "upcoming",
+    status: "completed",
     tag: "Performance & Wellness",
     description:
       "A hands-on session on building sustainable performance habits — energy management, hydration rhythms, and mindful breaks that keep you sharp through the day.",
@@ -261,12 +261,13 @@ export default function SessionsPage() {
                     )}
                   </div>
 
-                  {s.id === "pomodoro-focus" ? null : (
+                  {/* Show CTA button only for upcoming sessions */}
+{isUpcoming && (
   <button
-    className={`fa-cta ${isUpcoming ? "cta-up" : "cta-done"}`}
+    className="fa-cta cta-up"
     onClick={() => handleReserveClick(s.id)}
   >
-    {isUpcoming ? "Reserve your spot" : "View Recap"}
+    Reserve your spot
     <svg
       width="16"
       height="16"

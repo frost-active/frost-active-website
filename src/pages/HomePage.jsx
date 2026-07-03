@@ -1071,7 +1071,7 @@ function PricingSection() {
   useEffect(() => {
   // Fixed launch target: June 17, 2026, 00:00 local time
   
-  const end = new Date("2026-06-21T00:00:00+05:30").getTime();
+  const end = new Date("2026-07-09T00:00:00+05:30").getTime();
   const pad = (n) => String(Math.max(0, Math.floor(n))).padStart(2, "0");
 
   let id;
