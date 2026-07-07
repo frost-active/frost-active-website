@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ShoppingCart } from "lucide-react";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap');
@@ -154,6 +155,57 @@ const styles = `
     white-space: nowrap;
   }
 
+  /* CART ICON */
+  .cart-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: var(--blue-pale);
+    border: 1px solid rgba(87,156,211,.14);
+    color: var(--gray-700);
+    text-decoration: none;
+    position: relative;
+    transition: background .22s ease, color .22s ease, transform .22s ease, box-shadow .22s ease;
+  }
+
+  .cart-icon-link:hover {
+    background: var(--blue-light);
+    color: var(--blue-mid);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px var(--blue-glow);
+  }
+
+  .cart-icon-link:active {
+    transform: translateY(0);
+  }
+
+  .cart-icon-link svg {
+    width: 19px;
+    height: 19px;
+    display: block;
+  }
+
+  .cart-icon-link .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, var(--pink), #FF6BAD);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    box-shadow: 0 0 0 2px #fff;
+  }
+
   .hamburger {
     display: none;
     flex-direction: column;
@@ -249,6 +301,21 @@ const styles = `
     color: var(--gray-600);
   }
 
+  .mobile-menu a.mobile-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 13px 20px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, var(--pink), #FF6BAD);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+  }
+
   /* ✅ MOBILE FIX ONLY */
   @media (max-width: 960px) {
     .ticker-bar {
@@ -276,6 +343,16 @@ const styles = `
     .logo-img {
       height: 24px;
       max-width: 120px;
+    }
+
+    /* Only Logo, Cart, and Hamburger show in the top bar on mobile.
+       The "Back on Indiegogo" CTA moves inside the hamburger dropdown. */
+    .nav-right .nav-cta {
+      display: none;
+    }
+
+    .nav-right {
+      gap: 8px;
     }
   }
 `;
@@ -359,28 +436,48 @@ export default function Header() {
 
           <div className="nav-right">
             <a
+              href="/frostcart"
+              className="cart-icon-link"
+              aria-label="View cart"
+              title="Cart"
+            >
+              <ShoppingCart strokeWidth={1.8} />
+              
+              <span className="cart-badge">1</span>
+            
+            </a>
+
+            <a
               href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura"
               className="nav-cta"
             >
               Back on Indiegogo →
             </a>
+
+            <button
+              className={`hamburger ${menuOpen ? "open" : ""}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle Menu"
+            >
+              <span />
+              <span />
+              <span />
+            </button>
           </div>
 
-        <button
-  className={`hamburger ${menuOpen ? "open" : ""}`}
-  onClick={() => setMenuOpen(!menuOpen)}
-  aria-label="Toggle Menu"
->
-  <span />
-  <span />
-  <span />
-</button>
           <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
             {navLinks.map(({ href, label }) => (
               <a key={href} href={href} onClick={() => setMenuOpen(false)}>
                 {label}
               </a>
             ))}
+            <a
+              href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura"
+              className="mobile-cta"
+              onClick={() => setMenuOpen(false)}
+            >
+              Back on Indiegogo →
+            </a>
           </div>
 
         </div>

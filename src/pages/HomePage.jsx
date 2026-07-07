@@ -1,6 +1,7 @@
 import { React, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from '@/components/ui/use-toast';
+import ProductHuntLaunch from "../components/ProductHuntLaunch";
 
 /* ─────────────────────────────────────────────────
    STYLES
@@ -1069,9 +1070,9 @@ function PricingSection() {
    const [countdown, setCountdown] = useState({ d: "14", h: "00", m: "00", s: "00" });
 
   useEffect(() => {
-  // Fixed launch target: June 17, 2026, 00:00 local time
   
-  const end = new Date("2026-07-09T00:00:00+05:30").getTime();
+  
+  const end = new Date("2026-07-28T00:00:00+05:30").getTime();
   const pad = (n) => String(Math.max(0, Math.floor(n))).padStart(2, "0");
 
   let id;
@@ -1979,6 +1980,8 @@ export default function Home() {
 
       {/* 3. About — bg: #F0F7FC (blue-pale) */}
       <AboutSection />
+
+       
 
       {/* Wave: #F0F7FC → #fff */}
       <WaveAboutToHow />

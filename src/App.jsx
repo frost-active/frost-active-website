@@ -45,6 +45,7 @@ import WaterIntakeCalculator from './pages/WaterCalculator';
 import QuizPage from './pages/QuizPage';
 import SessionsPage from './pages/SessionsPage';
 import PausetoPerformSessionPage from './pages/PausetoPerformSessionPage';
+import FrostCartPage from './pages/FrostCartPage';
 
 function App() {
    
@@ -91,6 +92,7 @@ function App() {
             <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/sessions/pause-to-perform" element={<PausetoPerformSessionPage />} />
             {/* <Route path="/quiz" element={<QuizPage />}  /> */}
+            <Route path="/frostcart" element={<FrostCartPage />}  />
            
           
 
