@@ -19,7 +19,8 @@ import {
 const PRODUCT_IMAGE_SRC = "/images/heroimg1.jpeg";
 const INDIEGOGO_URL =
   "https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura";
-const UNIT_PRICE = 99;
+const UNIT_PRICE = 49;
+const ORIGINAL_PRICE = 99;
 // ─────────────────────────────────────────────────────────────
 
 export default function FrostAuraCartPage() {
@@ -159,6 +160,25 @@ export default function FrostAuraCartPage() {
           font-weight: 600;
           color: var(--fa-blue-dark);
           background: var(--fa-ice-2);
+          padding: 5px 10px;
+          border-radius: 8px;
+        }
+        .fa-price-row .fa-price-original{
+          font-size: 22px;
+          font-weight: 700;
+          color: var(--fa-muted);
+          text-decoration: line-through;
+          text-decoration-color: #E0555C;
+          text-decoration-thickness: 2px;
+        }
+        .fa-price-row .fa-price-offer-tag{
+          display: inline-flex;
+          align-items: center;
+          font-size: 12.5px;
+          font-weight: 800;
+          letter-spacing: 0.3px;
+          color: var(--fa-white);
+          background: #E0555C;
           padding: 5px 10px;
           border-radius: 8px;
         }
@@ -435,13 +455,14 @@ export default function FrostAuraCartPage() {
             Reserve the <span>Frost Aura</span> smart wellness dock
           </h1>
           <p className="fa-sub">
-            A desk companion that nudges you to hydrate, breathe, and move —
+            A desk companion that nudges you to hydrate, breathe, and move
             with gentle light cues, a focus timer, and sound-based water
             energizing. Pre-book here, then confirm your spot on Indiegogo.
           </p>
           <div className="fa-price-row">
             <span className="fa-price">${UNIT_PRICE}</span>
-            <span className="fa-price-tag">Pre-book price</span>
+            <span className="fa-price-original">${ORIGINAL_PRICE}</span>
+            <span className="fa-price-offer-tag">50% OFF</span>
           </div>
           <button className="fa-cta-primary" onClick={goToIndiegogo}>
             Pre-book on Indiegogo <ArrowUpRight size={17} />
@@ -493,7 +514,12 @@ export default function FrostAuraCartPage() {
           <div className="fa-summary">
             <div className="fa-summary-row">
               <span>Frost Aura — 1 unit</span>
-              <span>${UNIT_PRICE.toFixed(2)}</span>
+              <span>
+                <span style={{ textDecoration: "line-through", textDecorationColor: "#E0555C", marginRight: 8, opacity: 0.75 }}>
+                  ${ORIGINAL_PRICE.toFixed(2)}
+                </span>
+                ${UNIT_PRICE.toFixed(2)}
+              </span>
             </div>
             <div className="fa-summary-divider" />
             <div className="fa-summary-row total">
@@ -522,7 +548,7 @@ export default function FrostAuraCartPage() {
             <div className="fa-step-card">
               <div className="fa-step-num">1</div>
               <h4>Reserve here</h4>
-              <p>Lock in the ${UNIT_PRICE} pre-book price for your one unit.</p>
+              <p>Lock in the ${UNIT_PRICE} offer price (50% off ${ORIGINAL_PRICE}) for your one unit.</p>
             </div>
             <div className="fa-step-card">
               <div className="fa-step-num">2</div>
@@ -581,7 +607,13 @@ export default function FrostAuraCartPage() {
       <div className="fa-banner">
         <div>
           <h3>Ready to reserve your Frost Aura?</h3>
-          <p>Pre-book price of ${UNIT_PRICE} — complete your pledge on Indiegogo.</p>
+          <p>
+            Offer price{" "}
+            <span style={{ textDecoration: "line-through", opacity: 0.75, marginRight: 6 }}>
+              ${ORIGINAL_PRICE}
+            </span>
+            ${UNIT_PRICE} — complete your pledge on Indiegogo.
+          </p>
         </div>
         <button className="fa-cta-primary" onClick={goToIndiegogo}>
           Pre-book on Indiegogo <ArrowUpRight size={17} />
