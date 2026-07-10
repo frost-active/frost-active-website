@@ -452,7 +452,7 @@ export default function FrostAuraCartPage() {
             <Droplet size={13} /> Pre-Book Now Open
           </span>
           <h1>
-            Reserve the <span>Frost Aura</span> smart wellness dock
+            Reserve <span>Frost Aura</span> smart wellness dock
           </h1>
           <p className="fa-sub">
             A desk companion that nudges you to hydrate, breathe, and move
