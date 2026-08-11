@@ -1072,7 +1072,7 @@ function PricingSection() {
   useEffect(() => {
   
   
-  const end = new Date("2026-07-28T00:00:00+05:30").getTime();
+  const end = new Date("2026-08-15T00:00:00+05:30").getTime();
   const pad = (n) => String(Math.max(0, Math.floor(n))).padStart(2, "0");
 
   let id;
@@ -1451,6 +1451,259 @@ function HowItWorksSection() {
   );
 }
 
+function FeaturedOnSection() {
+  const platforms = [
+    {
+      name: "Indiegogo",
+      status: "Live Campaign",
+      desc: "Back Frost Aura today and lock in exclusive early-bird pricing before the campaign ends.",
+      cta: "Back us on Indiegogo",
+      href: "https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura",
+      accent: "#EB1478",
+      accentSoft: "#FDEBF4",
+      accentBorder: "#F9C6DE",
+      logo: (
+        <img
+          src="/images/go.png"
+          alt="Indiegogo logo"
+          width="46"
+          height="46"
+          style={{
+            width: 46,
+            height: 46,
+            objectFit: "contain",
+            borderRadius: 13,
+            display: "block",
+          }}
+        />
+      ),
+    },
+    {
+      name: "Product Hunt",
+      status: "Featured Product",
+      desc: "Frost Aura is live on Product Hunt — check out our page, leave a review, and show your support.",
+      cta: "View us on Product Hunt",
+      href: "https://www.producthunt.com/products/frost-aura?launch=frost-aura",
+      accent: "#FF6154",
+      accentSoft: "#FFF0EE",
+      accentBorder: "#FFC9C2",
+      logo: (
+        <svg viewBox="0 0 48 48" width="46" height="46" aria-hidden="true">
+          <circle cx="24" cy="24" r="24" fill="#FF6154" />
+          <path
+            d="M27.2 24.4h-5.6v-5.8h5.6c1.6 0 2.9 1.3 2.9 2.9s-1.3 2.9-2.9 2.9zm0-10.4H17v20h4.6v-5h5.6c4.1 0 7.5-3.4 7.5-7.5S31.3 14 27.2 14z"
+            fill="#fff"
+          />
+        </svg>
+      ),
+    },
+  ];
+ 
+  return (
+    <>
+      <style>{`
+        .s-featured {
+          background: #fff;
+          padding: 40px 80px 110px;
+        }
+        .s-featured-inner {
+          max-width: 1100px;
+          margin: 0 auto;
+          text-align: center;
+        }
+        .s-featured h2 {
+          font-family: 'DM Serif Display', serif;
+          font-size: clamp(28px, 4vw, 48px);
+          color: var(--gray-900);
+          line-height: 1.12;
+          margin-bottom: 14px;
+        }
+        .s-featured .section-desc {
+          font-size: 16px;
+          color: var(--gray-600);
+          max-width: 540px;
+          margin: 0 auto 56px;
+          line-height: 1.75;
+        }
+ 
+        .platform-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 26px;
+        }
+ 
+        .platform-card {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+          text-decoration: none;
+          background: #fff;
+          border: 1.5px solid var(--gray-200);
+          border-radius: var(--r-lg);
+          padding: 36px 34px 32px;
+          overflow: hidden;
+          transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+        }
+        .platform-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 4px;
+          background: var(--pc-accent);
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform .4s ease;
+        }
+        .platform-card:hover {
+          transform: translateY(-7px);
+          box-shadow: 0 24px 64px rgba(15, 23, 42, .1);
+          border-color: var(--pc-border);
+        }
+        .platform-card:hover::before { transform: scaleX(1); }
+        .platform-card:focus-visible {
+          outline: 3px solid var(--pc-accent);
+          outline-offset: 3px;
+        }
+ 
+        .platform-top {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 20px;
+          width: 100%;
+        }
+        .platform-logo {
+          flex-shrink: 0;
+          display: flex;
+          border-radius: 13px;
+          box-shadow: 0 6px 20px rgba(15, 23, 42, .12);
+          transition: transform .35s ease;
+        }
+        .platform-card:hover .platform-logo { transform: scale(1.06) rotate(-2deg); }
+        .platform-name {
+          font-family: 'DM Serif Display', serif;
+          font-size: 24px;
+          color: var(--gray-900);
+          line-height: 1.15;
+        }
+        .platform-status {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          margin-top: 5px;
+          font-size: 11.5px;
+          font-weight: 700;
+          letter-spacing: .05em;
+          text-transform: uppercase;
+          color: var(--pc-accent);
+          background: var(--pc-soft);
+          border: 1px solid var(--pc-border);
+          padding: 4px 12px;
+          border-radius: 100px;
+        }
+        .platform-status-dot {
+          width: 7px; height: 7px;
+          border-radius: 50%;
+          background: var(--pc-accent);
+          animation: dotpulse 2s ease infinite;
+        }
+        .platform-desc {
+          font-size: 14.5px;
+          color: var(--gray-600);
+          line-height: 1.7;
+          margin-bottom: 24px;
+        }
+        .platform-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 9px;
+          margin-top: auto;
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--pc-accent);
+          letter-spacing: .01em;
+        }
+        .platform-cta svg { transition: transform .3s ease; }
+        .platform-card:hover .platform-cta svg { transform: translateX(5px); }
+ 
+        @media (prefers-reduced-motion: reduce) {
+          .platform-card, .platform-card::before,
+          .platform-logo, .platform-cta svg { transition: none; }
+          .platform-status-dot { animation: none; }
+        }
+ 
+        @media (max-width: 960px) {
+          .s-featured { padding: 30px 28px 90px; }
+        }
+        @media (max-width: 768px) {
+          .platform-grid { grid-template-columns: 1fr; gap: 20px; }
+          .platform-card { padding: 28px 24px 26px; }
+          .platform-name { font-size: 21px; }
+        }
+      `}</style>
+ 
+      <section className="s-featured lg:mt-6 mt-10" id="featured">
+        <div className="s-featured-inner">
+          <div className="eyebrow" style={{ justifyContent: "center" }}>
+            Where To Find Us
+          </div>
+          <h2>We're Live On</h2>
+          <p className="section-desc">
+            Frost Aura is launching on the world's biggest platforms for new
+            products. Back the campaign, follow the launch, and join the
+            community.
+          </p>
+ 
+          <div className="platform-grid">
+            {platforms.map(
+              ({ name, status, desc, cta, href, accent, accentSoft, accentBorder, logo }) => (
+                <a
+                  key={name}
+                  className="platform-card"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${cta} (opens in a new tab)`}
+                  style={{
+                    "--pc-accent": accent,
+                    "--pc-soft": accentSoft,
+                    "--pc-border": accentBorder,
+                  }}
+                >
+                  <div className="platform-top">
+                    <div className="platform-logo">{logo}</div>
+                    <div>
+                      <div className="platform-name">{name}</div>
+                      <div className="platform-status">
+                        <span className="platform-status-dot" />
+                        {status}
+                      </div>
+                    </div>
+                  </div>
+ 
+                  <p className="platform-desc">{desc}</p>
+ 
+                  <span className="platform-cta">
+                    {cta}
+                    <svg width="17" height="17" fill="none" stroke="currentColor"
+                      strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                      viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </a>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+
 
 function GallerySection() {
   const scrollRef = useRef(null);
@@ -1484,7 +1737,35 @@ function GallerySection() {
   };
 
   return (
-    <section className="s-gallery lg:-mt-6" id="gallery">
+    <section className="s-gallery lg:-mt-24" id="gallery">
+      {/* Desktop-only size overrides (≥1024px). Mobile keeps original CSS. */}
+   <style>{`
+  @media (min-width: 1024px) {
+    .gallery-card {
+      width: clamp(420px, 34vw, 520px);
+      height: clamp(220px, 21vw, 320px); /* taller card */
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-card img {
+      width: 100%;
+      flex: 1;                              /* image fills remaining card height */
+      min-height: 0;
+      height: auto;
+      object-fit: fill;
+      display: block;
+    }
+    .gallery-track {
+      gap: 28px;
+      align-items: stretch;
+    }
+    .gallery-scroll-wrap {
+      padding-block: 8px;
+    }
+  }
+`}</style>
+
       <div className="lg:-mt-0 -mt-6">
         <div className="s-gallery-inner">
           <div className="eyebrow">Experience Frost</div>
@@ -1518,14 +1799,13 @@ function GallerySection() {
         </div>
 
         <div className="gallery-nav">
-          <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: -380, behavior: "smooth" })}>←</button>
-          <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: 380, behavior: "smooth" })}>→</button>
+          <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: -460, behavior: "smooth" })}>←</button>
+          <button className="gnav-btn" onClick={() => scrollRef.current.scrollBy({ left: 460, behavior: "smooth" })}>→</button>
         </div>
       </div>
     </section>
   );
 }
-
 
 function AppSection() {
   const navItems = [
@@ -1988,6 +2268,8 @@ export default function Home() {
 
       {/* 4. How It Works — bg: #fff */}
       <HowItWorksSection />
+
+      <FeaturedOnSection />
 
       {/* Wave: #fff → #F8FBFF */}
       <WaveHowToGallery />
