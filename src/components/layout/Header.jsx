@@ -435,7 +435,7 @@ export default function Header() {
           </div>
 
           <div className="nav-right">
-            <a
+            {/*<a
               href="/frostcart"
               className="cart-icon-link"
               aria-label="View cart"
@@ -445,14 +445,14 @@ export default function Header() {
               
               <span className="cart-badge">1</span>
             
-            </a>
+            </a> */}
 
-            <a
+            {/* <a
               href="https://www.indiegogo.com/en/projects/frostactive-38748367/stay-hydrated-focused-balanced-meet-frost-aura"
               className="nav-cta"
             >
               Back on Indiegogo →
-            </a>
+            </a> */}
 
             <button
               className={`hamburger ${menuOpen ? "open" : ""}`}

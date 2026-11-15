@@ -428,6 +428,9 @@ const styles = `
   .pc-cta:hover { background: var(--blue-light); }
   .pc.star .pc-cta { background: var(--pink-light); color: var(--pink); border-color: #FBCFE8; }
   .pc.star .pc-cta:hover { background: #FCE7F3; }
+  .pc-was.no-strike {
+  text-decoration: none !important;
+}
 
   .btn-pink-lg {
     display: inline-flex; align-items: center; gap: 10px;
@@ -1072,7 +1075,7 @@ function PricingSection() {
   useEffect(() => {
   
   
-  const end = new Date("2026-08-15T00:00:00+05:30").getTime();
+  const end = new Date("2026-11-06T00:00:00+05:30").getTime();
   const pad = (n) => String(Math.max(0, Math.floor(n))).padStart(2, "0");
 
   let id;
@@ -1104,9 +1107,9 @@ function PricingSection() {
 
   const tiers = [
     { tier: "MSRP", price: 99, save: null, was: "Full retail", cta: "Learn more", star: false },
-    { tier: "Standard", price: 69, save: "Save $30", was: "was $99", cta: "Learn more", star: false },
-    { tier: "Early Bird", price: 59, save: "Save $40", was: "was $99", cta: "Learn more", star: false },
-    { tier: "Super Early Bird", price: 49, save: "Save 51% — Biggest discount!", was: "was $99", cta: "Back now", star: true },
+    { tier: "Standard", price: 89, save: "Save $10", was: "was $99", cta: "Learn more", star: false },
+    { tier: "Early Bird", price: 69, save: "Save $30", was: "was $99", cta: "Learn more", star: false },
+    { tier: "Super Early Bird", price: 49, save: "Save 50% — Biggest discount!", was: "was $99", cta: "Back now", star: true },
   ];
 
   return (
@@ -1117,7 +1120,7 @@ function PricingSection() {
             Limited Launch Offer
           </div>
 
-          <h2>Launch Pricing Ends Soon</h2>
+          <h2> Campaign Ends Soon</h2>
 
           <p className="section-desc">
             Back early. Save more. Only a limited number of units available at these prices.
@@ -1142,7 +1145,8 @@ function PricingSection() {
                 <div className="pc-tier">{tier}</div>
                 <div className="pc-amt"><sup>$</sup>{price}</div>
                 {save && <div className="pc-save">{save}</div>}
-                <div className="pc-was">{was}</div>
+                <div className={`pc-was${tier === "MSRP" ? " no-strike" : ""}`}>
+                {was} </div>
                 <a href={campaignLink} target="_blank" rel="noopener noreferrer" className="pc-cta">
                   {cta}
                 </a>

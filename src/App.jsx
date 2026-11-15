@@ -92,7 +92,7 @@ function App() {
             <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/sessions/pause-to-perform" element={<PausetoPerformSessionPage />} />
             {/* <Route path="/quiz" element={<QuizPage />}  /> */}
-            <Route path="/frostcart" element={<FrostCartPage />}  />
+            {/* <Route path="/frostcart" element={<FrostCartPage />}  /> */}
            
           
 
