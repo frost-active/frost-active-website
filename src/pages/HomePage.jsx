@@ -75,7 +75,16 @@ const styles = `
     background: linear-gradient(135deg,var(--pink),#FF8CC8);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
-  .hero-sub { font-size: 17px; font-weight: 400; color: var(--gray-600); line-height: 1.75; max-width: 480px; margin-bottom: 40px; }
+  .hero-sub { font-size: 17px; font-weight: 400; color: var(--gray-600); line-height: 1.75; max-width: 480px; margin-bottom: 12px; }
+  .hero-price {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 28px; color: var(--gray-600);
+  }
+  .hero-price-amount {
+    font-family: 'DM Serif Display', serif; font-size: 34px;
+    line-height: 1.15; color: var(--gray-900);
+  }
+  .hero-price-label { font-size: 13px; font-weight: 600; color: var(--blue-mid); }
 
   /* Hero form */
   .hero-form {
@@ -969,6 +978,11 @@ function HeroSection() {
             A smart hydration & wellness tracker that builds better habits
           </p>
 
+          <div className="hero-price" aria-label="Frost product price: $127">
+            <span className="hero-price-amount">$127</span>
+            <span className="hero-price-label">Product price</span>
+          </div>
+
           <div className="hero-form lg:-mt-4">
             <div style={{ width: "100%" }}>
               <input
@@ -1457,6 +1471,7 @@ function HowItWorksSection() {
 
 function FeaturedOnSection() {
   const platforms = [
+    
     {
       name: "Indiegogo",
       status: "Live Campaign",
@@ -2257,7 +2272,7 @@ export default function Home() {
       <WaveHeroToPricing />
 
       {/* 2. Pricing — bg: gradient (#EFF6FF → #F0FCFF → #FFF0F6) */}
-      <PricingSection />
+      {/* <PricingSection /> */}
 
       {/* Wave: gradient → #F0F7FC */}
       <WavePricingToAbout />
@@ -2273,7 +2288,7 @@ export default function Home() {
       {/* 4. How It Works — bg: #fff */}
       <HowItWorksSection />
 
-      <FeaturedOnSection />
+      {/* <FeaturedOnSection /> */}
 
       {/* Wave: #fff → #F8FBFF */}
       <WaveHowToGallery />
